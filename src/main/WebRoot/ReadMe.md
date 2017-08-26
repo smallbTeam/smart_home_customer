@@ -8,6 +8,7 @@ Controller层:com.\*.\*\*.controller
 
 Service层：com.\*.\*\*.service
 
+
 Dao及MyBatis:com.\*.\*\*.dao
 
 View层:WEB-INF/page/\*\*.jsp
