@@ -183,18 +183,36 @@
                 deviceArray = new Array();
                 //重新请求分组下所有设备
                 $.ajax({
-                    url: "${path}/deviceGroup/allRelCustomerDeviceGroups",
+                    url: "${path}/deviceGroup/"+deviceGroup.tabDeviceGroupId,
                     type: "POST",
-                    data: {
-                        "tabDeviceGroupId": deviceGroup.tabDeviceGroupId
-                    },
+                    data: {},
                     dataType: "json",
                     success: function (result) {
                         if (result.code == 0) {
-                            for (var i in result.obj) {
-                                var itemDevice = result.obj[i];
-                                //如果用户有空气检测设备
-                                if (itemDevice.deviceCategory == "freshair") {
+                            //获取分组信息
+                            var tabDeviceGroupinfo = result.obj.tabDeviceGroupinfo;
+                            //获取空气检测设备信息
+                            var groupFreshairList = result.obj.groupFreshairList
+                            //如果用户有空气检测设备
+                            if ((null != groupFreshairList) && (0 < groupFreshairList.length)) {
+                                var freshairList = new Array();
+                                for (var i in groupFreshairList) {
+//                                    list_map.push({tabDeviceFreshairId:groupFreshairList[i].tabDeviceFreshairId,
+//                                        deviceSeriaNumber:groupFreshairList[i].deviceSeriaNumber,
+//                                        deviceCategory:groupFreshairList[i].deviceCategory,
+//                                        ip:groupFreshairList[i].ip,
+//                                        name:groupFreshairList[i].name,
+//                                        state:groupFreshairList[i].state
+//                                    });
+                                    list_map.push(groupFreshairList[i]);
+
+                                    //加载第一个空气检测设备
+                                    getFreshairInfo(deviceSeriaNumber,){
+
+                                    }
+
+                                    var freshair = groupFreshairList[i];
+
                                     //将设备信息添加到空气检测设备列表
 
                                     var wenduval = "";
@@ -432,7 +450,6 @@
 //                                              //WebSocketTest();
                                             }
                                         }
-
                                     });
                                 }
                             }
