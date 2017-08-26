@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html>
+
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script type="text/javascript" src="js/base/base.js"></script>
+		<script type="text/javascript" src='js/jquery.js'  charset="utf8"></script>
+		<script>
+			$(function() {
+			var ip = "";
+			setInterval(refreshDevice(ip), 5000);
+			});
+
+			function refreshDevice(ip) {
+				console.log(ip);
+				$.getJSON(basePath+"/deviceGroup/findDeviceByIp",function(data){
+					console.log(JSON.stringify(data))
+						if(data.code == 0) {
+							var ip1 = data.ip;
+							if(ip == "" || ip1 == ip) {
+								$("#oldIP").attr("html", ip1);
+								var deviceList = data.obj.deviceList;
+								var deviceListLength = deviceList.length;
+								for(var i = 0; i < deviceListLength; i++) {
+									var devices = "";
+									devices += deviceList[i].deviceSeriaNumber += ";";
+								}
+								$("#oldDevice").attr("html", devices);
+								$("#oldTime").attr("html", new time());
+							} else {
+								$("#newIp").attr("html", ip1);
+								var deviceListLength = deviceList.length;
+								for(var i = 0; i < deviceListLength; i++) {
+									var devices = "";
+									devices += deviceList[i].deviceSeriaNumber += ";";
+								}
+								$("#newDevice").attr("html", devices);
+								$("#newTime").attr("html", new time());
+								clearTimeout(refreshDevice(ip))
+							}
+						}
+				});
+			}
+		</script>
+	</head>
+
+	<body>
+		当前Ip:<span id="oldIP"></span><br> 当前设备：
+		<span id="oldDevice"></span><br> 当前时间：
+		<span id="oldTime"></span><br> 新IP:
+		<span id="newIp"></span><br> 新设备：
+		<span id="newDevice"></span><br> 新时间：
+		<span id="newTime"></span><br>
+
+		</span>
+	</body>
+
+</html>
