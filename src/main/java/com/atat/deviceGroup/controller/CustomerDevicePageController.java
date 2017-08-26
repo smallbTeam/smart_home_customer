@@ -49,4 +49,16 @@ public class CustomerDevicePageController extends BaseController{
         return mav;
     }
 
+    @RequestMapping(value = "/updateService", method = RequestMethod.GET)
+    public ModelAndView updateService() {
+        ModelAndView mav = new ModelAndView("updateService");
+        return mav;
+    }
+
+    @RequestMapping(value = "/addDevice", method = RequestMethod.GET)
+    public ModelAndView addDevice() {
+        ModelAndView mav = new ModelAndView("addDevice");
+        return mav;
+    }
+
 }

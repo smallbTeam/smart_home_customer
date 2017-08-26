@@ -1,5 +1,8 @@
 package com.atat.freshair.service.impl;
 
+import com.atat.common.bean.JsonResult;
+import com.atat.util.JsonUtil;
+import com.atat.util.httpClient.URLUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
 import com.atat.freshair.bean.TabDeviceFreshair;
@@ -9,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * @author whaosoft
@@ -23,6 +23,9 @@ public class TabDeviceFreshairServiceImpl implements TabDeviceFreshairService {
 
     @Autowired
     private TabDeviceFreshairDao tabDeviceFreshairDao;
+
+    @Autowired
+    private Properties deviceService;
 
     private String daoNamespace = TabDeviceFreshairDao.class.getName();
 
@@ -87,5 +90,23 @@ public class TabDeviceFreshairServiceImpl implements TabDeviceFreshairService {
         else {
             return null;
         }
+    }
+
+    @Override public Map<String, Object> getFreshairNowData(String deviceSeriaNumber) {
+        Map<String, Object> resultMap = new HashMap<String, Object>();
+        //http请求设备服务 获取Ip下所有设备及分组信息
+        String basePase = deviceService.getProperty("basePase");
+        String url=basePase+"/freshair/freshairNowData/"+deviceSeriaNumber;
+        String resultstr = "";
+        Map<String, String> paramMap = new HashMap<>();
+        try {
+            resultstr = URLUtil.originalGetData(url,paramMap);
+        } catch (Exception e) {
+            return null;
+        }
+        JsonResult<Map<String,Object>> result = new JsonResult<Map<String,Object>>();
+        result = JsonUtil.fromJson(resultstr,result.getClass());
+        resultMap = result.getObj();
+        return resultMap;
     }
 }
