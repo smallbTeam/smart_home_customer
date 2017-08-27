@@ -190,14 +190,15 @@ public class RelCustomerDeviceGroupController extends BaseController {
 
     @ApiOperation("查询 当前IP下设备")
     @RequestMapping(value = "/findDeviceByIp", method = RequestMethod.GET)
-    public void findDeviceByIp(HttpServletRequest request, HttpServletResponse response) throws Exception {
+    public void findDeviceByIp(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long customerId,
+            HttpServletRequest request, HttpServletResponse response) throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
         // 获取IP及其他信息
         Map<String, Object> ipInfoMap = IpUtil.getIpInfo(request);
         String ip = (String) ipInfoMap.get("ipNet");
         ip = "125.38.56.131";
         logger.info("用户当前外网Ip为:" + ip);
-        Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(ip);
+        Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(customerId,ip);
         if (null != resultMap) {
             result.setObj(resultMap);
             result.setCode(ResultCode.SUCCESS.getCode());

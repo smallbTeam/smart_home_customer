@@ -94,7 +94,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
     }
 
     @Override
-    public Map<String, Object> findDeviceByIp(String ip) {
+    public Map<String, Object> findDeviceByIp(Long customerId,String ip) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         // http请求设备服务 获取Ip下所有设备及分组信息
         String basePase = deviceService.getProperty("basePase");
@@ -112,11 +112,36 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         result = JsonUtil.fromJson(resultstr, result.getClass());
         resultMap = result.getObj();
         // 筛选设备分组不为空的设备
-        List<Map<String, String>> deviceList = (List<Map<String, String>>) resultMap.get("deviceList");
-        for (Map<String, String> device : deviceList) {
-            if (null != device.get("tabDeviceGroupId")
-                    && StringUtil.isNotEmpty(device.get("tabDeviceGroupId").toString())) {
-                deviceList.remove(device);
+        List<Map<String, Object>> deviceList = (List<Map<String, Object>>) resultMap.get("deviceList");
+        if (CollectionUtil.isNotEmpty(deviceList)){
+            for (Map<String, Object> device : deviceList) {
+                if (null != device.get("tabDeviceGroupId")
+                        && StringUtil.isNotEmpty(device.get("tabDeviceGroupId").toString())) {
+                    deviceList.remove(device);
+                }
+            }
+        }
+
+        //给deviceGroupList添加groupName属性
+        List<Map<String, Object>> deviceGroupList = (List<Map<String, Object>>) resultMap.get("deviceGroupList");
+        if (CollectionUtil.isNotEmpty(deviceGroupList)){
+            for (Map<String, Object> deviceGroup : deviceGroupList) {
+                if (null != deviceGroup.get("tabDeviceGroupId")
+                        && StringUtil.isNotEmpty(deviceGroup.get("tabDeviceGroupId").toString())) {
+                    Long tabDeviceGroupId = Long.parseLong(deviceGroup.get("tabDeviceGroupId").toString());
+                    Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
+                    getRelCustomerGroupParam.put("customerId", customerId);
+                    getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
+                    List<Map<String, Object>> relCustomerGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+                    //若存在添加groupName属性
+                    if (CollectionUtil.isNotEmpty(relCustomerGroupList)){
+                        Map<String, Object> relCustomerGroup = relCustomerGroupList.get(0);
+                        deviceGroup.put("groupName", (String) relCustomerGroup.get("groupName"));
+                    } else {
+                        //若不存在用户与分组关联关系添加groupName属性为分组的Addres属性
+                        deviceGroup.put("groupName",deviceGroup.get("address"));
+                    }
+                }
             }
         }
         resultMap.put("deviceList", deviceList);
@@ -152,6 +177,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             relCustomerDeviceGroup.setCreatedDate(new Date());
             relCustomerDeviceGroupDao.addRelCustomerDeviceGroup(relCustomerDeviceGroup);
             // 返回分组信息
+            groupMap.put("groupName",groupName);
             return groupMap;
         }
         else {

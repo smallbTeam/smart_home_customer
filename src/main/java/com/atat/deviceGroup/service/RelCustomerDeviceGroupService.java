@@ -64,7 +64,7 @@ public interface RelCustomerDeviceGroupService {
      * 
      * @param ip
      */
-    public Map<String, Object> findDeviceByIp(String ip);
+    public Map<String, Object> findDeviceByIp(Long customerId,String ip);
 
     /**
      * 用户新建分组后返回分组信息
