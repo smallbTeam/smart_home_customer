@@ -268,7 +268,7 @@ nav .dropDown li:nth-child(even) a ,.leftM li:nth-child(even) a{
     width: 100%;
     height: auto;
     padding: 0px 0px 10px;
-    /*display: none;*/
+    display: none;
 }
 
 .list-content {
@@ -335,20 +335,30 @@ nav .dropDown li:nth-child(even) a ,.leftM li:nth-child(even) a{
     font-size: 20px;
 }
 
-#serach-content {
+#serach-content-bind {
     width: 100%;
     height: auto;
     cursor: pointer;
     /*padding: 0px 0px 10px;*/
     /*background: #1b6d85;*/
     margin-top: 0px;
-    margin-bottom: 100px;
+    display: none;
 }
 
-#serach-content .serach-menu {
+#serach-content {
+    width: 100%;
+    height: auto;
+    cursor: pointer;
+    /*padding: 0px 0px 10px;*/
+    /*background: #1b6d85;*/
+    margin-top: 15px;
+    margin-bottom: 100px;
+    display: block;
+}
+ .serach-menu {
     width: 97%;
     border-radius: 5px ;
-    margin: 5px 1.5% 10px;
+    margin: 0px 1.5% 0;
     height: 50px;
     line-height: 50px;
     background: #f0ad4e;

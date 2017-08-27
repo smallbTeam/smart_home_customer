@@ -219,7 +219,7 @@
                             //获取分组信息
                             var tabDeviceGroupinfo = result.obj.tabDeviceGroupinfo;
                             //获取空气检测设备信息
-                            var groupFreshairList = result.obj.groupFreshairList
+                            var groupFreshairList = result.obj.groupFreshairList;
                             //如果用户有空气检测设备
                             if ((null != groupFreshairList) && (0 < groupFreshairList.length)) {
                                 var freshairList = new Array();

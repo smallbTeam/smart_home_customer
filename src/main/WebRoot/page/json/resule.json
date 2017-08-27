@@ -1,0 +1,22 @@
+{
+    "code": 0,
+    "obj": {
+        "ip": "125.38.56.131",
+        "deviceList": [
+            {
+                "deviceCategory": "freshair",
+                "createdDate": 1503729163000,
+                "isDeleted": 0,
+                "ip": "125.38.56.131",
+                "modifiedDate": 1503818653000,
+                "deviceSeriaNumber": "066eff565750657267045328",
+                "tabDeviceFreshairId": 1,
+                "tabDeviceGroupId": null
+            }
+        ],
+        "deviceGroupList": [
+
+        ]
+    },
+    "errorMsg": null
+}
