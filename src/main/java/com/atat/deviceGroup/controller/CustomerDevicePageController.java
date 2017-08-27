@@ -5,6 +5,9 @@
 package com.atat.deviceGroup.controller;
 
 import com.atat.common.base.controller.BaseController;
+import com.atat.customer.service.TabCustomerService;
+import com.atat.util.StringUtil;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
@@ -21,6 +24,9 @@ import java.util.Map;
 @RestController
 @RequestMapping("/deviceGroup")
 public class CustomerDevicePageController extends BaseController{
+
+    @Autowired
+    private TabCustomerService tabCustomerService;
 
     /**
      * 设备列表页面
@@ -50,14 +56,22 @@ public class CustomerDevicePageController extends BaseController{
     }
 
     @RequestMapping(value = "/updateService", method = RequestMethod.GET)
-    public ModelAndView updateService() {
+    public ModelAndView updateService(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("updateService");
+        String mobelPhone = request.getParameter("mobelPhone");
+        if (StringUtil.isNotEmpty(mobelPhone)) {
+            mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+        }
         return mav;
     }
 
     @RequestMapping(value = "/addDevice", method = RequestMethod.GET)
-    public ModelAndView addDevice() {
+    public ModelAndView addDevice(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("addDevice");
+        String mobelPhone = request.getParameter("mobelPhone");
+        if (StringUtil.isNotEmpty(mobelPhone)) {
+            mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+        }
         return mav;
     }
 
