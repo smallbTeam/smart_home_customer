@@ -126,11 +126,20 @@
             window.history.back();
         });
 
+        var customer = {
+            "tabCustomerId": '${customer.tabCustomerId}',
+            "mobelPhone": '${customer.mobelPhone}',
+            "wxId": '${customer.wxId}',
+            "nickName": '${customer.nickName}',
+            "birthday": '${customer.birthday}',
+            "sex": '${customer.sex}',
+            "token": '${customer.token}'
+        };
+
         var prefixUrl = 'http://58.87.74.233:9080';
         var currentIp = '125.38.56.131';
         var devList = new Array(); //全局数组，存储扫描到的设备信息
         var deviceGroupList = new Array(); //全局数组，存储扫描到的设备信息
-        var customerId=1;
 
         function addListItem(device) {
             var html = '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">'+
@@ -190,7 +199,7 @@
                     url: "${path}/deviceGroup/groupBoundDevice",
                     type: "POST",
                     data: {
-                        customerId: customerId,
+                        customerId: customer.tabCustomerId,
                         tabDeviceGroupId: tabDeviceGroupId,
                         deviceSeriaNumberList: deviceSeriaNumberList
                     },
@@ -239,7 +248,7 @@
                     url: "${path}/deviceGroup/customerAddNewGroup",
                     type: "POST",
                     data: {
-                        customerId: customerId,
+                        customerId: customer.tabCustomerId,
                         groupName: $("#category_gatewayName").val(),
                         address: $("#category_gatewayAddress").val()
                     },
@@ -261,7 +270,7 @@
                                 url: "${path}/deviceGroup/groupBoundDevice",
                                 type: "GET",
                                 data: {
-                                    customerId: customerId,
+                                    customerId: customer.tabCustomerId,
                                     tabDeviceGroupId: tabDeviceGroupId,
                                     deviceSeriaNumberList: deviceSeriaNumberList
                                 },
@@ -286,18 +295,18 @@
                         }
 
                     },
-                    error: function () {
-                        layer.alert('a:'+$("#category_gatewayName").val()+'-'+$("#category_gatewayAddress").val());
-
-                        layer.msg("程序繁忙，请稍后重试。！");
+                    error: function (error) {
+                        layer.msg("程序繁忙，请稍后重试。！"+error.toString());
                     }
                 });
-
             });
         }
 
         $('#serach-content').click(function () {
             var index = layer.load(0, {shade: false}); //0代表加载的风格，支持0-2
+
+            devList = new  Array();
+            $('#device_list').empty();
 
             $.ajax({
                 url: "${path}/page/json/resule.json",

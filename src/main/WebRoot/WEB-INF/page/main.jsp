@@ -769,8 +769,10 @@
 
 //              页面事件响应
             $("#addGateWayBtn").click(function () {
-//                addGateway();
-                window.location.href = "${path}/client/device?service=addGetway&mobelPhone=" + customer.mobelPhone;
+//                addGateway();http://localhost:8080/
+                window.location.href = "${path}/deviceGroup/addDevice?mobelPhone=" + customer.mobelPhone;
+
+                <%--window.location.href = "${path}/client/device?service=addGetway&mobelPhone=" + customer.mobelPhone;--%>
             });
             $("#addGateWay").click(function () {
 //                addGateway();
@@ -933,7 +935,7 @@
     </div>
     <ul id="rightM" class="dropDown">
         <li id="personal"><a href="#"><i class="personal"></i> 个人中心</a></li>
-        <li id="addGateWayBtn"><a href="#">添加网关</a></li>
+        <li id="addGateWayBtn"><a href="#">扫描设备</a></li>
         <li id="openAirKiss_btn"><a href="#">更改网关配置</a></li>
         <li id="shareWithSomeone"><a href="#">分享</a></li>
 
