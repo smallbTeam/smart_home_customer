@@ -117,8 +117,8 @@
 </section>
 
 
-<script src='js/jquery.js'></script>
-<script src="third/layer-v3.0.3/layer/layer.js"></script>
+<script src='${path}/page/js/jquery.js'></script>
+<script src="${path}/page/js/third/layer/layer.js"></script>
 
 <script>
     $(document).ready(function () {
@@ -199,7 +199,7 @@
                     url: "${path}/deviceGroup/groupBoundDevice",
                     type: "POST",
                     data: {
-                        customerId: customer.tabCustomerId,
+                        tabCustomerId: customer.tabCustomerId,
                         tabDeviceGroupId: tabDeviceGroupId,
                         deviceSeriaNumberList: deviceSeriaNumberList
                     },
@@ -248,7 +248,7 @@
                     url: "${path}/deviceGroup/customerAddNewGroup",
                     type: "POST",
                     data: {
-                        customerId: customer.tabCustomerId,
+                        tabCustomerId: customer.tabCustomerId,
                         groupName: $("#category_gatewayName").val(),
                         address: $("#category_gatewayAddress").val()
                     },
@@ -270,7 +270,7 @@
                                 url: "${path}/deviceGroup/groupBoundDevice",
                                 type: "GET",
                                 data: {
-                                    customerId: customer.tabCustomerId,
+                                    tabCustomerId: customer.tabCustomerId,
                                     tabDeviceGroupId: tabDeviceGroupId,
                                     deviceSeriaNumberList: deviceSeriaNumberList
                                 },

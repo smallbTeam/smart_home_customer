@@ -23,7 +23,7 @@ public interface TabDeviceFreshairService {
      * 依据主键更新 空气监测设备表
      * @param tabDeviceFreshair
      */
-    public void  updateTabDeviceFreshairById(TabDeviceFreshair tabDeviceFreshair);
+    public void updateTabDeviceFreshairById(TabDeviceFreshair tabDeviceFreshair);
 
     /**
      * 依据条件查找 空气监测设备表 列表
@@ -68,4 +68,12 @@ public interface TabDeviceFreshairService {
      * @return
      */
     public Map<String, Object> getFreshairNowData(String deviceSeriaNumber);
+
+    /**
+     * 用户更新空气检测设备信息
+     * @param tabCustomerId
+     * @param tabDeviceFreshair
+     * @return
+     */
+    public Integer CustomerUpdateTabDeviceFreshair(Long tabCustomerId,TabDeviceFreshair tabDeviceFreshair);
 }

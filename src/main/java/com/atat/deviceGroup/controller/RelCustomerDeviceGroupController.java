@@ -79,7 +79,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
             rs.put("tabCustomerId", tabCustomerId);
         }
         if (null != tabDeviceGroupId) {
-            rs.put("tabDeviceGroupId", "%" + tabDeviceGroupId + "%");
+            rs.put("tabDeviceGroupId", tabDeviceGroupId);
         }
         if (StringUtil.isNotEmpty(groupName)) {
             rs.put("groupName", "%" + groupName + "%");
@@ -234,7 +234,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     public void groupBoundDevice(
             @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
-            @ApiParam(value = "设备分组所在地地址 (必传参数)") @RequestParam String deviceSeriaNumberList, HttpServletResponse response)
+            @ApiParam(value = "设备序列号参数 (必传参数)") @RequestParam String deviceSeriaNumberList, HttpServletResponse response)
             throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
         Integer rescod = relCustomerDeviceGroupService.groupBoundDevice(tabCustomerId, tabDeviceGroupId, deviceSeriaNumberList);

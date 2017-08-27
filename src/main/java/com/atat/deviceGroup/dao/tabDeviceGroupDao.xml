@@ -17,9 +17,7 @@
                 <if test="createdDate != null">
                     modifiedDate,
                 </if>
-                <if test="isDeleted != null">
-                    isDeleted,
-                </if>
+                    isDeleted
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
                 <if test="uid != null">
@@ -34,9 +32,7 @@
                 <if test="createdDate != null">
                     #{createdDate},
                 </if>
-                <if test="isDeleted != null">
-                    #{isDeleted},
-                </if>
+                0
         </trim>
     </insert>
 

@@ -108,13 +108,12 @@
             var code;
             var t1;  ////定时器
 
-
             $("#openAirKiss_btn").click(function () {
                 window.location.href = "${path}/client/home?service=openWifiScan&mobelPhone=" + customer.mobelPhone;
             });
 
             //获取空气检测设备数据
-            function getFreshairData(deviceSeriaNumber){
+            var getFreshairData = function(deviceSeriaNumber){
                 if ("" == $.trim(deviceSeriaNumber)){
                     return;
                 }
@@ -132,38 +131,32 @@
                             var pmval = "";
                             var co2val = "";
                             var vocval = "";
-                            deviceId = itemDevice.deviceId;
-                            getmap.put("wendu", bean.getNowWendu());
-                            getmap.put("shidu", bean.getNowShidu());
-                            getmap.put("pm", bean.getNowPm());
-                            getmap.put("co2", bean.getNowCo2());
-                            getmap.put("voc", bean.getNowVoc());
-                            if (null != freshairData.wendu) {
+                            if (null == freshairData.wendu) {
                                 wenduval += "温度: " + "-- ℃";
                             } else {
                                 wenduval += "温度: " + freshairData.wendu + "℃";
                             }
                             $('#device_wendu_info').html(wenduval);
-                            if (null != freshairData.wendu) {
+                            if (null == freshairData.shidu) {
                                 shiduval += "湿度: " + "-- ％";
                             } else {
                                 shiduval += "湿度: " + freshairData.shidu + "％";
                             }
                             $('#device_shidu_info').html(shiduval);
-                            if (null != freshairData.wendu) {
+                            if (null == freshairData.pm) {
                                 pmval += "PM2.5: " + "-- μg/m³";
                             } else {
                                 pmval += "PM2.5: " + freshairData.pm + "μg/m³";
                             }
                             $('#device_pm_info').html(pmval);
-                            if (null != freshairData.wendu) {
+                            if (null == freshairData.co2) {
                                 co2val += "CO2: " + "-- ppm";
                             } else {
                                 co2val += "CO2: " + freshairData.wendu + "-- ppm";
                             }
                             $('#device_co2_info').html(co2val);
 
-                            if (null != freshairData.wendu) {
+                            if (null == freshairData.voc) {
                                 vocval += "VOC: " + "-- g/L";
                             } else {
                                 vocval += "VOC: " + freshairData.voc + "g/L";
@@ -207,10 +200,10 @@
                 $("#groupName").html(deviceGroup.address);
                 $("#groupStatus").html("isOn");
                 $("#devicelistPanel").empty();
-                deviceArray = new Array();
+                var deviceFreshairArray = new Array();
                 //重新请求分组下所有设备
                 $.ajax({
-                    url: "${path}/deviceGroup/"+deviceGroup.tabDeviceGroupId,
+                    url: "${path}/deviceGroup/tabDeviceInGroup/"+deviceGroup.tabDeviceGroupId,
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -224,132 +217,20 @@
                             if ((null != groupFreshairList) && (0 < groupFreshairList.length)) {
                                 var freshairList = new Array();
                                 for (var i in groupFreshairList) {
-//                                    list_map.push({tabDeviceFreshairId:groupFreshairList[i].tabDeviceFreshairId,
+//                                    deviceFreshairArray.push({tabDeviceFreshairId:groupFreshairList[i].tabDeviceFreshairId,
 //                                        deviceSeriaNumber:groupFreshairList[i].deviceSeriaNumber,
 //                                        deviceCategory:groupFreshairList[i].deviceCategory,
 //                                        ip:groupFreshairList[i].ip,
 //                                        name:groupFreshairList[i].name,
 //                                        state:groupFreshairList[i].state
 //                                    });
-                                    list_map.push(groupFreshairList[i]);
-
+                                    deviceFreshairArray.push(groupFreshairList[i]);
                                     //加载第一个空气检测设备
-                                    getFreshairData(groupFreshairList[0].deviceSeriaNumber);
-
-                                    currentFreshDeviceSeriaNumber = groupFreshairList[0].deviceSeriaNumber;
                                 }
+                                getFreshairData(groupFreshairList[0].deviceSeriaNumber);
+                                currentFreshDeviceSeriaNumber = groupFreshairList[0].deviceSeriaNumber;
                             }
-//                            var deviceItem = {
-//                                "deviceTypeAttention": itemDevice.deviceTypeAttention,
-//                                "DeviceData": itemDevice.DeviceData,
-//                                "deviceTypeId": itemDevice.deviceTypeId,
-//                                "DeviceNo": itemDevice.DeviceNo,
-//                                "gatewayIP": itemDevice.gatewayIP,
-//                                "deviceTypeName": itemDevice.deviceTypeName,
-//                                "gatewayGatewayPort": itemDevice.gatewayGatewayPort,
-//                                "id": itemDevice.id,
-//                                "deviceGetwayId": itemDevice.deviceGetwayId,
-//                                "deviceName": itemDevice.deviceName,
-//                                "deviceTypeModel": itemDevice.deviceTypeModel,
-//                                "deviceTypeDescribtion": itemDevice.deviceTypeDescribtion,
-//                                "deviceState": itemDevice.deviceState
-//                            };
-
-                            <%--/*if ($.inArray(deviceItem, deviceArray) == -1) {--%>
-                                <%--deviceArray.push(deviceItem);--%>
-                                <%--//向设备列表区域添加每条设备信息--%>
-                                <%--var html = '<div id="list-content_' + deviceItem.id + '" class="list-content">' +--%>
-                                    <%--'<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">' +--%>
-                                    <%--'<div class="list-item">' +--%>
-                                    <%--'<div class="list-item-content">' +--%>
-                                    <%--'<div class="leftContent">' +--%>
-                                    <%--'<div id="deviceMenu_' + deviceItem.id + '" class="device-menu">' +--%>
-                                    <%--'<img src="${path}/page/img/icon/ison.png"/>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--' <span id="deviceStatus_' + deviceItem.id + '" class="subtitle">状态：开启中</span>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'<div class="rightContent">' +--%>
-                                    <%--'<div class="topLabel">' +--%>
-                                    <%--'<div class="title">海尔变频空调</div>' +--%>
-                                    <%--'<span class="subline">型号：x30698</span>' +--%>
-                                    <%--'<span class="subline">设备编号：0102030</span>' +--%>
-                                    <%--'<span class="contentline">设备状态：良好</span>' +--%>
-                                    <%--'<br/>' +--%>
-                                    <%--'<span class="contentline">设备类型：空调</span>' +--%>
-                                    <%--'<br/>' +--%>
-                                    <%--'<span class="contentline">设备类型：空调</span>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'<div class="bottomLabel ">' +--%>
-                                    <%--'<div class="bottomLabel-item pull-left"><img ' +--%>
-                                    <%--'src="${path}/page/img/icon/blue.png"/><span>正常</span></div>' +--%>
-                                    <%--'<div class="bottomLabel-item pull-left"><img ' +--%>
-                                    <%--'src="${path}/page/img/icon/blue.png"/><span>18c</span></div>' +--%>
-                                    <%--'<div class="bottomLabel-item pull-left"><img ' +--%>
-                                    <%--'src="${path}/page/img/icon/blue.png"/><span>100</span></div>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'<div class="list-item-hover">' +--%>
-                                    <%--'<div id="delete_' + deviceItem.id + '" class="item-icon ">' +--%>
-                                    <%--'<img src="${path}/page/img/icon/delete.png" alt="img30"/>' +--%>
-                                    <%--'<span>删除</span>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'<div id="edit_' + deviceItem.id + '" class="item-icon ">' +--%>
-                                    <%--'<img src="${path}/page/img/icon/edit.png" alt="img30"/>' +--%>
-                                    <%--'<span>编辑</span>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'<div id="detail_' + deviceItem.id + '" class="item-icon ">' +--%>
-                                    <%--'<img src="${path}/page/img/icon/detail.png" alt="img30"/>' +--%>
-                                    <%--'<span>详情</span>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'  </div>' +--%>
-                                    <%--' </div>' +--%>
-                                    <%--' </div>' +--%>
-                                    <%--'</div>' +--%>
-                                    <%--'</div><!--list-content col-xs-12 -->' +--%>
-                                    <%--'</div><!--list-content -->';--%>
-
-                                    <%--$("#devicelistPanel").append(html);--%>
-                                    <%--$('#delete_' + deviceItem.id).click(function () {--%>
-                                        <%--var id = $(this).attr("id").split("_")[1];--%>
-                                        <%--$.ajax({--%>
-                                            <%--url: "${path}/client/device?service=delDeviceById",--%>
-                                            <%--data: {--%>
-                                                <%--deviceId: id--%>
-                                            <%--},--%>
-                                            <%--success: function (msg) {--%>
-                                                <%--if (msg.result == "success") {--%>
-                                                    <%--$("#list-content_" + id).remove();--%>
-
-                                                <%--} else {--%>
-                                                    <%--layer.msg("删除失败");--%>
-                                                <%--}--%>
-                                            <%--},--%>
-                                            <%--error: function () {--%>
-                                                <%--layer.msg("删除失败");--%>
-                                            <%--}--%>
-                                        <%--});--%>
-                                    <%--});--%>
-                                    <%--$('#edit_' + deviceItem.id).click(function () {--%>
-                                        <%--var id = $(this).attr("id").split("_")[1];--%>
-                                        <%--var index = -1;--%>
-                                        <%--for (var i in deviceArray) {--%>
-                                            <%--if (id == deviceArray[i].id) {--%>
-                                                <%--index = i;--%>
-                                            <%--}--%>
-                                        <%--}--%>
-                                        <%--if (index == -1) return;--%>
-                                        <%--addDevice(false, deviceArray[index]);--%>
-                                    <%--});--%>
-
-                                    <%--$('#detail_' + deviceItem.id).click(function () {--%>
-                                        <%--var id = $(this).attr("id").split("_")[1];--%>
-                                        <%--window.location.href = "${path}/client/device?service=getDeviceByDeviceId&deviceId=" + id;--%>
-                                    <%--});--%>
-                                    <%--$('#deviceMenu_' + deviceItem.id).click(function () {--%>
-                                        <%--var id = $(this).attr("id").split("_").last();--%>
-                                    <%--});--%>
-                                <%--}*/--%>
                         }
-
                         if (!isExist("#btnadddevice")) {
                             var btnadddevice = '<div id="btnadddevice" class="list-content">' +
                                 '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">' +
@@ -446,203 +327,9 @@
              * 定时器方法
              */
             function getTimer() {
-                t1 = window.setInterval("getFreshairData(currentFreshDeviceSeriaNumber)", 10000);//使用字符串执行方法
+                t1 = window.setInterval(getFreshairData(currentFreshDeviceSeriaNumber), 10000);//使用字符串执行方法
                 // window.clearInterval(t1);//去掉定时器
             }
-
-            function addDeviceDialog(deviceTypes) {
-                var dialog = '<div id="addDeviceDialog" class="box">' +
-                    '<form role="form" >' +
-                    '<div class="form-group">' +
-                    '<label for="name">设备类型</label>' +
-                    '<select id="deviceType"  class="form-control" >';
-
-                for (var i in deviceTypes) {
-                    dialog += '<option value="' + deviceTypes[i].id + '">' + deviceTypes[i].name + '</option>';
-                }
-                dialog += '</select>';
-                if (deviceTypes.length <= 0) {
-                    dialog += '<div class="click-title">当前无设备类型，<span id="addDeviceType">立即添加?</span></div>';
-                }
-
-                dialog += '<div class="form-group">' +
-                    '</div>' +
-                    '<label for="name">设备名称</label>' +
-                    '<input type="text" class="form-control" id="add_gatewayName" placeholder="请输入设备名称" required>' +
-                    '<label for="name">设备型号</label>' +
-                    '<input type="text" class="form-control" id="add_gatewayNo" placeholder="请输入设备型号" required>' +
-                    '</div>' +
-                    '</form>' +
-                    '</div>';
-
-                layer.confirm(dialog, {
-                    title: "添加网关",
-                    btn: ["提交"], //按钮
-                    width: "100%"
-                }, function () {
-                    $.ajax({
-                        url: "${path}/client/device?service=addDevice",
-                        type: "GET",
-                        data: {
-                            //tabCustomerId: customer.id,
-                            name: $("#add_gatewayName").val(),
-                            deviceCategoryId: $("#deviceType").val(),
-                            gatewaySerialNumber: current_deviceGroup.gatewayId,
-                            seriaNumber: $("#add_gatewayNo").val(),
-                        },
-                        dataType: "json",
-                        success: function (result) {
-                            //console.log(result);
-                            if (result.result == "success") {
-                                layer.msg("添加成功")
-                                reloadPageContent(current_deviceGroup);
-                                refresh();
-                            } else {
-                                layer.alert(result.error);
-                            }
-                        },
-                        error: function () {
-                            layer.msg("程序繁忙，请稍后重试。！");
-                        }
-                    });
-                });
-
-                $("#addDeviceType").on('click', function () {
-                    var dialog = '<div class="box">' +
-//                    '<form >'+
-                        '<div class="form-group">' +
-                        '<label for="name">设备名称</label>' +
-                        '<input type="text" class="form-control" id="add_deviceTypeName" placeholder="请输入设备名称" required>' +
-                        '<label for="name">设备型号</label>' +
-                        '<input type="text" class="form-control" id="add_deviceTypeModel" placeholder="请输入设备型号" required>' +
-                        '</div>' +
-                        '<div class="form-group">' +
-                        '</div>' +
-//                            '<div id="addGatewaySubmit" class="btn-default" >提交</div>'+
-//                    '</form>'+
-                        '</div>';
-
-
-                    layer.confirm(dialog, {
-                        title: "添加设备类型",
-                        btn: ["提交"], //按钮
-//                            width: "100%"
-                    }, function () {
-                        $.ajax({
-                            url: "${path}/client/device?service=addDeviceCategory",
-                            type: "GET",
-                            data: {
-                                tabCustomerId: customer.id,
-                                model: $("#add_deviceTypeModel").val(),
-                                name: $("#add_deviceTypeName").val()
-                            },
-                            dataType: "json",
-                            success: function (result) {
-                                if (result.result == "success") {
-                                    layer.msg("添加成功")
-                                } else {
-                                    layer.alert(result.error);
-                                }
-                            },
-                            error: function () {
-                                layer.msg("程序繁忙，请稍后重试。！");
-
-                            }
-                        });
-                    });
-                });
-            }
-
-            function addGateway() {
-                var dialog = '<div class="box">' +
-                    '<form >' +
-                    '<div class="form-group">' +
-                    '<label for="name">网关名称</label>' +
-                    '<input type="text" class="form-control" id="add_gatewayName" placeholder="请输入网关编号" required>' +
-
-//                            '<label for="name">网关IP</label>'+
-//                            '<input type="text" class="form-control" id="add_gatewayIP" placeholder="请输入网关IP">'+
-
-                    '<label for="name">网关地址</label>' +
-                    '<input type="text" class="form-control" id="add_gatewayPort" placeholder="请输入网关地址" required>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                    '</div>' +
-//                            '<div id="addGatewaySubmit" class="btn-default" >提交</div>'+
-                    '</form>' +
-                    '</div>';
-
-
-                layer.confirm(dialog, {
-                    title: "添加网关",
-                    btn: ["提交"], //按钮
-//                            width: "100%"
-                }, function () {
-                    $.ajax({
-                        url: "${path}/client/device?service=addGatewayForCustomer",
-                        type: "GET",
-                        data: {
-                            tabCustomerId: customer.id,
-                            groupName: $("#add_gatewayPort").val(),
-//                          iP: $("#add_gatewayIP").val(),
-                            gatewaySerialNumber: $("#add_gatewayName").val()
-                        },
-                        dataType: "json",
-                        success: function (result) {
-                            //console.log(result);
-                            if (result.result == "success") {
-                                layer.msg("添加成功")
-                                refresh();
-                            } else {
-                                layer.alert(result.error);
-                            }
-                        },
-                        error: function () {
-                            layer.msg("程序繁忙，请稍后重试。！");
-
-                        }
-                    });
-                });
-            }
-
-            function addDevice(isAdd, device) {
-                var deviceTypes = new Array();
-                $.ajax({
-                    url: "${path}/client/device?service=getDeviceCategoryList",
-                    type: "GET",
-                    data: {},
-                    dataType: "json",
-                    success: function (result) {
-                        //console.log(result);
-                        if (result.result == "success") {
-                            for (var i in result.operationResult) {
-//                                    alert("result:"+JSON.stringify(result.operationResult));
-                                var item = result.operationResult[i];
-                                var dt = {
-                                    "id": item.id,
-                                    "name": item.name,
-                                    "model": item.model,
-//                                  "attention":item.attention,
-//                                  "describtion":item.describtion,
-                                };
-
-                                deviceTypes.push(dt);
-                            }
-                            if (isAdd) {
-                                addDeviceDialog(deviceTypes);
-                            } else {
-                                updateDeviceMsg(device, deviceTypes);
-                            }
-                        } else {
-                            layer.alert(result.error);
-                        }
-                    },
-                    error: function () {
-                        layer.msg("程序繁忙，请稍后重试。！");
-                    }
-                });
-            }
-
 
             //            更新设备信息
             function updateDeviceMsg(device, deviceTypes) {

@@ -210,14 +210,75 @@ public class TabDeviceFreshairController  extends BaseController {
 
     @ApiOperation("查询 空气监测设备实时数据")
     @RequestMapping(value = "/freshairNowData/{deviceSeriaNumber}", method = RequestMethod.GET)
-    public JsonResult<Map<String, Object>> getFreshairNowData(
-            @ApiParam(value = "设备ID (必传参数)") @PathVariable String deviceSeriaNumber
+    public void getFreshairNowData(
+            @ApiParam(value = "设备ID (必传参数)") @PathVariable String deviceSeriaNumber,
+            HttpServletResponse response
     )throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
+        Map<String, Object> rs = tabDeviceFreshairService.getFreshairNowData(deviceSeriaNumber);
+        if (null == rs){
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
+        }else {
+            result.setObj(rs);
+            result.setCode(ResultCode.SUCCESS.getCode());
+        }
+        this.renderJson(response,result);
+    }
+
+    @ApiOperation("查询分组下所有空气检测设备")
+    @RequestMapping(value = "/tabDeviceFreshairsInGroup/{tabDeviceGroupId}", method = RequestMethod.POST)
+    public void findTabDeviceFreshairsByTabDeviceGroupId(
+            @ApiParam(value = "设备分组Id (非必传参数)") @PathVariable Long tabDeviceGroupId,
+            HttpServletResponse response
+    )throws Exception {
+        JsonResult<Object> result = new JsonResult<Object>();
         Map<String, Object> rs = new HashMap<String, Object>();
-        result.setObj(tabDeviceFreshairService.getFreshairNowData(deviceSeriaNumber));
+        if (null != tabDeviceGroupId) {
+            rs.put("tabDeviceGroupId",  tabDeviceGroupId );
+        }
+        result.setObj(tabDeviceFreshairService.selectTabDeviceFreshairList(rs));
         result.setCode(ResultCode.SUCCESS.getCode());
-        return result;
+        this.renderJson(response,result);
+    }
+
+    @ApiOperation("用户更新 空气监测设备")
+    @RequestMapping(value = "/CustomerUpdateTabDeviceFreshair", method = RequestMethod.POST)
+    public void CustomerUpdateTabDeviceFreshair(
+            @ApiParam(value = "设备ID (必传参数)") @PathVariable Long  tabDeviceFreshairId,
+            @ApiParam(value = "用户Id (非必传参数)") @RequestParam Long tabCustomerId,
+            @ApiParam(value = "设备名称 (非必传参数)") @RequestParam(required = false) String name,
+            @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
+            @ApiParam(value = "设备开关状态 (非必传参数)") @RequestParam(required = false) Integer state,
+            @ApiParam(value = "是否删除 1:是 2:否 (非必传参数)") @RequestParam(required = false) Integer isDeleted,
+            HttpServletResponse response
+    ) throws Exception {
+        JsonResult<Object> result = new JsonResult<Object>();
+        TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
+        tabDeviceFreshair.setTabDeviceFreshairId(tabDeviceFreshairId);
+        if (StringUtil.isNotEmpty(name)) {
+            tabDeviceFreshair.setName(name);
+        }
+        if (null != tabDeviceGroupId) {
+            tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
+        }
+        if (null != state) {
+            tabDeviceFreshair.setState(state);
+        }
+        if (null != isDeleted) {
+            tabDeviceFreshair.setIsDeleted(isDeleted);
+        }
+        tabDeviceFreshair.setModifiedDate(new Date());
+        Integer rescode = tabDeviceFreshairService.CustomerUpdateTabDeviceFreshair(tabCustomerId,tabDeviceFreshair);
+        if (((Integer)1).equals(rescode)){
+            result.setCode(ResultCode.SUCCESS.getCode());
+        } else if (((Integer)0).equals(rescode)){
+            result.setCode(ResultCode.ERROR.getCode());
+            result.setErrorMsg("非当前设备所有人不能修改设备信息");
+        } else {
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
+            result.setErrorMsg("数据异常 修改失败");
+        }
+        this.renderJson(response,result);
     }
 }
 

@@ -138,7 +138,7 @@ public class TabDeviceGroupController  extends BaseController {
     }
 
     @ApiOperation("查询 设备分组表(家) 以及分组下所有设备")
-    @RequestMapping(value = "/tabDeviceGroup/{tabDeviceGroupId}", method = RequestMethod.GET)
+    @RequestMapping(value = "/tabDeviceInGroup/{tabDeviceGroupId}", method = RequestMethod.GET)
     public void getTabDeviceGroupById(
             @ApiParam(value = "设备分组ID (必传参数)") @PathVariable Long  tabDeviceGroupId,
             HttpServletResponse response) throws Exception {
@@ -146,31 +146,6 @@ public class TabDeviceGroupController  extends BaseController {
         Map<String, Object> rs = new HashMap<String, Object>();
         result.setObj(tabDeviceGroupService.getTabDeviceGroupById(tabDeviceGroupId));
         result.setCode(ResultCode.SUCCESS.getCode());
-        this.renderJson(response,result);
-    }
-
-    @ApiOperation("绑定设备与分组(家)")
-    @RequestMapping(value = "/boundDeviceAndGroup", method = RequestMethod.PUT)
-    public void boundDeviceAndGroup(
-            @ApiParam(value = "设备分组ID (必传参数)") @PathVariable Long  tabDeviceGroupId,
-            @ApiParam(value = "设备表Id (必传参数)") @RequestParam Long tabdeviceId,
-            @ApiParam(value = "设备类型 (必传参数)") @RequestParam String deviceCategory,
-            HttpServletResponse response
-    ) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
-        TabDeviceGroup tabDeviceGroup = new TabDeviceGroup();
-        result.setCode(ResultCode.SUCCESS.getCode());
-        if ("freshair".equals(deviceCategory)){
-            //绑定空气检测设备
-            TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
-            tabDeviceFreshair.setTabDeviceFreshairId(tabdeviceId);
-            tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
-            tabDeviceFreshair.setModifiedDate(new Date());
-            tabDeviceFreshairService.updateTabDeviceFreshairById(tabDeviceFreshair);
-        } else {
-            result.setCode(ResultCode.CATEGORY_NOT_EXIST.getCode());
-            result.setErrorMsg(ResultCode.CATEGORY_NOT_EXIST.getInfo());
-        }
         this.renderJson(response,result);
     }
 }
