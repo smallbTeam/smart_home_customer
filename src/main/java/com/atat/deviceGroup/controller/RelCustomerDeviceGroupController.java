@@ -228,7 +228,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
         this.renderJson(response, result);
     }
 
-    @ApiOperation("用户新增组 并完成绑定")
+    @ApiOperation("用户给分组绑定设备")
     @RequestMapping(value = "/groupBoundDevice", method = RequestMethod.POST)
     public void groupBoundDevice(
             @ApiParam(value = "用户Id (必传参数)") @RequestParam Long customerId,
