@@ -48,7 +48,7 @@
             <div id="list-content" class="list-content">
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
                     <div class="device-item">
-                        <img src="img/addservice/aircleaner.png">
+                        <img src="${path}/page/img/addservice/aircleaner.png">
                         <div class="rightContent">
                             <span class="title">新风空调</span>
                             <span>美的xb-102128</span>
@@ -59,7 +59,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
                     <div class="device-item">
-                        <img src="img/addservice/heater.png">
+                        <img src="${path}/page/img/addservice/heater.png">
                         <div class="rightContent">
                             <span class="title">热水器</span>
                             <span>美的xb-102128</span>
@@ -70,7 +70,7 @@
                 </div>
                 <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
                     <div class="device-item">
-                        <img src="img/addservice/chandelier.png">
+                        <img src="${path}/page/img/addservice/chandelier.png">
                         <div class="rightContent">
                             <span class="title">新风空调</span>
                             <span>美的xb-102128</span>
