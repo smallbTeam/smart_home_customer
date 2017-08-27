@@ -64,24 +64,24 @@ public interface RelCustomerDeviceGroupService {
      * 
      * @param ip
      */
-    public Map<String, Object> findDeviceByIp(Long customerId,String ip);
+    public Map<String, Object> findDeviceByIp(Long tabCustomerId,String ip);
 
     /**
      * 用户新建分组后返回分组信息
      * 
-     * @param customerId
+     * @param tabCustomerId
      * @param groupName
      * @param address
      * @return
      */
-    public Map<String, Object> customerAddNewGroup(Long customerId, String groupName, String address);
+    public Map<String, Object> customerAddNewGroup(Long tabCustomerId, String groupName, String address);
 
     /**
      * 用户给分组绑定设备
      * 
-     * @param customerId
+     * @param tabCustomerId
      * @param tabDeviceGroupId
      * @param deviceSeriaNumberList
      */
-    public Integer groupBoundDevice(Long customerId, Long tabDeviceGroupId, String deviceSeriaNumberList);
+    public Integer groupBoundDevice(Long tabCustomerId, Long tabDeviceGroupId, String deviceSeriaNumberList);
 }

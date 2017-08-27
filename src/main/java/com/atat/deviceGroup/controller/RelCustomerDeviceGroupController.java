@@ -37,7 +37,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @ApiOperation("查询 所有 用户设备分组关系表 分页")
     @RequestMapping(value = "/relCustomerDeviceGroups", method = RequestMethod.POST)
     public void getRelCustomerDeviceGroupPageTurn(
-            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long customerId,
+            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
             @ApiParam(value = "组名称 (非必传参数)") @RequestParam(required = false) String groupName,
             @ApiParam(value = "用户是否为设备组拥有着 (非必传参数)") @RequestParam(required = false) Integer isOnwer,
@@ -46,8 +46,8 @@ public class RelCustomerDeviceGroupController extends BaseController {
             @ApiParam(value = "每页显示多少数据(必传)") @RequestParam Integer pageSize, HttpServletResponse response)
             throws Exception {
         Map<String, Object> rs = new HashMap<String, Object>();
-        if (null != customerId) {
-            rs.put("customerId", customerId);
+        if (null != tabCustomerId) {
+            rs.put("tabCustomerId", tabCustomerId);
         }
         if (null != tabDeviceGroupId) {
             rs.put("tabDeviceGroupId", tabDeviceGroupId);
@@ -67,7 +67,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @ApiOperation("查询 所有 用户设备分组关系表")
     @RequestMapping(value = "/allRelCustomerDeviceGroups", method = RequestMethod.POST)
     public void selectRelCustomerDeviceGroupList(
-            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long customerId,
+            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
             @ApiParam(value = "组名称 (非必传参数)") @RequestParam(required = false) String groupName,
             @ApiParam(value = "用户是否为设备组拥有着 (非必传参数)") @RequestParam(required = false) Integer isOnwer,
@@ -75,8 +75,8 @@ public class RelCustomerDeviceGroupController extends BaseController {
             HttpServletResponse response) throws Exception {
         JsonResult<Object> result = new JsonResult<Object>();
         Map<String, Object> rs = new HashMap<String, Object>();
-        if (null != customerId) {
-            rs.put("customerId", customerId);
+        if (null != tabCustomerId) {
+            rs.put("tabCustomerId", tabCustomerId);
         }
         if (null != tabDeviceGroupId) {
             rs.put("tabDeviceGroupId", "%" + tabDeviceGroupId + "%");
@@ -98,7 +98,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @ApiOperation("新增 用户设备分组关系表")
     @RequestMapping(value = "/relCustomerDeviceGroup", method = RequestMethod.POST)
     public void addRelCustomerDeviceGroup(
-            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long customerId,
+            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
             @ApiParam(value = "组名称 (非必传参数)") @RequestParam(required = false) String groupName,
             @ApiParam(value = "用户是否为设备组拥有着 (非必传参数)") @RequestParam(required = false) Integer isOnwer,
@@ -106,8 +106,8 @@ public class RelCustomerDeviceGroupController extends BaseController {
             HttpServletResponse response) throws Exception {
         JsonResult<Object> result = new JsonResult<Object>();
         RelCustomerDeviceGroup relCustomerDeviceGroup = new RelCustomerDeviceGroup();
-        if (null != customerId) {
-            relCustomerDeviceGroup.setCustomerId(customerId);
+        if (null != tabCustomerId) {
+            relCustomerDeviceGroup.setTabCustomerId(tabCustomerId);
         }
         if (null != tabDeviceGroupId) {
             relCustomerDeviceGroup.setTabDeviceGroupId(tabDeviceGroupId);
@@ -131,7 +131,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @RequestMapping(value = "/relCustomerDeviceGroup/{relCustomerDeviceGroupId}", method = RequestMethod.PUT)
     public void updateRelCustomerDeviceGroupById(
             @ApiParam(value = "用户-设备分组关联Id (必传参数)") @PathVariable Long relCustomerDeviceGroupId,
-            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long customerId,
+            @ApiParam(value = "用户Id (非必传参数)") @RequestParam(required = false) Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
             @ApiParam(value = "组名称 (非必传参数)") @RequestParam(required = false) String groupName,
             @ApiParam(value = "用户是否为设备组拥有着 (非必传参数)") @RequestParam(required = false) Integer isOnwer,
@@ -141,8 +141,8 @@ public class RelCustomerDeviceGroupController extends BaseController {
         JsonResult<Object> result = new JsonResult<Object>();
         RelCustomerDeviceGroup relCustomerDeviceGroup = new RelCustomerDeviceGroup();
         relCustomerDeviceGroup.setRelCustomerDeviceGroupId(relCustomerDeviceGroupId);
-        if (null != customerId) {
-            relCustomerDeviceGroup.setCustomerId(customerId);
+        if (null != tabCustomerId) {
+            relCustomerDeviceGroup.setTabCustomerId(tabCustomerId);
         }
         if (null != tabDeviceGroupId) {
             relCustomerDeviceGroup.setTabDeviceGroupId(tabDeviceGroupId);
@@ -190,7 +190,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
 
     @ApiOperation("查询 当前IP下设备")
     @RequestMapping(value = "/findDeviceByIp", method = RequestMethod.GET)
-    public void findDeviceByIp(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long customerId,
+    public void findDeviceByIp(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             HttpServletRequest request, HttpServletResponse response) throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
         // 获取IP及其他信息
@@ -198,7 +198,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
         String ip = (String) ipInfoMap.get("ipNet");
         ip = "125.38.56.131";
         logger.info("用户当前外网Ip为:" + ip);
-        Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(customerId,ip);
+        Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(tabCustomerId,ip);
         if (null != resultMap) {
             result.setObj(resultMap);
             result.setCode(ResultCode.SUCCESS.getCode());
@@ -212,12 +212,12 @@ public class RelCustomerDeviceGroupController extends BaseController {
 
     @ApiOperation("用户新增组 并完成绑定")
     @RequestMapping(value = "/customerAddNewGroup", method = RequestMethod.POST)
-    public void customerAddNewGroup(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long customerId,
+    public void customerAddNewGroup(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "组名称 (必传参数)") @RequestParam String groupName,
             @ApiParam(value = "设备分组所在地地址 (必传参数)") @RequestParam String address, HttpServletResponse response)
             throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
-        Map<String, Object> groupInfo = relCustomerDeviceGroupService.customerAddNewGroup(customerId, groupName, address);
+        Map<String, Object> groupInfo = relCustomerDeviceGroupService.customerAddNewGroup(tabCustomerId, groupName, address);
         if (null == groupInfo) {
             result.setCode(ResultCode.SYSTEM_ERROR.getCode());
             result.setErrorMsg("创建新组失败");
@@ -232,12 +232,12 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @ApiOperation("用户给分组绑定设备")
     @RequestMapping(value = "/groupBoundDevice", method = RequestMethod.POST)
     public void groupBoundDevice(
-            @ApiParam(value = "用户Id (必传参数)") @RequestParam Long customerId,
+            @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
             @ApiParam(value = "设备分组所在地地址 (必传参数)") @RequestParam String deviceSeriaNumberList, HttpServletResponse response)
             throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
-        Integer rescod = relCustomerDeviceGroupService.groupBoundDevice(customerId, tabDeviceGroupId, deviceSeriaNumberList);
+        Integer rescod = relCustomerDeviceGroupService.groupBoundDevice(tabCustomerId, tabDeviceGroupId, deviceSeriaNumberList);
         if (((Integer)0).equals(rescod)){
             result.setCode(ResultCode.SUCCESS.getCode());
         } else {

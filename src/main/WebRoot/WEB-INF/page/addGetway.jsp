@@ -34,7 +34,7 @@
     var timestamp = '${timestamp}';
     var nonceStr = '${noncestr}';
     var signature = '${signaturet}';
-    var account = {"id":'${account.customerId}',
+    var account = {"id":'${account.tabCustomerId}',
         "mobelPhone":'${account.mobelPhone}',
         "wxId":'${account.wxId}',
         "nickName":'${account.nickName}',

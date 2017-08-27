@@ -57,7 +57,7 @@ public class TabCustomerServiceImpl implements TabCustomerService {
     }
 
     @Override
-    public Map<String, Object> getTabCustomerById(Integer tabCustomerId) {
+    public Map<String, Object> getTabCustomerById(Long tabCustomerId) {
         Map<String, Object> tabCustomerinfo = new HashMap<String, Object>();
         Map<String, Object> rs = new HashMap<String, Object>();
         rs.put("tabCustomerId", tabCustomerId);
@@ -69,7 +69,7 @@ public class TabCustomerServiceImpl implements TabCustomerService {
     }
 
     @Override
-    public void delTabCustomerById(Integer tabCustomerId) {
+    public void delTabCustomerById(Long tabCustomerId) {
      TabCustomer tabCustomer = new TabCustomer();
      tabCustomer.setIsDeleted(1);
      tabCustomer.setTabCustomerId(tabCustomerId);
@@ -98,7 +98,7 @@ public class TabCustomerServiceImpl implements TabCustomerService {
                 Map<String, Object> customerMap = customerList.get(0);
                 //绑定wxId
                 TabCustomer customer = new TabCustomer();
-                customer.setTabCustomerId(Integer.parseInt(customerMap.get("tabCustomerId").toString()));
+                customer.setTabCustomerId(Long.parseLong(customerMap.get("tabCustomerId").toString()));
                 customer.setWxId(wxId);
                 tabCustomerDao.updateTabCustomerById(customer);
             }

@@ -48,7 +48,7 @@ $(document).ready(function () {
                                     url: path + "/client/device?service=addGatewayForCustomer",
                                     type: "POST",
                                     data: {
-                                        customerId: account.id,
+                                        tabCustomerId: account.id,
                                         gatewaySerialNumber: $("#deviceNo").val(),
                                         gatewayName: $("#wangguan").val()
                                     },

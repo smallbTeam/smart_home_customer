@@ -94,7 +94,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
     }
 
     @Override
-    public Map<String, Object> findDeviceByIp(Long customerId,String ip) {
+    public Map<String, Object> findDeviceByIp(Long tabCustomerId,String ip) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         // http请求设备服务 获取Ip下所有设备及分组信息
         String basePase = deviceService.getProperty("basePase");
@@ -130,7 +130,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
                         && StringUtil.isNotEmpty(deviceGroup.get("tabDeviceGroupId").toString())) {
                     Long tabDeviceGroupId = Long.parseLong(deviceGroup.get("tabDeviceGroupId").toString());
                     Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
-                    getRelCustomerGroupParam.put("customerId", customerId);
+                    getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
                     getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
                     List<Map<String, Object>> relCustomerGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
                     //若存在添加groupName属性
@@ -149,7 +149,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
     }
 
     @Override
-    public Map<String, Object> customerAddNewGroup(Long customerId, String groupName, String address) {
+    public Map<String, Object> customerAddNewGroup(Long tabCustomerId, String groupName, String address) {
         // 新建分组
         JsonResult<Object> result = new JsonResult<Object>();
         TabDeviceGroup tabDeviceGroup = new TabDeviceGroup();
@@ -169,7 +169,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             Integer isOnwer = 1;
             Integer isSendMsg = 1;
             RelCustomerDeviceGroup relCustomerDeviceGroup = new RelCustomerDeviceGroup();
-            relCustomerDeviceGroup.setCustomerId(customerId);
+            relCustomerDeviceGroup.setTabCustomerId(tabCustomerId);
             relCustomerDeviceGroup.setTabDeviceGroupId(tabDeviceGroupId);
             relCustomerDeviceGroup.setGroupName(groupName);
             relCustomerDeviceGroup.setIsOnwer(isOnwer);
@@ -186,11 +186,11 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
     }
 
     @Override
-    public Integer groupBoundDevice(Long customerId, Long tabDeviceGroupId, String deviceSeriaNumberList) {
+    public Integer groupBoundDevice(Long tabCustomerId, Long tabDeviceGroupId, String deviceSeriaNumberList) {
         // 依据用户及分组id判定权限
         JsonResult<Object> result = new JsonResult<Object>();
         Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
-        getRelCustomerGroupParam.put("customerId", customerId);
+        getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
         getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
         List<Map<String, Object>> realList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
         if (CollectionUtil.isNotEmpty(realList)){
