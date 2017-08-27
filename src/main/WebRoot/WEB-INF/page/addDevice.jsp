@@ -136,8 +136,6 @@
             "token": '${customer.token}'
         };
 
-        var prefixUrl = 'http://58.87.74.233:9080';
-        var currentIp = '125.38.56.131';
         var devList = new Array(); //全局数组，存储扫描到的设备信息
         var deviceGroupList = new Array(); //全局数组，存储扫描到的设备信息
 
@@ -309,12 +307,12 @@
             $('#device_list').empty();
 
             $.ajax({
-                url: "${path}/page/json/resule.json",
+                url: "${path}/deviceGroup/findDeviceByIp",
                 type: "GET",
+                data:{"tabCustomerId":customer.tabCustomerId},
                 dataType: "json",
                 success: function(result) {
                     layer.close(index);
-
                     if (result.code == 0) {
                         var re = result.obj;
 

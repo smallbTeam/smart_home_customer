@@ -196,7 +196,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
         // 获取IP及其他信息
         Map<String, Object> ipInfoMap = IpUtil.getIpInfo(request);
         String ip = (String) ipInfoMap.get("ipNet");
-        ip = "125.38.56.131";
+        //ip = "125.38.56.131";
         logger.info("用户当前外网Ip为:" + ip);
         Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(tabCustomerId,ip);
         if (null != resultMap) {
