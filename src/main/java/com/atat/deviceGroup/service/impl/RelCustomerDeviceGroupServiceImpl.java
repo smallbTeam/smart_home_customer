@@ -1,20 +1,19 @@
 package com.atat.deviceGroup.service.impl;
 
-import com.alibaba.fastjson.JSONObject;
 import com.atat.common.bean.JsonResult;
+import com.atat.deviceGroup.bean.RelCustomerDeviceGroup;
 import com.atat.deviceGroup.bean.TabDeviceGroup;
+import com.atat.deviceGroup.dao.RelCustomerDeviceGroupDao;
+import com.atat.deviceGroup.service.RelCustomerDeviceGroupService;
 import com.atat.deviceGroup.service.TabDeviceGroupService;
+import com.atat.freshair.bean.TabDeviceFreshair;
+import com.atat.freshair.service.TabDeviceFreshairService;
 import com.atat.util.CollectionUtil;
 import com.atat.util.JsonUtil;
 import com.atat.util.StringUtil;
 import com.atat.util.httpClient.URLUtil;
-import com.atat.util.weixinClient.CommonUtil;
 import com.github.pagehelper.PageHelper;
 import com.github.pagehelper.PageInfo;
-import com.atat.deviceGroup.bean.RelCustomerDeviceGroup;
-import com.atat.deviceGroup.dao.RelCustomerDeviceGroupDao;
-import com.atat.deviceGroup.service.RelCustomerDeviceGroupService;
-import com.atat.freshair.service.TabDeviceFreshairService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,7 +139,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         List<Map<String, Object>> groupList = tabDeviceGroupService.selectTabDeviceGroupList(findGroupParam);
         if (CollectionUtil.isNotEmpty(groupList)) {
             Map<String, Object> groupMap = groupList.get(0);
-            //新建用户与分组绑定关系
+            // 新建用户与分组绑定关系
             Long tabDeviceGroupId = Long.parseLong(groupMap.get("tabDeviceGroupId").toString());
             Integer isOnwer = 1;
             Integer isSendMsg = 1;
@@ -152,7 +151,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             relCustomerDeviceGroup.setIsSendMsg(isSendMsg);
             relCustomerDeviceGroup.setCreatedDate(new Date());
             relCustomerDeviceGroupDao.addRelCustomerDeviceGroup(relCustomerDeviceGroup);
-            //返回分组信息
+            // 返回分组信息
             return groupMap;
         }
         else {
@@ -160,7 +159,36 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         }
     }
 
-    @Override public void groupBoundDevice(Long customerId, Long tabDeviceGroupId, String deviceSeriaNumberList) {
-
+    @Override
+    public Integer groupBoundDevice(Long customerId, Long tabDeviceGroupId, String deviceSeriaNumberList) {
+        // 依据用户及分组id判定权限
+        JsonResult<Object> result = new JsonResult<Object>();
+        Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
+        getRelCustomerGroupParam.put("customerId", customerId);
+        getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
+        List<Map<String, Object>> realList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+        if (CollectionUtil.isNotEmpty(realList)){
+            // 依次给设备添加分组
+            String[] deviceSeriaNumbers = deviceSeriaNumberList.split(",");
+            for (String deviceSeriaNumber : deviceSeriaNumbers) {
+                //依据序列号查找设备
+                Map<String, Object> findDeviceParam = new HashMap<String, Object>();
+                findDeviceParam.put("deviceSeriaNumber", deviceSeriaNumber);
+                //去空气检测设备更改设别分组
+                List<Map<String, Object>> freshairList = tabDeviceFreshairService.selectTabDeviceFreshairList(findDeviceParam);
+                if (CollectionUtil.isNotEmpty(freshairList)){
+                    //依据Id更新设备
+                    Map<String, Object> freshair = freshairList.get(0);
+                    TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
+                    tabDeviceFreshair.setTabDeviceFreshairId(Long.parseLong(freshair.get("tabDeviceFreshairId").toString()));
+                    tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
+                    tabDeviceFreshairService.updateTabDeviceFreshairById(tabDeviceFreshair);
+                }
+                //去其他类型设备去更改设备分组
+            }
+            return 0;
+        } else {
+            return -1;
+        }
     }
 }

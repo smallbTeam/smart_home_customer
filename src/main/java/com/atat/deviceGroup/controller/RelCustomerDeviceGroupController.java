@@ -218,7 +218,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
         Map<String, Object> groupInfo = relCustomerDeviceGroupService.customerAddNewGroup(customerId, groupName, address);
         if (null == groupInfo) {
-            result.setCode(ResultCode.ERROR.getCode());
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
             result.setErrorMsg("创建新组失败");
         }
         else {
@@ -236,8 +236,13 @@ public class RelCustomerDeviceGroupController extends BaseController {
             @ApiParam(value = "设备分组所在地地址 (必传参数)") @RequestParam String deviceSeriaNumberList, HttpServletResponse response)
             throws Exception {
         JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
-        relCustomerDeviceGroupService.groupBoundDevice(customerId, tabDeviceGroupId, deviceSeriaNumberList);
-        result.setCode(ResultCode.SUCCESS.getCode());
+        Integer rescod = relCustomerDeviceGroupService.groupBoundDevice(customerId, tabDeviceGroupId, deviceSeriaNumberList);
+        if (((Integer)0).equals(rescod)){
+            result.setCode(ResultCode.SUCCESS.getCode());
+        } else {
+            result.setCode(ResultCode.ERROR.getCode());
+            result.setErrorMsg("您没有权限添加设备 请联系房屋所有人");
+        }
         this.renderJson(response, result);
     }
 }
