@@ -5,8 +5,8 @@
     <insert id="addRelCustomerDeviceGroup" parameterType="com.atat.deviceGroup.bean.RelCustomerDeviceGroup">
         INSERT INTO rel_customer_device_group
         <trim prefix="(" suffix=")" suffixOverrides=",">
-                <if test="customerId != null">
-                    customerId,
+                <if test="tabCustomerId != null">
+                    tabCustomerId,
                 </if>
                 <if test="tabDeviceGroupId != null">
                     tabDeviceGroupId,
@@ -29,8 +29,8 @@
                 isDeleted
         </trim>
         <trim prefix="values (" suffix=")" suffixOverrides=",">
-                <if test="customerId != null">
-                    #{customerId},
+                <if test="tabCustomerId != null">
+                    #{tabCustomerId},
                 </if>
                 <if test="tabDeviceGroupId != null">
                     #{tabDeviceGroupId},
@@ -57,8 +57,8 @@
     <update id="updateRelCustomerDeviceGroupById" parameterType="com.atat.deviceGroup.bean.RelCustomerDeviceGroup">
         update rel_customer_device_group
         <trim prefix="set" suffixOverrides=",">
-                <if test="customerId != null">
-                    customerId =#{customerId},
+                <if test="tabCustomerId != null">
+                    tabCustomerId =#{tabCustomerId},
                 </if>
                 <if test="tabDeviceGroupId != null">
                     tabDeviceGroupId =#{tabDeviceGroupId},
@@ -85,7 +85,7 @@
     <select id="selectRelCustomerDeviceGroupList" parameterType="java.util.Map"
             resultType="java.util.Map">
         select
-            customerId customerId,
+            tabCustomerId tabCustomerId,
             tabDeviceGroupId tabDeviceGroupId,
             groupName groupName,
             isOnwer isOnwer,
@@ -100,8 +100,8 @@
         <if test="relCustomerDeviceGroupId != null">
             and id = #{relCustomerDeviceGroupId}
         </if>
-        <if test="customerId != null">
-            and customerId = #{customerId}
+        <if test="tabCustomerId != null">
+            and tabCustomerId = #{tabCustomerId}
         </if>
         <if test="tabDeviceGroupId != null">
             and tabDeviceGroupId like #{tabDeviceGroupId}

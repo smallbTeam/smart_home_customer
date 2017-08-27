@@ -203,7 +203,7 @@
                 url: "${path}/client/device?service=getDeviceDataMap",
                 type: "GET",
                 data: {
-                    //customerId: account.id,
+                    //tabCustomerId: account.id,
                     deviceId: deviceD.deviceId,
                     code: deviceD.code,
                     type: deviceD.type

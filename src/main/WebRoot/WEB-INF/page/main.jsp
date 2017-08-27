@@ -379,7 +379,7 @@
                     url: "${path}/deviceGroup/allRelCustomerDeviceGroups",
                     type: "POST",
                     data: {
-                        customerId: customer.tabCustomerId
+                        tabCustomerId: customer.tabCustomerId
                     },
                     dataType: "json",
                     success: function (result) {
@@ -484,7 +484,7 @@
                         url: "${path}/client/device?service=addDevice",
                         type: "GET",
                         data: {
-                            //customerId: customer.id,
+                            //tabCustomerId: customer.id,
                             name: $("#add_gatewayName").val(),
                             deviceCategoryId: $("#deviceType").val(),
                             gatewaySerialNumber: current_deviceGroup.gatewayId,
@@ -532,7 +532,7 @@
                             url: "${path}/client/device?service=addDeviceCategory",
                             type: "GET",
                             data: {
-                                customerId: customer.id,
+                                tabCustomerId: customer.id,
                                 model: $("#add_deviceTypeModel").val(),
                                 name: $("#add_deviceTypeName").val()
                             },
@@ -582,7 +582,7 @@
                         url: "${path}/client/device?service=addGatewayForCustomer",
                         type: "GET",
                         data: {
-                            customerId: customer.id,
+                            tabCustomerId: customer.id,
                             groupName: $("#add_gatewayPort").val(),
 //                          iP: $("#add_gatewayIP").val(),
                             gatewaySerialNumber: $("#add_gatewayName").val()
@@ -744,7 +744,7 @@
                         url: "${path}/client/device?service=updateGateway",
                         type: "GET",
                         data: {
-//                            customerId: customer.id,
+//                            tabCustomerId: customer.id,
                             address: $("#update_gatewayPort").val(),
 //                            iP: $("#update_gatewayIP").val(),
                             serialNumber: deviceGroup.tabDeviceGroupId
@@ -833,14 +833,14 @@
                         success: function (result) {
                             //console.log(result);
                             if (result.operationResult) {
-                                var invitederId = result.customer.customerId;
+                                var invitederId = result.customer.tabCustomerId;
                                 $.ajax({
                                     url: "${path}/client/device?service=addGateWayByInvite",
                                     type: "GET",
                                     data: {
                                         invitederId: invitederId,
                                         gatewaySerialNumber: current_deviceGroup.id,
-                                        customerId: customer.id
+                                        tabCustomerId: customer.id
                                     },
                                     dataType: "json",
                                     success: function (result) {
@@ -880,7 +880,7 @@
                     type: "GET",
                     data: {
                         gatewaySerialNumber: current_deviceGroup.id,
-                        customerId: customer.id
+                        tabCustomerId: customer.id
                     },
                     dataType: "json",
                     success: function (result) {

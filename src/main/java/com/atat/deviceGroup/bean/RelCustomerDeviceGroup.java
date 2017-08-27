@@ -13,7 +13,7 @@ public class RelCustomerDeviceGroup {
     private Long  relCustomerDeviceGroupId;
 
     //用户Id
-    private Long customerId;
+    private Long tabCustomerId;
 
     //设备分组Id
     private Long tabDeviceGroupId;
@@ -40,7 +40,7 @@ public class RelCustomerDeviceGroup {
 
     public RelCustomerDeviceGroup(
         Long  relCustomerDeviceGroupId,
-        Long customerId,
+        Long tabCustomerId,
         Long tabDeviceGroupId,
         String groupName,
         Integer isOnwer,
@@ -49,7 +49,7 @@ public class RelCustomerDeviceGroup {
         Date modifiedDate,
         Integer isDeleted
     ) {
-        this.customerId = customerId;
+        this.tabCustomerId = tabCustomerId;
         this.tabDeviceGroupId = tabDeviceGroupId;
         this.groupName = groupName;
         this.isOnwer = isOnwer;
@@ -75,14 +75,13 @@ public class RelCustomerDeviceGroup {
         this.tabDeviceGroupId = tabDeviceGroupId;
     }
 
-    public Long getCustomerId() {
-        return customerId;
+    public Long getTabCustomerId() {
+        return tabCustomerId;
     }
 
-    public void setCustomerId(Long  customerId) {
-        this.customerId = customerId;
+    public void setTabCustomerId(Long tabCustomerId) {
+        this.tabCustomerId = tabCustomerId;
     }
-
 
     public String getGroupName() {
         return groupName;

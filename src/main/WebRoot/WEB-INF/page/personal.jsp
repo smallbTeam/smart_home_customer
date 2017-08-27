@@ -140,7 +140,7 @@
         <%--"token":'${account.Token}'--%>
         <%--};--%>
         var account = {
-            "id": '${account.customerId}',
+            "id": '${account.tabCustomerId}',
             "mobelPhone": '${account.mobelPhone}',
             "wxId": '${account.wxId}',
             "nickName": '${account.nickName}',
@@ -269,7 +269,7 @@
                     type: "GET",
                     data: {
                         newMobelPhone: $("#up_phoneNum").val(),
-                        customerId: account.id,
+                        tabCustomerId: account.id,
                         veridateMsg: $("#veridateMsg").val()
                     },
                     dataType: "json",
@@ -332,7 +332,7 @@
                     type: "GET",
                     data: {
                         sex: $("#up_gender").val(),
-                        customerId: account.id
+                        tabCustomerId: account.id
                     },
                     dataType: "json",
                     success: function (result) {
@@ -387,7 +387,7 @@
                     type: "GET",
                     data: {
                         nickName: $("#up_nickName").val(),
-                        customerId: account.id
+                        tabCustomerId: account.id
                     },
                     dataType: "json",
                     success: function (result) {
