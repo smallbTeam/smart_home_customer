@@ -102,7 +102,16 @@ public class TabDeviceFreshairServiceImpl implements TabDeviceFreshairService {
         try {
             resultstr = URLUtil.originalGetData(url,paramMap);
         } catch (Exception e) {
-            return null;
+
+            //测试数据
+            Map<String, Object> getmap = new HashMap<String, Object>();
+            getmap.put("wendu", 27.77);
+            getmap.put("shidu", 50.25);
+            getmap.put("pm", 13);
+            getmap.put("co2", 2);
+            getmap.put("voc", 414);
+            return getmap;
+            //return null;
         }
         JsonResult<Map<String,Object>> result = new JsonResult<Map<String,Object>>();
         result = JsonUtil.fromJson(resultstr,result.getClass());

@@ -3,6 +3,7 @@ package com.atat.deviceGroup.service.impl;
 import com.alibaba.fastjson.JSONObject;
 import com.atat.common.bean.JsonResult;
 import com.atat.util.JsonUtil;
+import com.atat.util.StringUtil;
 import com.atat.util.httpClient.URLUtil;
 import com.atat.util.weixinClient.CommonUtil;
 import com.github.pagehelper.PageHelper;
@@ -103,6 +104,14 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         }JsonResult<Map<String,Object>> result = new JsonResult<Map<String,Object>>();
         result = JsonUtil.fromJson(resultstr,result.getClass());
         resultMap = result.getObj();
+        //筛选设备分组不为空的设备
+        List<Map<String, String>> deviceList = (List<Map<String, String>>) resultMap.get("deviceList");
+        for (Map<String, String> device : deviceList) {
+            if (null != device.get("tabDeviceGroupId") && StringUtil.isNotEmpty(device.get("tabDeviceGroupId").toString())){
+                deviceList.remove(device);
+            }
+        }
+        resultMap.put("deviceList",deviceList);
         return resultMap;
     }
 }
