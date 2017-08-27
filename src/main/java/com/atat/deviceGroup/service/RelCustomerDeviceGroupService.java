@@ -59,4 +59,21 @@ public interface RelCustomerDeviceGroupService {
      * @param ip
      */
     public Map<String, Object> findDeviceByIp(String ip);
+
+    /**
+     * 用户新建分组后返回分组信息
+     * @param customerId
+     * @param groupName
+     * @param address
+     * @return
+     */
+    public Map<String, Object> customerAddNewGroup(Long customerId,String groupName,String address);
+
+    /**
+     * 用户绑定设备和设别分组
+     * @param customerId
+     * @param tabDeviceGroupId
+     * @param deviceSeriaNumberList
+     */
+    public void groupBoundDevice(Long customerId, Long tabDeviceGroupId, String deviceSeriaNumberList);
 }
