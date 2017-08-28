@@ -157,9 +157,9 @@
                             $('#device_co2_info').html(co2val);
 
                             if (null == freshairData.voc) {
-                                vocval += "VOC: " + "-- g/L";
+                                vocval += "VOC: " + "-- μg/m³";
                             } else {
-                                vocval += "VOC: " + freshairData.voc + "g/L";
+                                vocval += "VOC: " + freshairData.voc + "μg/m³";
                             }
                             $('#device_voc_info').html(vocval);
                         }

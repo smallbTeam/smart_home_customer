@@ -105,28 +105,19 @@ public class TabDeviceFreshairServiceImpl implements TabDeviceFreshairService {
         String url = basePase + "/freshair/freshairNowData/" + deviceSeriaNumber;
         String resultstr = "";
         Map<String, String> paramMap = new HashMap<>();
-
-        Map<String, Object> getmap = new HashMap<String, Object>();
-        getmap.put("wendu", 27.77);
-        getmap.put("shidu", 50.25);
-        getmap.put("pm", 13);
-        getmap.put("co2", 2);
-        getmap.put("voc", 414);
         try {
             resultstr = URLUtil.originalGetData(url, paramMap);
             JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
             result = JsonUtil.fromJson(resultstr, result.getClass());
-            if (((Integer)0).equals(result.getCode())){
+            if ((((Integer)0).equals(result.getCode())) && (CollectionUtil.isNotEmpty(result.getObj()))){
                 resultMap = result.getObj();
                 return resultMap;
             } else {
-                return getmap;
-                //return null;
+                return null;
             }
         } catch (Exception e) {
             // 测试数据
-            return getmap;
-            // return null;
+            return null;
         }
     }
 

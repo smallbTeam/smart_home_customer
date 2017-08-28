@@ -24,15 +24,15 @@ $(function () {
 $(document).ready(function () {
     $("#addgetway_btn").click(function () {
         var res = /^[\S]{1,}$/;
-        if (!res.test($("#deviceNo").val())) {
-            $("#deviceNo").parent().prev("img").attr("src", path+"/page/img/icon/failed.png");
-            $("#deviceNo").attr('placeholder', "请扫描添加设备!");
-        } else {
-            $("#deviceNo").parent().prev("img").attr("src", path+"/page/img/icon/success.png");
-            if (!res.test($("#wangguan").val())) {
-                $("#wangguan").parent().prev("img").attr("src", path+"/page/img/icon/failed.png");
-                $("#wangguan").attr('placeholder', "请填写网关所在地址!");
-            } else {
+        // if (!res.test($("#deviceNo").val())) {
+        //     $("#deviceNo").parent().prev("img").attr("src", path+"/page/img/icon/failed.png");
+        //     $("#deviceNo").attr('placeholder', "请扫描添加设备!");
+        // } else {
+        //     $("#deviceNo").parent().prev("img").attr("src", path+"/page/img/icon/success.png");
+        //     if (!res.test($("#wangguan").val())) {
+        //         $("#wangguan").parent().prev("img").attr("src", path+"/page/img/icon/failed.png");
+        //         $("#wangguan").attr('placeholder', "请填写网关所在地址!");
+        //     } else {
                 $("#wangguan").parent().prev("img").attr("src", path+"/page/img/icon/success.png");
                 wx.checkJsApi({
                     jsApiList: ['configWXDeviceWiFi'],
@@ -44,35 +44,35 @@ $(document).ready(function () {
                                 // $('#message').html("配置 WIFI成功，<span id='second'>5</span>秒后跳转到首页。");
                                 // setInterval(count, 1000);
                                 alert("配置 WIFI成功");
-                                $.ajax({
-                                    url: path + "/client/device?service=addGatewayForCustomer",
-                                    type: "POST",
-                                    data: {
-                                        tabCustomerId: account.id,
-                                        gatewaySerialNumber: $("#deviceNo").val(),
-                                        gatewayName: $("#wangguan").val()
-                                    },
-                                    dataType: "json",
-                                    success: function (result) {
-                                        console.log(result);
-                                        if (result.result == "success") {
-                                            if (result.operationResult == 0){
-                                                alert("网关已被添加，请联系网管所有者");
-                                            } else if (result.operationResult == 1){
-                                                alert("添加网关成功");
-                                                window.location.href = path+"/client/home?service=index&mobelPhone=" + account.mobelPhone;
-                                            } else {
-                                                alert("添加网关异常")
-                                            }
-                                        } else {
-                                            alert("添加网关失败："+result.error)
-                                        }
-                                    },
-                                    error: function () {
-                                        alert("添加网关失败");
-
-                                    }
-                                });
+                                // $.ajax({
+                                //     url: path + "/client/device?service=addGatewayForCustomer",
+                                //     type: "POST",
+                                //     data: {
+                                //         customerId: account.id,
+                                //         gatewaySerialNumber: $("#deviceNo").val(),
+                                //         gatewayName: $("#wangguan").val()
+                                //     },
+                                //     dataType: "json",
+                                //     success: function (result) {
+                                //         console.log(result);
+                                //         if (result.result == "success") {
+                                //             if (result.operationResult == 0){
+                                //                 alert("网关已被添加，请联系网管所有者");
+                                //             } else if (result.operationResult == 1){
+                                //                 alert("添加网关成功");
+                                //                 window.location.href = path+"/client/home?service=index&mobelPhone=" + account.mobelPhone;
+                                //             } else {
+                                //                 alert("添加网关异常")
+                                //             }
+                                //         } else {
+                                //             alert("添加网关失败："+result.error)
+                                //         }
+                                //     },
+                                //     error: function () {
+                                //         alert("添加网关失败");
+                                //
+                                //     }
+                                // });
                             } else {
                                 alert("配置 WIFI失败");
                             }
@@ -80,8 +80,9 @@ $(document).ready(function () {
                         });
                     }
                 });
-            }
-        }
+
+            // }
+        // }
     });
     $("#scanfordevice_btn").click(function () {
         wx.scanQRCode({

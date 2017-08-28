@@ -1,6 +1,7 @@
 package com.atat.deviceGroup.service.impl;
 
 import com.atat.common.bean.JsonResult;
+import com.atat.customer.service.TabCustomerService;
 import com.atat.deviceGroup.bean.RelCustomerDeviceGroup;
 import com.atat.deviceGroup.bean.TabDeviceGroup;
 import com.atat.deviceGroup.dao.RelCustomerDeviceGroupDao;
@@ -8,6 +9,7 @@ import com.atat.deviceGroup.service.RelCustomerDeviceGroupService;
 import com.atat.deviceGroup.service.TabDeviceGroupService;
 import com.atat.freshair.bean.TabDeviceFreshair;
 import com.atat.freshair.service.TabDeviceFreshairService;
+import com.atat.message.service.ShortMessageService;
 import com.atat.util.CollectionUtil;
 import com.atat.util.JsonUtil;
 import com.atat.util.StringUtil;
@@ -40,6 +42,12 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
 
     @Autowired
     private TabDeviceFreshairService tabDeviceFreshairService;
+
+    @Autowired
+    private TabCustomerService tabCustomerService;
+
+    @Autowired
+    private ShortMessageService shortMessageService;
 
     private Logger logger = LoggerFactory.getLogger(getClass());
 
@@ -94,7 +102,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
     }
 
     @Override
-    public Map<String, Object> findDeviceByIp(Long tabCustomerId,String ip) {
+    public Map<String, Object> findDeviceByIp(Long tabCustomerId, String ip) {
         Map<String, Object> resultMap = new HashMap<String, Object>();
         // http请求设备服务 获取Ip下所有设备及分组信息
         String basePase = deviceService.getProperty("basePase");
@@ -113,7 +121,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         resultMap = result.getObj();
         // 筛选设备分组不为空的设备
         List<Map<String, Object>> deviceList = (List<Map<String, Object>>) resultMap.get("deviceList");
-        if (CollectionUtil.isNotEmpty(deviceList)){
+        if (CollectionUtil.isNotEmpty(deviceList)) {
             for (Map<String, Object> device : deviceList) {
                 if (null != device.get("tabDeviceGroupId")
                         && StringUtil.isNotEmpty(device.get("tabDeviceGroupId").toString())) {
@@ -121,10 +129,9 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
                 }
             }
         }
-
-        //给deviceGroupList添加groupName属性
+        // 给deviceGroupList添加groupName属性
         List<Map<String, Object>> deviceGroupList = (List<Map<String, Object>>) resultMap.get("deviceGroupList");
-        if (CollectionUtil.isNotEmpty(deviceGroupList)){
+        if (CollectionUtil.isNotEmpty(deviceGroupList)) {
             for (Map<String, Object> deviceGroup : deviceGroupList) {
                 if (null != deviceGroup.get("tabDeviceGroupId")
                         && StringUtil.isNotEmpty(deviceGroup.get("tabDeviceGroupId").toString())) {
@@ -133,13 +140,14 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
                     getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
                     getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
                     List<Map<String, Object>> relCustomerGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
-                    //若存在添加groupName属性
-                    if (CollectionUtil.isNotEmpty(relCustomerGroupList)){
+                    // 若存在添加groupName属性
+                    if (CollectionUtil.isNotEmpty(relCustomerGroupList)) {
                         Map<String, Object> relCustomerGroup = relCustomerGroupList.get(0);
                         deviceGroup.put("groupName", (String) relCustomerGroup.get("groupName"));
-                    } else {
-                        //若不存在用户与分组关联关系添加groupName属性为分组的Addres属性
-                        deviceGroup.put("groupName",deviceGroup.get("address"));
+                    }
+                    else {
+                        // 若不存在用户与分组关联关系添加groupName属性为分组的Addres属性
+                        deviceGroup.put("groupName", deviceGroup.get("address"));
                     }
                 }
             }
@@ -177,7 +185,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             relCustomerDeviceGroup.setCreatedDate(new Date());
             relCustomerDeviceGroupDao.addRelCustomerDeviceGroup(relCustomerDeviceGroup);
             // 返回分组信息
-            groupMap.put("groupName",groupName);
+            groupMap.put("groupName", groupName);
             return groupMap;
         }
         else {
@@ -192,29 +200,122 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
         getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
         getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
-        List<Map<String, Object>> realList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
-        if (CollectionUtil.isNotEmpty(realList)){
+        List<Map<String, Object>> relCustomerDeviceGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+        if (CollectionUtil.isNotEmpty(relCustomerDeviceGroupList)) {
             // 依次给设备添加分组
             String[] deviceSeriaNumbers = deviceSeriaNumberList.split(",");
             for (String deviceSeriaNumber : deviceSeriaNumbers) {
-                //依据序列号查找设备
+                // 依据序列号查找设备
                 Map<String, Object> findDeviceParam = new HashMap<String, Object>();
                 findDeviceParam.put("deviceSeriaNumber", deviceSeriaNumber);
-                //去空气检测设备更改设别分组
+                // 去空气检测设备更改设别分组
                 List<Map<String, Object>> freshairList = tabDeviceFreshairService.selectTabDeviceFreshairList(findDeviceParam);
-                if (CollectionUtil.isNotEmpty(freshairList)){
-                    //依据Id更新设备
+                if (CollectionUtil.isNotEmpty(freshairList)) {
+                    // 依据Id更新设备
                     Map<String, Object> freshair = freshairList.get(0);
                     TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
                     tabDeviceFreshair.setTabDeviceFreshairId(Long.parseLong(freshair.get("tabDeviceFreshairId").toString()));
                     tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
                     tabDeviceFreshairService.updateTabDeviceFreshairById(tabDeviceFreshair);
                 }
-                //去其他类型设备去更改设备分组
+                // 去其他类型设备去更改设备分组
             }
             return 0;
-        } else {
+        }
+        else {
             return -1;
+        }
+    }
+
+    @Override
+    public Integer addGroupByInvite(Long tabCustomerId, String invitederPhone, Long tabDeviceGroupId) {
+        Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
+        getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
+        getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
+        List<Map<String, Object>> relCustomerDeviceGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+        if (CollectionUtil.isNotEmpty(relCustomerDeviceGroupList)) {
+            // 获取用户与设备所在分组关系 是否为拥有着
+            Map<String, Object> relCustomerDeviceGroup = relCustomerDeviceGroupList.get(0);
+            Integer isOnwer = (Integer) relCustomerDeviceGroup.get("isOnwer");
+            if (((Integer) 1).equals(isOnwer)) {
+                // 获取分享者信息
+                Map<String, Object> onwerCustomerInfo = tabCustomerService.getTabCustomerById(tabCustomerId);
+                String onwerName = (String) onwerCustomerInfo.get("nickName");
+                String onwerPhone = (String) onwerCustomerInfo.get("mobelPhone");
+                // 网关拥有着短信昵称
+                String onwerTishi = StringUtil.isEmpty(onwerName) ? onwerPhone : onwerName;
+                // 分组名称
+                String groupName = (String) relCustomerDeviceGroup.get("groupName");
+                // 判断被分享者是否已注册系统
+                Map<String, Object> invitederInfo = tabCustomerService.getCustomerByMobelPhone(invitederPhone);
+                // 已注册系统
+                if (CollectionUtil.isNotEmpty(invitederInfo)) {
+                    // 被邀请人Id
+                    Long invitederId = Long.parseLong(invitederInfo.get("tabCustomerId").toString());
+                    // 被邀请人姓名
+                    String invitedName = (String) invitederInfo.get("nickName");
+                    // 新用户下是否已经拥有该网关
+                    Map<String, Object> paramCheckInviteder = new HashMap<String, Object>();
+                    paramCheckInviteder.put("tabDeviceGroupId", tabDeviceGroupId);
+                    paramCheckInviteder.put("tabCustomerId", invitederId);
+                    List<Map<String, Object>> invitederGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(paramCheckInviteder);
+                    if (CollectionUtil.isEmpty(invitederGroupList)) {
+                        RelCustomerDeviceGroup invitederGroup = new RelCustomerDeviceGroup();
+                        invitederGroup.setIsOnwer(0);
+                        invitederGroup.setGroupName(groupName);
+                        // 默认订阅当前网关
+                        invitederGroup.setIsSendMsg(1);
+                        invitederGroup.setCreatedDate(new Date());
+                        relCustomerDeviceGroupDao.addRelCustomerDeviceGroup(invitederGroup);
+                        // 推送消息
+                        String invitedTishi = StringUtil.isEmpty(invitedName) ? invitederPhone : invitedName;
+                        // String wxId = (String) customerinfo.get("wxId");
+                        // List<String> touser = new ArrayList<String>();
+                        // touser.add(wxId);
+                        // weixinMessageService.sendWeixinMessage(touser,null,);
+                        String msgContent = "尊敬的" + invitedTishi + "！你好！用户" + onwerTishi + "给您分享了" + groupName
+                                + "智能家居,请前往\"ATAT智能家\"公众号查看";
+                        // 发送短信
+                        shortMessageService.sendShortMessage(invitederPhone, msgContent);
+                    }
+                    return 1;
+                }
+                else {
+                    // 未注册系统
+                    String msgContent = "尊敬的" + invitederPhone + "！你好！用户" + onwerTishi + "给您分享了" + groupName
+                            + "的智能家居,请前往\"ATAT智能家\"公众号查看";
+                    // 发送短信
+                    shortMessageService.sendShortMessage(invitederPhone, msgContent);
+                    return 0;
+                }
+            }
+            else {
+                return -1;
+            }
+        }
+        else {
+            return -1;
+        }
+    }
+
+    @Override
+    public Integer switchGroupIsSendMag(Long tabCustomerId, Long tabDeviceGroupId) {
+        Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
+        getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
+        getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
+        List<Map<String, Object>> relCustomerDeviceGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+        if (CollectionUtil.isNotEmpty(relCustomerDeviceGroupList)) {
+            // 获取用户与设备所在分组关系 是否为拥有着
+            Map<String, Object> relCustomerDeviceGroup = relCustomerDeviceGroupList.get(0);
+            Integer isSendMsg = (Integer) relCustomerDeviceGroup.get("isSendMsg");
+            Integer isSendMsg_new = ((Integer) 1).equals(isSendMsg) ? 0 : 1;
+            RelCustomerDeviceGroup relCustomerDeviceGroup_add = new RelCustomerDeviceGroup();
+            relCustomerDeviceGroup_add.setRelCustomerDeviceGroupId(Long.parseLong(relCustomerDeviceGroup.get("relCustomerDeviceGroupId").toString()));
+            relCustomerDeviceGroup_add.setIsSendMsg(isSendMsg_new);
+            relCustomerDeviceGroupDao.updateRelCustomerDeviceGroupById(relCustomerDeviceGroup_add);
+            return isSendMsg_new;
+        } else {
+            return null;
         }
     }
 }

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
@@ -236,13 +237,67 @@ public class RelCustomerDeviceGroupController extends BaseController {
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
             @ApiParam(value = "设备序列号参数 (必传参数)") @RequestParam String deviceSeriaNumberList, HttpServletResponse response)
             throws Exception {
-        JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
+        JsonResult<Object> result = new JsonResult<Object>();
         Integer rescod = relCustomerDeviceGroupService.groupBoundDevice(tabCustomerId, tabDeviceGroupId, deviceSeriaNumberList);
         if (((Integer)0).equals(rescod)){
             result.setCode(ResultCode.SUCCESS.getCode());
         } else {
             result.setCode(ResultCode.ERROR.getCode());
             result.setErrorMsg("您没有权限添加设备 请联系房屋所有人");
+        }
+        this.renderJson(response, result);
+    }
+
+    /**
+     * 用户邀请注册
+     * return  1成功 0没有权限
+     * @param tabCustomerId
+     * @param invitederPhone
+     * @param tabDeviceGroupId
+     * @param response
+     * @throws Exception
+     */
+    @RequestMapping(params = "action=addGroupByInvite")
+    public void addGroupByInvite(
+            @ApiParam(value = "邀请人用户Id (必传参数)") @RequestParam Long tabCustomerId,
+            @ApiParam(value = "被邀请人手机号 (必传参数)") @RequestParam String invitederPhone,
+            @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
+            HttpServletResponse response) throws Exception {
+            JsonResult<Object> result = new JsonResult<Object>();
+            Integer rescod = relCustomerDeviceGroupService.addGroupByInvite(tabCustomerId, invitederPhone, tabDeviceGroupId);
+        if (((Integer)1).equals(rescod)){
+            result.setCode(ResultCode.SUCCESS.getCode());
+        } if (((Integer)0).equals(rescod)){
+            result.setCode(ResultCode.ERROR.getCode());
+            result.setErrorMsg("用户未注册系统 已短信邀请注册");
+        } if (((Integer)(-1)).equals(rescod)){
+            result.setCode(ResultCode.ERROR.getCode());
+            result.setErrorMsg("仅房屋所有人有权限分享设备");
+        } else {
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
+        }
+        this.renderJson(response, result);
+    }
+
+    /**
+     * 用户切换微信通知状态
+     * @param tabCustomerId
+     * @param tabDeviceGroupId
+     * @param response
+     * @throws IOException
+     */
+    @RequestMapping(params = "action=switchGroupIsSendMag")
+    public void switchGroupIsSendMag(
+            @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
+            @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
+            HttpServletResponse response) throws IOException {
+        JsonResult<Integer> result = new JsonResult<Integer>();
+        Integer status = relCustomerDeviceGroupService.switchGroupIsSendMag(tabCustomerId,tabDeviceGroupId);
+        if (null != status){
+        result.setCode(ResultCode.SUCCESS.getCode());
+        result.setObj(status);} else {
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
+            result.setErrorMsg("数据异常");
         }
         this.renderJson(response, result);
     }

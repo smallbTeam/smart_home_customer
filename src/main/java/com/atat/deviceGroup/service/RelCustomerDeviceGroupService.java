@@ -84,4 +84,22 @@ public interface RelCustomerDeviceGroupService {
      * @param deviceSeriaNumberList
      */
     public Integer groupBoundDevice(Long tabCustomerId, Long tabDeviceGroupId, String deviceSeriaNumberList);
+
+    /**
+     * 用户邀请注册
+     * return  1成功 0没有权限
+     * @param tabCustomerId
+     * @param invitederPhone
+     * @param tabDeviceGroupId
+     * @return
+     */
+    public Integer  addGroupByInvite(Long tabCustomerId, String invitederPhone, Long tabDeviceGroupId);
+
+    /**
+     * 用户切换微信通知状态
+     * @param tabCustomerId
+     * @param tabDeviceGroupId
+     * @return
+     */
+    public Integer switchGroupIsSendMag(Long tabCustomerId,Long tabDeviceGroupId);
 }
