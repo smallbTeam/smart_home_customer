@@ -114,7 +114,7 @@ public class CustomerPageController extends BaseController{
             if (CollectionUtil.isNotEmpty(customerMap)) {
                 mav = new ModelAndView("main");
                 mav.addObject("account", customerMap);
-                String mainurl = "http://s-357114.gotocdn.com/smart_home/customer/wxUidIsExit";
+                String mainurl = "http://www.atatkj.com/smarthome/customer/wxUidIsExit";
                 Map<String, Object> weixinInfoMap = weixinService.getSignature(mainurl);
                 mav.addObject("appid", appid);
                 mav.addObject("noncestr", weixinInfoMap.get("noncestr"));

@@ -228,7 +228,7 @@ public class TabDeviceFreshairController  extends BaseController {
     @ApiOperation("查询分组下所有空气检测设备")
     @RequestMapping(value = "/tabDeviceFreshairsInGroup/{tabDeviceGroupId}", method = RequestMethod.POST)
     public void findTabDeviceFreshairsByTabDeviceGroupId(
-            @ApiParam(value = "设备分组Id (非必传参数)") @PathVariable Long tabDeviceGroupId,
+            @ApiParam(value = "设备分组Id (必传参数)") @PathVariable Long tabDeviceGroupId,
             HttpServletResponse response
     )throws Exception {
         JsonResult<Object> result = new JsonResult<Object>();
@@ -245,7 +245,7 @@ public class TabDeviceFreshairController  extends BaseController {
     @RequestMapping(value = "/CustomerUpdateTabDeviceFreshair", method = RequestMethod.POST)
     public void CustomerUpdateTabDeviceFreshair(
             @ApiParam(value = "设备ID (必传参数)") @PathVariable Long  tabDeviceFreshairId,
-            @ApiParam(value = "用户Id (非必传参数)") @RequestParam Long tabCustomerId,
+            @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "设备名称 (非必传参数)") @RequestParam(required = false) String name,
             @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam(required = false) Long tabDeviceGroupId,
             @ApiParam(value = "设备开关状态 (非必传参数)") @RequestParam(required = false) Integer state,

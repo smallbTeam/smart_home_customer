@@ -507,8 +507,8 @@
 
 
                 layer.confirm(dialog, {
-                    title: "共享",
-                    btn: ["分享"], //按钮
+                    title: "邀请",
+                    btn: ["邀请"], //按钮
 //                            width: "100%"
                 }, function () {
                     $.ajax({
@@ -624,7 +624,7 @@
         <li id="personal"><a href="#"><i class="personal"></i> 个人中心</a></li>
         <li id="addGateWayBtn"><a href="#">扫描设备</a></li>
         <li id="openAirKiss_btn"><a href="#">更改网关配置</a></li>
-        <li id="shareWithSomeone"><a href="#">分享</a></li>
+        <li id="shareWithSomeone"><a href="#">邀请</a></li>
 
     </ul>
     <ul id="leftM" class=" leftM">

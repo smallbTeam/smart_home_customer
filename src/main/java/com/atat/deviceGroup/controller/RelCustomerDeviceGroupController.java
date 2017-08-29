@@ -261,7 +261,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     public void addGroupByInvite(
             @ApiParam(value = "邀请人用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "被邀请人手机号 (必传参数)") @RequestParam String invitederPhone,
-            @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
+            @ApiParam(value = "设备分组Id (必传参数)") @RequestParam Long tabDeviceGroupId,
             HttpServletResponse response) throws Exception {
             JsonResult<Object> result = new JsonResult<Object>();
             Integer rescod = relCustomerDeviceGroupService.addGroupByInvite(tabCustomerId, invitederPhone, tabDeviceGroupId);
@@ -289,7 +289,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
     @RequestMapping(params = "action=switchGroupIsSendMag")
     public void switchGroupIsSendMag(
             @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
-            @ApiParam(value = "设备分组Id (非必传参数)") @RequestParam Long tabDeviceGroupId,
+            @ApiParam(value = "设备分组Id (必传参数)") @RequestParam Long tabDeviceGroupId,
             HttpServletResponse response) throws IOException {
         JsonResult<Integer> result = new JsonResult<Integer>();
         Integer status = relCustomerDeviceGroupService.switchGroupIsSendMag(tabCustomerId,tabDeviceGroupId);

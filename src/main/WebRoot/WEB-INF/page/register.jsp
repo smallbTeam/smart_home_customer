@@ -120,7 +120,6 @@
 
 <script type="text/javascript">
     var wxId = '${wxId}';
-    //alert(wxId);
     $(document).ready(function () {
         //console.log(JSON.stringify(wxId));
         Flatpickr.l10n.weekdays.shorthand = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
@@ -387,7 +386,7 @@
                             var str = $("#birth").val(); // 日期字符串
                             str = str.replace(/-/g, '/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
                             var birthday = new Date(str).getTime();
-                            if (wxId !== null && wxId !== undefined && wxId !== '') {
+                            if (wxId == null || wxId == undefined || wxId == '') {
                                 wxId = "";
                             }
                             $.ajax({

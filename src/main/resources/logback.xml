@@ -130,10 +130,10 @@ debug：当此属性设置为true时，将打印出logback内部日志信息，�
     -->
     <!-- root将级别为${log.root.level}及大于${log.root.level}的日志信息交给已经配置好的名为“Console”的appender处理，
     “Console”appender将信息打印到Console,其它同理 -->
-    <!--<root level="info">-->
+    <root level="info">
         <!--<appender-ref ref="stdout"/>-->
-        <!--<appender-ref ref="file.all"/>-->
-    <!--</root>-->
+        <appender-ref ref="file.all"/>
+    </root>
     <root level="ERROR">
         <appender-ref ref="file.error"/>
     </root>
