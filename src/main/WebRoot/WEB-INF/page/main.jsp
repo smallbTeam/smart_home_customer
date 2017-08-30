@@ -109,7 +109,7 @@
             var t1;  ////定时器
 
             $("#openAirKiss_btn").click(function () {
-                window.location.href = "${path}/client/home?service=openWifiScan&mobelPhone=" + customer.mobelPhone;
+                window.location.href = "${path}/deviceGroup/openWifiScan?mobelPhone=" + customer.mobelPhone;
             });
 
             //获取空气检测设备数据
@@ -285,7 +285,6 @@
                                             if (deviceGroupArray[i].tabDeviceGroupId == tabDeviceGroupId) {
                                                 current_deviceGroup = deviceGroupArray[i];
                                                 reloadPageContent(current_deviceGroup);
-//                                              //WebSocketTest();
                                             }
                                         }
                                     });
@@ -294,17 +293,12 @@
                             if (deviceGroupArray.length > 0) {
                                 current_deviceGroup = deviceGroupArray[0];
                                 reloadPageContent(current_deviceGroup);
-//                                if (ws != null) {
-//                                    ws.send(current_deviceGroup.id);
-//                                } else {
-////                                    WebSocketTest();
-//                                }
                             }
                             if (!isExist("#gateWayId_nomore")) {
                                 $("#leftM").append('<li id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></li>');
                             }
                         } else {
-                            layer.alert(result.error);
+                            layer.alert(result.errorMsg);
                             $("#leftM").append('<li id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></li>');
                         }
                     },
@@ -372,8 +366,8 @@
                         data: {
                             name: $("#update_gatewayName").val(),
                             deviceId: device.id,
-                            deviceCategoryId: current_deviceGroup.id,
-                            parentId: customer.id,
+                            deviceCategoryId: current_deviceGroup.tabDeviceGroupId,
+                            parentId: customer.tabCustomerId,
                             gatewaySerialNumber: $("#deviceTypeCurrent").val(),
                             seriaNumber: $("#update_gatewayNo").val(),
                             deviceId: device.gatewayDeviceID
@@ -387,7 +381,7 @@
                                 reloadPageContent(current_deviceGroup);
                                 refresh();
                             } else {
-                                layer.alert(result.error);
+                                layer.alert(result.errorMsg);
                             }
                         },
                         error: function () {
@@ -431,7 +425,7 @@
                         url: "${path}/client/device?service=updateGateway",
                         type: "GET",
                         data: {
-//                            tabCustomerId: customer.id,
+//                            tabCustomerId: customer.tabCustomerId,
                             address: $("#update_gatewayPort").val(),
 //                            iP: $("#update_gatewayIP").val(),
                             serialNumber: deviceGroup.tabDeviceGroupId
@@ -443,7 +437,7 @@
                                 layer.msg("更新成功");
                                 refresh();
                             } else {
-                                layer.alert(result.error);
+                                layer.alert(result.errorMsg);
                             }
                         },
                         error: function () {
@@ -455,19 +449,8 @@
             }
 
 //              页面事件响应
-            $("#addGateWayBtn").click(function () {
-//                addGateway();http://localhost:8080/
-                window.location.href = "${path}/deviceGroup/addDevice?mobelPhone=" + customer.mobelPhone;
-
-                <%--window.location.href = "${path}/client/device?service=addGetway&mobelPhone=" + customer.mobelPhone;--%>
-            });
-            $("#addGateWay").click(function () {
-//                addGateway();
-                window.location.href = "${path}/client/device?service=addGetway&mobelPhone=" + customer.mobelPhone;
-            });
-
             $("#personal").click(function () {
-                window.location.href = "${path}/client/customer?service=personal&mobelPhone=" + customer.mobelPhone;
+                window.location.href = "${path}/customer/personal?mobelPhone=" + customer.mobelPhone;
             });
 
             $('#device_shidu_item').click(function () {
@@ -511,22 +494,20 @@
                     btn: ["邀请"], //按钮
 //                            width: "100%"
                 }, function () {
-
                     $.ajax({
                         url: "${path}/deviceGroup/addGroupByInvite",
-                        type: "GET",
+                        type: "POST",
                         data: {
-                            invitederPhone: $('#invate_phoneNum').value(),
-                            tabDeviceGroupId: current_deviceGroup.id,
-                            tabCustomerId: customer.id
+                            invitederPhone: $('#invate_phoneNum').val(),
+                            tabDeviceGroupId: current_deviceGroup.tabDeviceGroupId,
+                            tabCustomerId: customer.tabCustomerId
                         },
                         dataType: "json",
                         success: function (result) {
-                            //console.log(result);
                             if (result.code == 0 ) {
                                 layer.msg("已成功发送邀请");
                             } else {
-                                layer.alert(result.error);
+                                layer.alert(result.errorMsg);
                             }
                         },
                         error: function () {
@@ -539,27 +520,23 @@
 
             //关闭通知推送与开启推送通知
             $("#notify").click(function () {
-
-                // alert("gid:"+current_deviceGroup.id+":"+customer.id);
                 $.ajax({
-                    url: "${path}/client/device?service=switchGatewayIsSendMag",
-                    type: "GET",
+                    url: "${path}/deviceGroup/switchGroupIsSendMag",
+                    type: "POST",
                     data: {
-                        gatewaySerialNumber: current_deviceGroup.id,
-                        tabCustomerId: customer.id
+                        tabDeviceGroupId: current_deviceGroup.tabDeviceGroupId,
+                        tabCustomerId: customer.tabCustomerId
                     },
                     dataType: "json",
                     success: function (result) {
-                        //console.log(result);
-                        if (result.result == "success") {
-                            if (result.operationResult) {
+                        if (result.code == 0) {
+                            if (result.obj == 1) {
                                 $("#notifyText").html("关闭通知");
                                 $("#notify").css("background", "#2BB4EA");
                             } else {
                                 $("#notifyText").html("开启通知");
                                 $("#notify").css("background", "red");
                             }
-
                         } else {
                             layer.msg("操作失败！");
                         }
@@ -578,7 +555,7 @@
                     type: "POST",
                     data: {
                         pageSize: 3,
-                        tabCustomerId: customer.id
+                        tabCustomerId: customer.tabCustomerId
                     },
                     dataType: "json",
                     success: function (result) {
@@ -664,7 +641,7 @@
     <ul id="rightM" class="dropDown">
         <li id="personal"><a href="#"><i class="personal"></i> 个人中心</a></li>
         <li id="addGateWayBtn"><a href="#">扫描设备</a></li>
-        <li id="openAirKiss_btn"><a href="#">更改网关配置</a></li>
+        <li id="openAirKiss_btn"><a href="#">配置WIFI</a></li>
         <li id="shareWithSomeone"><a href="#">邀请</a></li>
 
     </ul>
@@ -682,7 +659,7 @@
             <div id="topContent" class="topContent">
                 <div class="row">
                     <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">
-                        <h3 class="title"><span>网关信息</span>
+                        <h3 class="title"><span>分组信息</span>
                             <div id="groupName"> Qixu Lorem</div>
                         </h3>
                     </div>

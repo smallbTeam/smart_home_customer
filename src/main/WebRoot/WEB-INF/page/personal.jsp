@@ -172,26 +172,24 @@
             //发送验证码请求
             //console.log("[" + url + "]");
             $.ajax({
-                url: "${path}/client/account?service=accountIsExit",
+                url: "${path}/customer/accountIsExit/"+$("#up_phoneNum").val(),
                 type: "post",
-                data: {
-                    mobelPhone: $("#up_phoneNum").val()
-                },
+                data: {},
                 dataType: "json",
                 success: function (result) {
-                    if (result.result == "success") {
-                        if (result.operationResult) {
+                    if (result.code == 0) {
+                        if (result.obj.isExit) {
                             alert("手机号已注册！！");
                         } else {
                             $.ajax({
-                                url: "${path}/verificationMsg?service=sendMsg",
+                                url: "${path}/shortMessage/sendMsg",
                                 type: "GET",
                                 data: {
                                     mobelPhone: $("#up_phoneNum").val()
                                 },
                                 dataType: "json",
                                 success: function (result) {
-                                    if (result.result == "success") {
+                                    if (result.code == 0) {
                                         isSendCode = true;
                                         var countdown = 60;
                                         var _this = $(this);
@@ -265,8 +263,8 @@
                 //alert("13652091037:" + $("#veridateMsg").val());
 
                 $.ajax({
-                    url: "${path}/client/account?service=accountUpdateMobile",
-                    type: "GET",
+                    url: "${path}/customer/accountUpdateMobile",
+                    type: "POST",
                     data: {
                         newMobelPhone: $("#up_phoneNum").val(),
                         tabCustomerId: account.id,
@@ -275,15 +273,15 @@
                     dataType: "json",
                     success: function (result) {
                         //console.log(result);
-                        if (result.result == "success" && result.operationResult == 1) {
+                        if (result.code == 0 && result.obj == 1) {
                             layer.msg("更新成功");
                             $("#phoneNum").html($("#up_phoneNum").val());
-                        } else if (result.operationResult == 1) {
+                        } else if ( result.obj == 1) {
 
-                        } else if (result.result == "success") {
-                            layer.msg("更新失败:" + result.operationResul);
+                        } else if (result.code == "0") {
+                            layer.msg("更新失败:" + result.errorMsg);
                         } else {
-                            layer.msg("更新失败:" + result.error);
+                            layer.msg("更新失败:" + result.errorMsg);
                         }
                     },
                     error: function () {
@@ -328,11 +326,10 @@
 //                            width: "100%"
             }, function () {
                 $.ajax({
-                    url: "${path}/client/account?service=updateAccount",
-                    type: "GET",
+                    url: "${path}/customer/tabCustomer/"+account.id,
+                    type: "PUT",
                     data: {
                         sex: $("#up_gender").val(),
-                        tabCustomerId: account.id
                     },
                     dataType: "json",
                     success: function (result) {
@@ -383,11 +380,10 @@
 //                            width: "100%"
             }, function () {
                 $.ajax({
-                    url: "${path}/client/account?service=updateAccount",
-                    type: "GET",
+                    url: "${path}/customer/tabCustomer/"+account.id,
+                    type: "PUT",
                     data: {
                         nickName: $("#up_nickName").val(),
-                        tabCustomerId: account.id
                     },
                     dataType: "json",
                     success: function (result) {

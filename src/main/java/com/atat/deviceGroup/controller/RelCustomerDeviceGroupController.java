@@ -257,7 +257,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
      * @param response
      * @throws Exception
      */
-    @RequestMapping(params = "action=addGroupByInvite")
+    @RequestMapping(value = "/addGroupByInvite",method = RequestMethod.POST)
     public void addGroupByInvite(
             @ApiParam(value = "邀请人用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "被邀请人手机号 (必传参数)") @RequestParam String invitederPhone,
@@ -286,7 +286,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
      * @param response
      * @throws IOException
      */
-    @RequestMapping(params = "action=switchGroupIsSendMag")
+    @RequestMapping(value = "/switchGroupIsSendMag",method = RequestMethod.POST)
     public void switchGroupIsSendMag(
             @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
             @ApiParam(value = "设备分组Id (必传参数)") @RequestParam Long tabDeviceGroupId,
@@ -295,7 +295,8 @@ public class RelCustomerDeviceGroupController extends BaseController {
         Integer status = relCustomerDeviceGroupService.switchGroupIsSendMag(tabCustomerId,tabDeviceGroupId);
         if (null != status){
         result.setCode(ResultCode.SUCCESS.getCode());
-        result.setObj(status);} else {
+        result.setObj(status);
+        } else {
             result.setCode(ResultCode.SYSTEM_ERROR.getCode());
             result.setErrorMsg("数据异常");
         }

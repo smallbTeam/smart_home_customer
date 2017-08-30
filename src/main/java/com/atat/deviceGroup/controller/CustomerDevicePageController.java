@@ -6,6 +6,7 @@ package com.atat.deviceGroup.controller;
 
 import com.atat.common.base.controller.BaseController;
 import com.atat.customer.service.TabCustomerService;
+import com.atat.message.service.WeixinService;
 import com.atat.util.StringUtil;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -16,6 +17,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * @author ligw
@@ -27,6 +29,12 @@ public class CustomerDevicePageController extends BaseController{
 
     @Autowired
     private TabCustomerService tabCustomerService;
+
+    @Autowired
+    private WeixinService weixinService;
+
+    @Autowired
+    private Properties wxPlatformProperties;
 
     /**
      * 设备列表页面
@@ -72,6 +80,29 @@ public class CustomerDevicePageController extends BaseController{
         if (StringUtil.isNotEmpty(mobelPhone)) {
             mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
         }
+        return mav;
+    }
+
+    /**
+     * 配置Wifi
+     * @param request
+     * @param response
+     * @return
+     */
+    @RequestMapping(value = "/openWifiScan",method = RequestMethod.GET)
+    public ModelAndView openWifiScan(HttpServletRequest request, HttpServletResponse response) {
+        String mobelPhone = request.getParameter("mobelPhone");
+        ModelAndView mav = new ModelAndView("openWifiScan");
+        if (StringUtil.isNotEmpty(mobelPhone)) {
+            mav.addObject("account",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+        }
+        String mainurl = "http://www.atatkj.com/smarthome/deviceGroup/openWifiScan?mobelPhone="+mobelPhone;
+        Map<String, Object> map = weixinService.getSignature(mainurl);
+        String appid = wxPlatformProperties.getProperty("wxAppId");
+        mav.addObject("appid", appid);
+        mav.addObject("noncestr", map.get("noncestr"));
+        mav.addObject("timestamp", map.get("timestamp"));
+        mav.addObject("signaturet", map.get("signaturet"));
         return mav;
     }
 

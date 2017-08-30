@@ -261,6 +261,8 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
                     List<Map<String, Object>> invitederGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(paramCheckInviteder);
                     if (CollectionUtil.isEmpty(invitederGroupList)) {
                         RelCustomerDeviceGroup invitederGroup = new RelCustomerDeviceGroup();
+                        invitederGroup.setTabCustomerId(invitederId);
+                        invitederGroup.setTabDeviceGroupId(tabDeviceGroupId);
                         invitederGroup.setIsOnwer(0);
                         invitederGroup.setGroupName(groupName);
                         // 默认订阅当前网关
