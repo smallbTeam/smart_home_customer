@@ -42,143 +42,144 @@
     <div id="titleV" class="titleView">
         <span>设备列表</span>
     </div>
-
 </nav>
 
 <!--内容区 -->
+<section id="user-group">
+    <section id="device-content-0" class="device-content" >
 
-<section id="device-content-0" class="device-content" >
-
-    <div class="top">
-        <div id="  " class="topContent">
-            <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">
-                    <h3 class="title"><span>网关信息</span>Qixu Lorem</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 ">
-            <div id="" class="list-content">
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/aircleaner.png">
-                        <div class="rightContent">
-                            <span class="title">新风空调</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
-
-                        </div>
-                        <div class="operation pull-right">
-                            <div class="edit">
-                                <img src="${path}/page/img/addservice/editicon.png"/>
-                            </div>
-                            <div class="delete">
-                                <img src="${path}/page/img/addservice/delete.png"/>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/aircleaner.png">
-                        <div class="rightContent">
-                            <span class="title">新风空调</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
-
-                        </div>
-                        <div class="operation pull-right">
-                            <div class="edit">
-                                <img src="${path}/page/img/addservice/editicon.png"/>
-                            </div>
-                            <div class="delete">
-                                <img src="${path}/page/img/addservice/delete.png"/>
-                            </div>
-
-
-                        </div>
-                    </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/aircleaner.png">
-                        <div class="rightContent">
-                            <span class="title">新风空调</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
-
-                        </div>
-                        <div class="operation pull-right">
-                            <div class="edit">
-                                <img src="${path}/page/img/addservice/editicon.png"/>
-                            </div>
-                            <div class="delete">
-                                <img src="${path}/page/img/addservice/delete.png"/>
-                            </div>
-
-
-                        </div>
+        <div class="top">
+            <div id="  " class="topContent">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">
+                        <h3 class="title"><span>网关信息</span>Qixu Lorem</h3>
                     </div>
                 </div>
             </div>
         </div>
-    </div>
-</section>
+        <div class="row">
+            <div class="col-xs-12 ">
+                <div id="" class="list-content">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/aircleaner.png">
+                            <div class="rightContent">
+                                <span class="title">新风空调</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
 
-<section id="device-content-1"  class="device-content">
+                            </div>
+                            <div class="operation pull-right">
+                                <div class="edit">
+                                    <img src="${path}/page/img/addservice/editicon.png"/>
+                                </div>
+                                <div class="delete">
+                                    <img src="${path}/page/img/addservice/delete.png"/>
+                                </div>
 
-    <div class="top">
-        <div id="topContent" class="topContent">
-            <div class="row">
-                <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">
-                    <h3 class="title"><span>网关信息</span>Qixu Lorem</h3>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-xs-12 ">
-            <div id="list-content" class="list-content">
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/aircleaner.png">
-                        <div class="rightContent">
-                            <span class="title">新风空调</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/heater.png">
-                        <div class="rightContent">
-                            <span class="title">热水器</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/aircleaner.png">
+                            <div class="rightContent">
+                                <span class="title">新风空调</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
 
+                            </div>
+                            <div class="operation pull-right">
+                                <div class="edit">
+                                    <img src="${path}/page/img/addservice/editicon.png"/>
+                                </div>
+                                <div class="delete">
+                                    <img src="${path}/page/img/addservice/delete.png"/>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
-                    <div class="device-item">
-                        <img src="${path}/page/img/addservice/chandelier.png">
-                        <div class="rightContent">
-                            <span class="title">新风空调</span>
-                            <span>美的xb-102128</span>
-                            <span>2017-08-16</span>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/aircleaner.png">
+                            <div class="rightContent">
+                                <span class="title">新风空调</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
 
+                            </div>
+                            <div class="operation pull-right">
+                                <div class="edit">
+                                    <img src="${path}/page/img/addservice/editicon.png"/>
+                                </div>
+                                <div class="delete">
+                                    <img src="${path}/page/img/addservice/delete.png"/>
+                                </div>
+
+
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </section>
 
-    </div>
+    <section id="device-content-1"  class="device-content">
+
+        <div class="top">
+            <div id="topContent" class="topContent">
+                <div class="row">
+                    <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">
+                        <h3 class="title"><span>网关信息</span>Qixu Lorem</h3>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-xs-12 ">
+                <div id="list-content" class="list-content">
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/aircleaner.png">
+                            <div class="rightContent">
+                                <span class="title">新风空调</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/heater.png">
+                            <div class="rightContent">
+                                <span class="title">热水器</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
+
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">
+                        <div class="device-item">
+                            <img src="${path}/page/img/addservice/chandelier.png">
+                            <div class="rightContent">
+                                <span class="title">新风空调</span>
+                                <span>美的xb-102128</span>
+                                <span>2017-08-16</span>
+
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </section>
+
 </section>
 
 
@@ -190,6 +191,105 @@
         $(".menuleft").click(function () {
             window.history.back();
         });
+
+
+        var deviceGroupArray = new  Array();
+
+        var customer = {
+            "tabCustomerId": '${customer.tabCustomerId}',
+            "mobelPhone": '${customer.mobelPhone}',
+            "wxId": '${customer.wxId}',
+            "nickName": '${customer.nickName}',
+            "birthday": '${customer.birthday}',
+            "sex": '${customer.sex}',
+            "token": '${customer.token}'
+        };
+
+        customer.tabCustomerId = 1;
+
+        refreshData();
+
+
+            function userGroupDeviceItemContenReload() {
+            var html = '<div class="col-xs-12 col-sm-6 col-md-4 col-lg-3 ">'+
+                '<div class="device-item">'+
+            '<img src="${path}/page/img/addservice/aircleaner.png">'+
+            '<div class="rightContent">'+
+            '<span class="title">新风空调</span>'+
+            '<span>美的xb-102128</span>'+
+            '<span>2017-08-16</span>'+
+            '</div>'+
+            '</div>'+
+            '</div>';
+
+            $('#list-content').add(html);
+
+        }
+        function userGroupContenReload(groupItem) {
+            var html = '<section id="device-content-1"  class="device-content">'+
+            '<div class="top">'+
+                '<div id="topContent" class="topContent">'+
+                '<div class="row">'+
+                '<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">'+
+                ' <h3 class="title"><span>网关信息</span>Qixu Lorem</h3>'+
+            ' </div>'+
+            '</div>'+
+            '</div>'+
+            ' </div>'+
+            '<div class="row">'+
+                '<div class="col-xs-12 ">'+
+                '<div id="list-content" class="list-content">'+
+                '</div>'+
+                '</div>'+
+                '</div>'+
+                '</section>';
+
+            $('#user-group').add(html);
+
+        }
+
+        function refreshData() {
+
+            $.ajax({
+                url: "${path}/deviceGroup/allRelCustomerDeviceGroups",
+                type: "POST",
+                data: {
+                    tabCustomerId: customer.tabCustomerId
+                },
+                dataType: "json",
+                success: function (result) {
+                    alert('result:'+result.code);
+
+                    if (result.code == 0) {
+                        var groupList = result.obj;
+                        for (var i in groupList) {
+                            var item = groupList[i];
+                            var groupItem = {
+                                "tabDeviceGroupId": item.tabDeviceGroupId,
+                                "groupName": item.groupName,
+                                "isSendMsg": item.isSendMsg
+                            };
+                            if ($.inArray(groupItem, deviceGroupArray) == -1) {
+                                deviceGroupArray.push(groupItem);
+                                userGroupContenReload(groupItem);
+                            }
+                        }
+
+                    } else {
+                        layer.alert(result.error);
+                        $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
+                    }
+                },
+                error: function () {
+                    layer.error();
+                    $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
+                }
+            });
+
+
+
+
+        }
 
 //        var success = swal("Good job!", "You clicked the button!", "success");
 

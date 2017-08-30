@@ -511,49 +511,26 @@
                     btn: ["邀请"], //按钮
 //                            width: "100%"
                 }, function () {
+
                     $.ajax({
-                        url: "${path}/client/customer?service=accountIsExit",
+                        url: "${path}/deviceGroup/addGroupByInvite",
                         type: "GET",
                         data: {
-                            mobelPhone: $("#invate_phoneNum").val()
-//                        serialNumber: current_deviceGroup.id
+                            invitederPhone: $('#invate_phoneNum').value(),
+                            tabDeviceGroupId: current_deviceGroup.id,
+                            tabCustomerId: customer.id
                         },
                         dataType: "json",
                         success: function (result) {
                             //console.log(result);
-                            if (result.operationResult) {
-                                var invitederId = result.customer.tabCustomerId;
-                                $.ajax({
-                                    url: "${path}/client/device?service=addGateWayByInvite",
-                                    type: "GET",
-                                    data: {
-                                        invitederId: invitederId,
-                                        gatewaySerialNumber: current_deviceGroup.id,
-                                        tabCustomerId: customer.id
-                                    },
-                                    dataType: "json",
-                                    success: function (result) {
-                                        //console.log(result);
-                                        if (result.result == "success") {
-                                            layer.msg("已成功发送邀请");
-
-
-                                        } else {
-                                            layer.alert(result.error);
-                                        }
-                                    },
-                                    error: function () {
-                                        layer.msg("程序繁忙，请稍后重试。！");
-                                    }
-                                });
-
+                            if (result.code == 0 ) {
+                                layer.msg("已成功发送邀请");
                             } else {
-                                layer.msg("该用户未注册，邀请失败");
+                                layer.alert(result.error);
                             }
                         },
                         error: function () {
                             layer.msg("程序繁忙，请稍后重试。！");
-
                         }
                     });
                 });
@@ -591,6 +568,70 @@
                         layer.msg("程序繁忙，请稍后重试。！");
 
                     }
+                });
+
+            });
+
+            $('#ask').click(function () {
+                $.ajax({
+                    url: "${path}/freshair/allTabDeviceFreshairs",
+                    type: "POST",
+                    data: {
+                        pageSize: 3,
+                        tabCustomerId: customer.id
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        //console.log(result);
+                        if (result.code == 0) {
+
+
+                        } else {
+                            layer.msg("操作失败！");
+                        }
+                    },
+                    error: function () {
+                        layer.msg("程序繁忙，请稍后重试。！");
+
+                    }
+                });
+
+
+
+
+
+                var dialog = '<div class="box">' +
+                    '<form >' +
+                    '<div class="form-group">' +
+//                '<label for="name">手机号码</label>' +
+                    '<div class="freshDevice-item" id="invate1" value="请输入邀请用户手机号"  required>设备1</div>' +
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '<div class="freshDevice-item" id="invate2" value="请输入邀请用户手机号"  required>设备2</div>' +
+
+//                            '<label for="name">网关IP</label>'+
+//                            '<input type="text" class="form-control" id="add_gatewayIP" placeholder="请输入网关IP">'+
+
+                    '</div>' +
+                    '<div class="form-group">' +
+                    '</div>' +
+//                            '<div id="addGatewaySubmit" class="btn-default" >提交</div>'+
+                    '</form>' +
+                    '</div>';
+
+
+                layer.confirm(dialog, {
+                    title: "选择空气检测设备查看指数",
+                    btn: [], //按钮
+//                            width: "100%"
+                });
+
+                $('#invate2').click(function () {
+                   layer.closeAll();
+                });
+
+                $('#invate1').click(function () {
+                    layer.closeAll();
                 });
 
             });
@@ -647,6 +688,10 @@
                     </div>
                 </div>
             </div>
+        </div>
+
+        <div id="ask" class="ask-content">
+            <img src="${path}/page/img/icon/ask.png">
         </div>
         <%--<div class="row">--%>
         <%--<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">--%>

@@ -409,6 +409,20 @@ h3.title span:after {
 }
 
 
+.ask-content {
+    float: right;
+    margin: 0px 0 5px;
+    /*padding: 0 15px 0;*/
+}
+
+.ask-content img {
+    width: 30px;
+    height: 30px;
+    margin-right: 0;
+    margin-top: -5px;
+    cursor: pointer;
+}
+
 .gateWay_detail .content{
     /*background: #f0f0f0;*/
     background: url("../img/cellbg.jpg") no-repeat;
@@ -531,7 +545,21 @@ h3.title span:after {
 
 }
 
+.freshDevice-item {
+    text-align: center;
+    color: #ffffff;
+    outline: none;
+    border: none;
+    height: 44px;
+    line-height: 44px;
+    /*background: #ffffff;*/
+    border-radius: 8px;
+    filter:alpha(opacity=50 finishopacity=50 style=1 startx=0,starty=0,finishx=150,finishy=0) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#2BB4EA,endcolorstr=#3687CB,gradientType=0);
+    -ms-filter:alpha(opacity=50 finishopacity=50 style=1 startx=0,starty=0,finishx=150,finishy=0) progid:DXImageTransform.Microsoft.gradient(startcolorstr=#2BB4EA,endcolorstr=#3687CB,gradientType=0);
 
+    background:-moz-linear-gradient(left, #2BB4EA, #3687CB);
+    background:-webkit-gradient(linear, 0 25%, 100% 50%, from(#2BB4EA), to(#3687CB));
+}
 
 .list-content .list-item {
     /*background: #ec428f;*/
