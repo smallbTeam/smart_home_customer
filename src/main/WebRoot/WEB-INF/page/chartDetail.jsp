@@ -63,12 +63,10 @@
         <i class="return"></i>
     </div>
     <ul id="rightM" class="dropDown">
-        <li id="monthAccount"><a href="#">1天内</a></li>
-        <li id="yearAccount"><a href="#">1年内</a></li>
-        <li id="todayAccount"><a href="#">3小时内</a></li>
+        <li id="yearAccount"><a href="#">本年</a></li>
+        <li id="monthAccount"><a href="#">本月</a></li>
+        <li id="todayAccount"><a href="#">今天</a></li>
     </ul>
-
-
 </nav>
 
 
@@ -94,24 +92,17 @@
 
 <script>
     $(document).ready(function () {
-//        var ctx = $("#chart").getContext("2d");
-
-//        var myChart = echarts.init(document.getElementById('chart'));
-
-
-        //
         $('.dropDown').mouseleave(function () {
             $('.dropDown').slideUp("slow", function () {
                 $(this).fadeOut(2000);
             });
         });
-        <%--alert("deviceD:"+${code});--%>
-        $("#chartTitle").html("3小时内");
+        $("#chartTitle").html("今天");
 
         var deviceD = {
-            deviceId: "${deviceId}",
+            tabDeviceFreshairId: "${tabDeviceFreshairId}",
             code: "${code}",
-            type: "hour"
+            type: "day"
         };
 
         var dom = document.getElementById("chart");
@@ -156,20 +147,6 @@
 
         }
 
-        function addData(msg,type) {
-            var newDateStr = format(msg.recordTime,2);
-            date.push(newDateStr);
-
-            data.push(msg.value);
-            if (type == 0) {
-                now = now + oneDay;
-            }else if (type == 1) {
-                now = now + oneHour;
-            }else{
-                now = now + oneMinute;
-            }
-        }
-
         function setOption() {
             option = {
                 xAxis: {
@@ -200,52 +177,44 @@
 
         function accountMsgs(deviceD) {
             $.ajax({
-                url: "${path}/client/device?service=getDeviceDataMap",
-                type: "GET",
+                url: "${path}/freshair/getDeviceDataMap",
+                type: "POST",
                 data: {
-                    //tabCustomerId: account.id,
-                    deviceId: deviceD.deviceId,
-                    code: deviceD.code,
-                    type: deviceD.type
+                    "tabDeviceFreshairId": deviceD.tabDeviceFreshairId,
+                    "code": deviceD.code,
+                    "type": deviceD.type
                 },
                 dataType: "json",
                 success: function (result) {
                     //console.log(result);
-                    if (result.result == "success") {
-                        var operationResult = result.operationResult;
+                    if (result.code == 0) {
+                        var operationResult = result.obj;
                         var common = {
-                            "unit": operationResult.unit,
-                            "code": operationResult.code,
-                            "isReadOnly": operationResult.isReadOnly,
-                            "createdDate": operationResult.createdDate,
-                            "deviceCategoryId": operationResult.deviceCategoryId,
-                            "dataType": operationResult.dataType,
                             "name": operationResult.name,
-                            "modifiedDate": operationResult.modifiedDate,
-                            "type": operationResult.type,
-                            "categoryParameterId": operationResult.categoryParameterId
+                            "unit": operationResult.unit,
+                            "data": operationResult.data,
+                            "recordTime": operationResult.recordTime,
+                            "min": operationResult.deviceCategoryId,
+                            "max": operationResult.dataType,
+                            "avg": operationResult.name,
                         } ;
 
                         unit = operationResult.name+" "+operationResult.unit;
-
-                        for (var i in operationResult.deviceEchartsData) {
-                            var  item = operationResult.deviceEchartsData[i];
-                            var item_msg = {
-                                "recordTime": item.recordTime,
-                                "deviceId": item.deviceId,
-                                "value": item.value,
-                                "categoryParameterId": item.categoryParameterId
-                            };
-                            if (deviceD.type == "day") {
-                                addData(item_msg, 1);
-                            }else if  (deviceD.type == "year") {
-                                addData(item_msg, 0);
-                            }else {
-                                addData(item_msg, 2);
+                        data.push(operationResult.data);
+                        for (var i in operationResult.recordTime) {
+                            var  item = operationResult.recordTime[i];
+                            var newDateStr = format(item,2);
+                            date.push(newDateStr);
+                            if (deviceD.type == 0) {
+                                now = now + oneDay;
+                            }else if (deviceD.type == 1) {
+                                now = now + oneHour;
+                            }else{
+                                now = now + oneMinute;
                             }
                         }
 
-                        if (operationResult.deviceEchartsData.length == 0) {
+                        if (operationResult.data.length == 0) {
                             date.push("当前无数据");
                             data.push(0);
                         }
@@ -256,7 +225,7 @@
                                 myChart.setOption(option, true);
                             }
                     } else {
-                        layer.alert(result.error);
+                        layer.alert(result.errorMsg);
                     }
                 },
                 error: function () {
@@ -272,28 +241,27 @@
 
         $("#todayAccount").click(function () {
 
-            $("#chartTitle").html("3小时内");
+            $("#chartTitle").html("今天");
 
-            deviceD.type = "hour";
+            deviceD.type = "day";
             date = [];
             data = [];
 //            now -= oneHour*3;
             accountMsgs(deviceD);
         });
         $("#monthAccount").click(function () {
-            deviceD.type = "day";
+            deviceD.type = "mounth";
             date = [];
             data = [];
 //            now -= oneMonth;
-            $("#chartTitle").html("1天内");
+            $("#chartTitle").html("本月");
             accountMsgs(deviceD);
         });
         $("#yearAccount").click(function () {
             deviceD.type = "year";
             date = [];
             data = [];
-//            now -= oneYear;
-            $("#chartTitle").html("1年内");
+            $("#chartTitle").html("本年");
             accountMsgs(deviceD);
         });
 

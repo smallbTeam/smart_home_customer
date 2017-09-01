@@ -94,8 +94,8 @@ public class DataFreshairNowServiceImpl implements DataFreshairNowService {
         dataFreshairNowDao.delDataNowByEndTime(cal.getTime().getTime());
     }
 
-    @Override public List<Map<String, Object>> getThreeHourDeviceData(Long tabDeviceFreshairId) {
-        List<Map<String, Object>> categoryParameter = new ArrayList<Map<String, Object>>();
+    @Override public Map<String, Object> getThreeHourDeviceData(Long tabDeviceFreshairId,String code) {
+        Map<String, Object> categoryParameter = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("tabDeviceFreshairId", tabDeviceFreshairId);
         Calendar cal = Calendar.getInstance();
@@ -103,7 +103,7 @@ public class DataFreshairNowServiceImpl implements DataFreshairNowService {
         cal.add(Calendar.HOUR, -3);
         param.put("recordTimeStart", cal.getTime().getTime());
         List<Map<String, Object>> deviceThreeHourData = dataFreshairNowDao.selectDataFreshairNowList(param);
-        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceThreeHourData);
+        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceThreeHourData,code);
         return categoryParameter;
     }
 }

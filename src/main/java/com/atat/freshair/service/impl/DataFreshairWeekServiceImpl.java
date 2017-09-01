@@ -1,11 +1,11 @@
 package com.atat.freshair.service.impl;
 
-import com.github.pagehelper.PageHelper;
-import com.github.pagehelper.PageInfo;
 import com.atat.freshair.action.FreshAirDataFormate;
 import com.atat.freshair.bean.DataFreshairWeek;
 import com.atat.freshair.dao.DataFreshairWeekDao;
 import com.atat.freshair.service.DataFreshairWeekService;
+import com.github.pagehelper.PageHelper;
+import com.github.pagehelper.PageInfo;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -63,8 +63,8 @@ public class DataFreshairWeekServiceImpl implements DataFreshairWeekService {
         dataFreshairWeekDao.delDataFreshairWeekById(dataFreshairWeekId);
     }
 
-    @Override public List<Map<String, Object>> getOneYearDeviceData(Long tabDeviceFreshairId) {
-        List<Map<String, Object>> categoryParameter = new ArrayList<Map<String, Object>>();
+    @Override public Map<String, Object> getOneYearDeviceData(Long tabDeviceFreshairId,String code) {
+        Map<String, Object> categoryParameter = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("tabDeviceFreshairId", tabDeviceFreshairId);
         Calendar cal = Calendar.getInstance();
@@ -72,7 +72,7 @@ public class DataFreshairWeekServiceImpl implements DataFreshairWeekService {
         cal.add(Calendar.YEAR, -1);
         param.put("recordTimeStart", cal.getTime().getTime());
         List<Map<String, Object>> deviceOneMonthData = dataFreshairWeekDao.selectDataFreshairWeekList(param);
-        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceOneMonthData);
+        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceOneMonthData,code);
         return categoryParameter;
     }
 }

@@ -58,5 +58,5 @@ public interface DataFreshairDayService {
      * @param tabDeviceFreshairId
      * @return
      */
-    public List<Map<String, Object>> getOneMounthDeviceData(Long tabDeviceFreshairId);
+    public Map<String, Object> getOneMounthDeviceData(Long tabDeviceFreshairId,String code);
 }

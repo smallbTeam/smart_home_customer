@@ -58,5 +58,5 @@ public interface DataFreshairNowService {
      * @param tabDeviceFreshairId
      * @return
      */
-    public List<Map<String, Object>> getThreeHourDeviceData(Long tabDeviceFreshairId);
+    public Map<String, Object> getThreeHourDeviceData(Long tabDeviceFreshairId,String code);
 }

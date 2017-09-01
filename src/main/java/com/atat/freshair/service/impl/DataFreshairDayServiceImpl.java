@@ -91,8 +91,8 @@ public class DataFreshairDayServiceImpl implements DataFreshairDayService {
         dataFreshairDayDao.delDataDayByEndTime(cal.getTime().getTime());
     }
 
-    @Override public List<Map<String, Object>> getOneMounthDeviceData(Long tabDeviceFreshairId) {
-        List<Map<String, Object>> categoryParameter = new ArrayList<Map<String, Object>>();
+    @Override public Map<String, Object> getOneMounthDeviceData(Long tabDeviceFreshairId,String code) {
+        Map<String, Object> categoryParameter = new HashMap<String, Object>();
         Map<String, Object> param = new HashMap<String, Object>();
         param.put("tabDeviceFreshairId", tabDeviceFreshairId);
         Calendar cal = Calendar.getInstance();
@@ -100,7 +100,7 @@ public class DataFreshairDayServiceImpl implements DataFreshairDayService {
         cal.add(Calendar.MONTH, -1);
         param.put("recordTimeStart", cal.getTime().getTime());
         List<Map<String, Object>> deviceOneMonthData = dataFreshairDayDao.selectDataFreshairDayList(param);
-        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceOneMonthData);
+        categoryParameter = FreshAirDataFormate.formateDataForEchar(deviceOneMonthData,code);
         return categoryParameter;
     }
 }

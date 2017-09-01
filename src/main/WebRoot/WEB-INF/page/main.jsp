@@ -104,7 +104,8 @@
             var deviceGroupArray = new Array();
             var deviceArray = new Array();
             var current_deviceGroup;
-            var deviceId;
+            var currentFreshDeviceSeriaNumber = "";
+            var currentFreshairDeviceTabId = "";
             var code;
             var t1;  ////定时器
 
@@ -178,8 +179,6 @@
                 });
             });
 
-            var currentFreshDeviceSeriaNumber = "";
-
             // 网关切换，页面数据重新加载
             function reloadPageContent(deviceGroup) {
                 if (!deviceGroup) {
@@ -229,6 +228,7 @@
                                 }
                                 getFreshairData(groupFreshairList[0].deviceSeriaNumber);
                                 currentFreshDeviceSeriaNumber = groupFreshairList[0].deviceSeriaNumber;
+                                currentFreshairDeviceTabId = groupFreshairList[0].tabDeviceFreshairId;
                             }
                         }
                         if (!isExist("#btnadddevice")) {
@@ -325,74 +325,6 @@
                 // window.clearInterval(t1);//去掉定时器
             }
 
-            //            更新设备信息
-            function updateDeviceMsg(device, deviceTypes) {
-                var dialog = '<div id="updateDeviceDialog" class="box">' +
-                    '<form role="form" >' +
-                    '<div class="form-group">' +
-                    '<label for="name">设备类型</label>' +
-                    '<select id="deviceTypeCurrent"  class="form-control" >';
-
-                var index = 0;
-                for (var i in deviceTypes) {
-                    dialog += '<option value="' + deviceTypes[i].id + '">' + deviceTypes[i].name + '</option>';
-                    if (deviceTypes[i].id == device.deviceTypeId) {
-                        index = i;
-                    }
-                }
-                dialog += '</select>';
-
-                dialog += '<div class="form-group">' +
-                    '</div>' +
-                    '<label for="name">设备名称</label>' +
-                    '<input type="text" class="form-control" id="update_gatewayName" ' +
-                    'placeholder="请输入设备名称" value="' + device.deviceName + '" required>' +
-                    '<label for="name">设备型号</label>' +
-                    '<input type="text" class="form-control" id="update_gatewayNo" ' +
-                    'placeholder="请输入设备型号"  value="' + device.DeviceNo + '" required>' +
-                    '</div>' +
-                    '</form>' +
-                    '</div>';
-
-
-                layer.confirm(dialog, {
-                    title: "修改信息",
-                    btn: ["更新"], //按钮
-                    width: "100%"
-                }, function () {
-                    $.ajax({
-                        url: "${path}/client/device?service=updateDeviceById",
-                        type: "GET",
-                        data: {
-                            name: $("#update_gatewayName").val(),
-                            deviceId: device.id,
-                            deviceCategoryId: current_deviceGroup.tabDeviceGroupId,
-                            parentId: customer.tabCustomerId,
-                            gatewaySerialNumber: $("#deviceTypeCurrent").val(),
-                            seriaNumber: $("#update_gatewayNo").val(),
-                            deviceId: device.gatewayDeviceID
-
-                        },
-                        dataType: "json",
-                        success: function (result) {
-                            //console.log(result);
-                            if (result.result == "success") {
-                                layer.msg("更新成功")
-                                reloadPageContent(current_deviceGroup);
-                                refresh();
-                            } else {
-                                layer.alert(result.errorMsg);
-                            }
-                        },
-                        error: function () {
-                            layer.msg("程序繁忙，请稍后重试。！");
-                        }
-                    });
-                });
-
-                $("#deviceTypeCurrent")[index].selected(true);
-            }
-
             //更新网关信息，留用
             function updateGateway(deviceGroup) {
                 var dialog = '<div class="box">' +
@@ -422,7 +354,7 @@
 //                            width: "100%"
                 }, function () {
                     $.ajax({
-                        url: "${path}/client/device?service=updateGateway",
+                        url: "${path}/freshair/chartDetail?service=updateGateway",
                         type: "GET",
                         data: {
 //                            tabCustomerId: customer.tabCustomerId,
@@ -454,41 +386,33 @@
             });
 
             $('#device_shidu_item').click(function () {
-                window.location.href = "${path}/client/device?service=chartDetail&deviceId=" + deviceId + "&code=shidu";
+                window.location.href = "${path}/freshair/chartDetail?tabDeviceFreshairId=" + currentFreshairDeviceTabId + "&code=shidu";
             });
 
             $('#device_wendu_item').click(function () {
-                window.location.href = "${path}/client/device?service=chartDetail&deviceId=" + deviceId + "&code=wendu";
+                window.location.href = "${path}/freshair/chartDetail?tabDeviceFreshairId=" + currentFreshairDeviceTabId + "&code=wendu";
             });
 
             $('#device_pm_item').click(function () {
-                window.location.href = "${path}/client/device?service=chartDetail&deviceId=" + deviceId + "&code=pm";
+                window.location.href = "${path}/freshair/chartDetail?tabDeviceFreshairId=" + currentFreshairDeviceTabId + "&code=pm";
             });
             $('#device_voc_item').click(function () {
-                window.location.href = "${path}/client/device?service=chartDetail&deviceId=" + deviceId + "&code=voc";
+                window.location.href = "${path}/freshair/chartDetail?tabDeviceFreshairId=" + currentFreshairDeviceTabId + "&code=voc";
             });
             $('#device_co2_item').click(function () {
-                window.location.href = "${path}/client/device?service=chartDetail&deviceId=" + deviceId + "&code=co2";
+                window.location.href = "${path}/freshair/chartDetail?tabDeviceFreshairId=" + currentFreshairDeviceTabId + "&code=co2";
             });
 
             $("#shareWithSomeone").click(function () {
                 var dialog = '<div class="box">' +
                     '<form >' +
                     '<div class="form-group">' +
-//                '<label for="name">手机号码</label>' +
                     '<input type="text" class="form-control" id="invate_phoneNum" placeholder="请输入邀请用户手机号"  required>' +
-
-//                            '<label for="name">网关IP</label>'+
-//                            '<input type="text" class="form-control" id="add_gatewayIP" placeholder="请输入网关IP">'+
-
                     '</div>' +
                     '<div class="form-group">' +
                     '</div>' +
-//                            '<div id="addGatewaySubmit" class="btn-default" >提交</div>'+
                     '</form>' +
                     '</div>';
-
-
                 layer.confirm(dialog, {
                     title: "邀请",
                     btn: ["邀请"], //按钮
@@ -573,26 +497,16 @@
                     }
                 });
 
-
-
-
-
                 var dialog = '<div class="box">' +
                     '<form >' +
                     '<div class="form-group">' +
-//                '<label for="name">手机号码</label>' +
                     '<div class="freshDevice-item" id="invate1" value="请输入邀请用户手机号"  required>设备1</div>' +
                     '</div>' +
                     '<div class="form-group">' +
                     '<div class="freshDevice-item" id="invate2" value="请输入邀请用户手机号"  required>设备2</div>' +
-
-//                            '<label for="name">网关IP</label>'+
-//                            '<input type="text" class="form-control" id="add_gatewayIP" placeholder="请输入网关IP">'+
-
                     '</div>' +
                     '<div class="form-group">' +
                     '</div>' +
-//                            '<div id="addGatewaySubmit" class="btn-default" >提交</div>'+
                     '</form>' +
                     '</div>';
 
@@ -619,10 +533,6 @@
 
 </head>
 <body>
-<!--<div style="clear:both;">-->
-<!--<script src="/gg_bd_ad_720x90.js" type="text/javascript"></script>-->
-<!--<script src="/follow.js" type="text/javascript"></script>-->
-<!--</div>-->
 
 <nav>
     <div class="menuleft">
@@ -670,18 +580,6 @@
         <div id="ask" class="ask-content">
             <img src="${path}/page/img/icon/ask.png">
         </div>
-        <%--<div class="row">--%>
-        <%--<div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">--%>
-        <%--<div id class="common-detail">--%>
-        <%--<div class="circle-status">--%>
-        <%--&lt;%&ndash;<span id="gatewayIP">IP: 192.168.92.13:80</span>&ndash;%&gt;--%>
-        <%--<span id="groupStatus" class="menu-status">未开启</span>--%>
-        <%--</div>--%>
-        <%--<!--<canvas id="shadowcanvas">-->--%>
-        <%--<!--</canvas>-->--%>
-        <%--</div>--%>
-        <%--</div>--%>
-        <%--</div>--%>
         <div class="gateWay_detail">
             <div class="row">
                 <div class="col-xs-12 col-sm-10 col-sm-offset-1 col-md-8 col-md-offset-2 col-lg-8 col-lg-offset-2 ">

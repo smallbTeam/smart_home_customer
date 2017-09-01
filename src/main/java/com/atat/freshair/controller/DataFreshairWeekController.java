@@ -197,26 +197,4 @@ public class DataFreshairWeekController extends BaseController {
         this.renderJson(response,result);
     }
 
-    @ApiOperation("删除 空气监测设备每周数据表")
-    @RequestMapping(value = "/dataFreshairWeek/{dataFreshairWeekId}", method = RequestMethod.DELETE)
-    public void delDataFreshairWeekById(
-            @ApiParam(value = "采集时间 (必传参数)") @PathVariable Long dataFreshairWeekId,
-            HttpServletResponse response) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
-        dataFreshairWeekService.delDataFreshairWeekById(dataFreshairWeekId);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        this.renderJson(response,result);
-    }
-
-    @ApiOperation("查询 空气监测设备 一年内数据")
-    @RequestMapping(value = "/oneYearFreshairData/{tabDeviceFreshairId}", method = RequestMethod.GET)
-    public void delTabDeviceFreshairById(
-            @ApiParam(value = "设备ID (必传参数)") @PathVariable Long  tabDeviceFreshairId,
-            HttpServletResponse response
-    ) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
-        dataFreshairWeekService.getOneYearDeviceData(tabDeviceFreshairId);
-        result.setCode(ResultCode.SUCCESS.getCode());
-        this.renderJson(response,result);
-    }
 }

@@ -207,16 +207,4 @@ public class DataFreshairNowController  extends BaseController {
         result.setCode(ResultCode.SUCCESS.getCode());
         this.renderJson(response,result);
     }
-
-    @ApiOperation("查询 空气监测设备 三小时内数据")
-    @RequestMapping(value = "/threeHoursFreshairData/{tabDeviceFreshairId}", method = RequestMethod.GET)
-    public void delTabDeviceFreshairById(
-            @ApiParam(value = "设备ID (必传参数)") @PathVariable Long  tabDeviceFreshairId,
-            HttpServletResponse response
-    ) throws Exception {
-        JsonResult<Object> result = new JsonResult<Object>();
-        result.setObj(dataFreshairNowService.getThreeHourDeviceData(tabDeviceFreshairId));;
-        result.setCode(ResultCode.SUCCESS.getCode());
-        this.renderJson(response,result);
-    }
 }

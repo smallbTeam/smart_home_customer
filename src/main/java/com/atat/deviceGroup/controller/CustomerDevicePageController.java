@@ -6,18 +6,20 @@ package com.atat.deviceGroup.controller;
 
 import com.atat.common.base.controller.BaseController;
 import com.atat.customer.service.TabCustomerService;
+import com.atat.freshair.service.DataFreshairDayService;
+import com.atat.freshair.service.DataFreshairHourService;
+import com.atat.freshair.service.DataFreshairNowService;
+import com.atat.freshair.service.DataFreshairWeekService;
 import com.atat.message.service.WeixinService;
 import com.atat.util.StringUtil;
+import io.swagger.annotations.ApiParam;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.Map;
-import java.util.Properties;
+import java.util.*;
 
 /**
  * @author ligw
@@ -105,5 +107,4 @@ public class CustomerDevicePageController extends BaseController{
         mav.addObject("signaturet", map.get("signaturet"));
         return mav;
     }
-
 }
