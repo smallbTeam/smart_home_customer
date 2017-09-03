@@ -85,6 +85,13 @@
             </div>
         </div><!--col-xs-12 -->
     </div><!--row -->
+    <div class="row">
+        <div class="col-xs-12 col-sm-12">
+            <p class="title">最高值：<span id="max_data">--</span></p>
+            <p class="title">最低值：<span id="min_data">--</span></p>
+            <p class="title">平均值：<span id="avg_data">--</span></p>
+        </div>
+    </div>
 </section>
 
 <script type="text/javascript" src='${path}/page/js/third/echarts.min.js' charset="utf8"></script>
@@ -92,6 +99,10 @@
 
 <script>
     $(document).ready(function () {
+        function fomatFloat(src,pos){
+            return Math.round(src*Math.pow(10, pos))/Math.pow(10, pos);
+        }
+
         $('.dropDown').mouseleave(function () {
             $('.dropDown').slideUp("slow", function () {
                 $(this).fadeOut(2000);
@@ -192,6 +203,15 @@
                         }
                         unit = codeData.name+" "+codeData.unit;
                         data = codeData.data;
+                        if(deviceD.code == "voc"){
+                            $("#max_data").html(fomatFloat(codeData.max, 4) + " " + codeData.unit);
+                            $("#min_data").html(fomatFloat(codeData.min, 4) + " " + codeData.unit);
+                            $("#avg_data").html(fomatFloat(codeData.avg, 4) + " " + codeData.unit);
+                        } else {
+                            $("#max_data").html(fomatFloat(codeData.max, 2) + " " + codeData.unit);
+                            $("#min_data").html(fomatFloat(codeData.min, 2) + " " + codeData.unit);
+                            $("#avg_data").html(fomatFloat(codeData.avg, 2) + " " + codeData.unit);
+                        }
                         for (var i in codeData.recordTime) {
                             var  item = codeData.recordTime[i];
                             var newDateStr = format(item,deviceD.type);
@@ -203,6 +223,8 @@
                            // 显示折线图。
                            myChart.setOption(option, true);
                         }
+                        //显示最高最低和平均值
+
                     } else {
                         layer.alert(result.errorMsg);
                     }
