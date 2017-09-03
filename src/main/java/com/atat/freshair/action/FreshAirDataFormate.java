@@ -185,6 +185,12 @@ public class FreshAirDataFormate {
             codeData.put("data", wendu_val_list);
             data_avg = data_sum / (wendu_val_list.size() != 0 ? wendu_val_list.size() : 1);
             codeData.put("recordTime", dateList);
+        } else {
+            codeData.put("data", null);
+            data_avg = null;
+            data_min = null;
+            data_max = null;
+            codeData.put("recordTime", null);
         }
         codeData.put("min", data_min);
         codeData.put("max", data_max);

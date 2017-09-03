@@ -189,6 +189,19 @@ public class RelCustomerDeviceGroupController extends BaseController {
         this.renderJson(response, result);
     }
 
+    @ApiOperation("查询 所有 用户设备分组关系表")
+    @RequestMapping(value = "/allCustomerGroups/{tabCustomerId}", method = RequestMethod.GET)
+    public void getCustomerDeviceGroupByCustomerID(
+            @ApiParam(value = "用户Id (非必传参数)") @PathVariable Long tabCustomerId,
+            HttpServletResponse response) throws Exception {
+        JsonResult<Object> result = new JsonResult<Object>();
+        Map<String, Object> rs = new HashMap<String, Object>();
+        rs.put("tabCustomerId", tabCustomerId);
+        result.setObj(relCustomerDeviceGroupService.selectRelCustomerDeviceGroupList(rs));
+        result.setCode(ResultCode.SUCCESS.getCode());
+        this.renderJson(response, result);
+    }
+
     @ApiOperation("查询 当前IP下设备")
     @RequestMapping(value = "/findDeviceByIp", method = RequestMethod.GET)
     public void findDeviceByIp(@ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
@@ -197,7 +210,7 @@ public class RelCustomerDeviceGroupController extends BaseController {
         // 获取IP及其他信息
         Map<String, Object> ipInfoMap = IpUtil.getIpInfo(request);
         String ip = (String) ipInfoMap.get("ipNet");
-        //ip = "125.38.56.131";
+        //ip = "117.8.182.135";8
         logger.info("用户当前外网Ip为:" + ip);
         Map<String, Object> resultMap = relCustomerDeviceGroupService.findDeviceByIp(tabCustomerId,ip);
         if (null != resultMap) {
@@ -267,10 +280,10 @@ public class RelCustomerDeviceGroupController extends BaseController {
             Integer rescod = relCustomerDeviceGroupService.addGroupByInvite(tabCustomerId, invitederPhone, tabDeviceGroupId);
         if (((Integer)1).equals(rescod)){
             result.setCode(ResultCode.SUCCESS.getCode());
-        } if (((Integer)0).equals(rescod)){
+        } else if (((Integer)0).equals(rescod)){
             result.setCode(ResultCode.ERROR.getCode());
             result.setErrorMsg("用户未注册系统 已短信邀请注册");
-        } if (((Integer)(-1)).equals(rescod)){
+        } else if (((Integer)(-1)).equals(rescod)){
             result.setCode(ResultCode.ERROR.getCode());
             result.setErrorMsg("仅房屋所有人有权限分享设备");
         } else {

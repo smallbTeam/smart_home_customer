@@ -34,13 +34,14 @@
     var timestamp = '${timestamp}';
     var nonceStr = '${noncestr}';
     var signature = '${signaturet}';
-    var account = {"id":'${account.customerId}',
-        "mobelPhone":'${account.mobelPhone}',
-        "wxId":'${account.wxId}',
-        "nickName":'${account.nickName}',
-        "birthday":'${account.birthday}',
-        "sex":'${account.sex}',
-        "token":'${account.token}'
+    var account = {
+        "tabCustomerId": '${account.tabCustomerId}',
+        "mobelPhone": '${account.mobelPhone}',
+        "wxId": '${account.wxId}',
+        "nickName": '${account.nickName}',
+        "birthday": '${account.birthday}',
+        "sex": '${account.sex}',
+        "token": '${account.token}'
     }
 
     $(function () {

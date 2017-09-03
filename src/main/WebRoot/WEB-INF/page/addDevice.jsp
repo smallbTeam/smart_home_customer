@@ -7,14 +7,13 @@
     <%--引入基础设置--%>
     <%@include file="/page/common/jsp/baseInclude.jsp" %>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>扫描设备</title>
     <link rel="stylesheet" type="text/css" href="${path}/page/css/normalize.css" />
     <link rel="stylesheet" type="text/css" href="${path}/page/css/bootstrap.css" />
     <link rel="stylesheet" type="text/css" href="${path}/page/css/adddevice.css" />
 </head>
 
 <style>
-
     .row{margin:0;}
     .col-lg-1,.col-lg-10,.col-lg-11,.col-lg-12,.col-lg-2,.col-lg-3,.col-lg-4,.col-lg-5,.col-lg-6,.col-lg-7,.col-lg-8,.col-lg-9,.col-md-1,.col-md-10,.col-md-11,.col-md-12,.col-md-2,.col-md-3,.col-md-4,.col-md-5,.col-md-6,.col-md-7,.col-md-8,.col-md-9,.col-sm-1,.col-sm-10,.col-sm-11,.col-sm-12,.col-sm-2,.col-sm-3,.col-sm-4,.col-sm-5,.col-sm-6,.col-sm-7,.col-sm-8,.col-sm-9,.col-xs-1,.col-xs-10,.col-xs-11,.col-xs-12,.col-xs-2,.col-xs-3,.col-xs-4,.col-xs-5,.col-xs-6,.col-xs-7,.col-xs-8,.col-xs-9{padding:0;}
 
@@ -127,13 +126,13 @@
         });
 
         var customer = {
-            "tabCustomerId": '${customer.tabCustomerId}',
-            "mobelPhone": '${customer.mobelPhone}',
-            "wxId": '${customer.wxId}',
-            "nickName": '${customer.nickName}',
-            "birthday": '${customer.birthday}',
-            "sex": '${customer.sex}',
-            "token": '${customer.token}'
+            "tabCustomerId": '${account.tabCustomerId}',
+            "mobelPhone": '${account.mobelPhone}',
+            "wxId": '${account.wxId}',
+            "nickName": '${account.nickName}',
+            "birthday": '${account.birthday}',
+            "sex": '${account.sex}',
+            "token": '${account.token}'
         };
 
         var devList = new Array(); //全局数组，存储扫描到的设备信息
@@ -203,8 +202,6 @@
                     },
                     dataType: "json",
                     success: function (result) {
-                        //console.log(result);
-//                        layer.alert("result"+result.code);
                         if (result.code == 0){
 //                            layer.alert(result.obj.tabDeviceGroupId);
                             layer.alert("绑定设备成功!");
@@ -240,22 +237,17 @@
                 btn: ["提交"], //按钮
                 width: "100%"
             }, function () {
-//                console.log('a:'+$("#category_gatewayName").val()+'-'+$("#category_gatewayAddress").val());
-                layer.alert('hhh:'+$("#category_gatewayName").val());
                 $.ajax({
                     url: "${path}/deviceGroup/customerAddNewGroup",
                     type: "POST",
                     data: {
-                        tabCustomerId: customer.tabCustomerId,
-                        groupName: $("#category_gatewayName").val(),
-                        address: $("#category_gatewayAddress").val()
+                        "tabCustomerId": customer.tabCustomerId,
+                        "groupName": $("#category_gatewayName").val(),
+                        "address": $("#category_gatewayAddress").val()
                     },
                     dataType: "json",
                     success: function (result) {
-                        //console.log(result);
-
                         layer.alert('result'+result.code);
-
                         if (result.code == 0){
                             layer.alert(result.obj.tabDeviceGroupId);
                             var  tabDeviceGroupId=result.obj.tabDeviceGroupId;
@@ -263,28 +255,23 @@
                             for (var i in devList){
                                 deviceSeriaNumberList += devList[i].deviceSeriaNumber+',';
                             }
-
                             $.ajax({
                                 url: "${path}/deviceGroup/groupBoundDevice",
-                                type: "GET",
+                                type: "POST",
                                 data: {
-                                    tabCustomerId: customer.tabCustomerId,
-                                    tabDeviceGroupId: tabDeviceGroupId,
-                                    deviceSeriaNumberList: deviceSeriaNumberList
+                                    "tabCustomerId": customer.tabCustomerId,
+                                    "tabDeviceGroupId": tabDeviceGroupId,
+                                    "deviceSeriaNumberList": deviceSeriaNumberList
                                 },
                                 dataType: "json",
                                 success: function (result) {
-                                    //console.log(result);
-
                                     if (result.code == 0){
                                         layer.alert("绑定成功");
-
-
                                     }
 
                                 },
                                 error: function () {
-                                    layer.msg("程序繁忙，请稍后重试。！");
+                                    layer.msg("程序繁忙，请稍后重试！");
                                 }
                             });
 
@@ -294,7 +281,7 @@
 
                     },
                     error: function (error) {
-                        layer.msg("程序繁忙，请稍后重试。！"+error.toString());
+                        layer.msg("程序繁忙，请稍后重试");
                     }
                 });
             });
@@ -363,19 +350,14 @@
                                 devList.push(device);
                                 addListItem(device);
                             }
-
                         }else {
                             layer.alert('未搜索到相关设备!');
                             }
-
                     }
-
-
-                    console.log(JSON.stringify(result))
                 },
                 error: function(error) {
                     layer.close(index);
-                    console.log("程序繁忙，请稍后重试。！" + error.errorMsg);
+                    layer.alert("程序繁忙，请稍后重试！");
                 }
             });
 

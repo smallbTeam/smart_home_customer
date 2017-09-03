@@ -138,7 +138,7 @@ public class CustomerPageController extends BaseController{
         ModelAndView mav = new ModelAndView("main");
         String mobelPhone = request.getParameter("mobelPhone");
         if (StringUtil.isNotEmpty(mobelPhone)) {
-            mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+            mav.addObject("account",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
         }
         return mav;
     }

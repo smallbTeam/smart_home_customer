@@ -81,14 +81,15 @@
             return false;
         }
         var customer = {
-            "tabCustomerId": '${customer.tabCustomerId}',
-            "mobelPhone": '${customer.mobelPhone}',
-            "wxId": '${customer.wxId}',
-            "nickName": '${customer.nickName}',
-            "birthday": '${customer.birthday}',
-            "sex": '${customer.sex}',
-            "token": '${customer.token}'
+            "tabCustomerId": '${account.tabCustomerId}',
+            "mobelPhone": '${account.mobelPhone}',
+            "wxId": '${account.wxId}',
+            "nickName": '${account.nickName}',
+            "birthday": '${account.birthday}',
+            "sex": '${account.sex}',
+            "token": '${account.token}'
         };
+
         $(function () {
             // alert("登录手机号：[" + customer.mobelPhone + "]");
         });
@@ -114,12 +115,12 @@
             });
 
             //获取空气检测设备数据
-            var getFreshairData = function(deviceSeriaNumber){
-                if ("" == $.trim(deviceSeriaNumber)){
+            var getFreshairData = function () {
+                if ("" == $.trim(currentFreshDeviceSeriaNumber)) {
                     return;
                 }
                 $.ajax({
-                    url: "${path}/freshair/freshairNowData/"+deviceSeriaNumber,
+                    url: "${path}/freshair/freshairNowData/" + currentFreshDeviceSeriaNumber,
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -153,7 +154,7 @@
                             if (null == freshairData.co2) {
                                 co2val += "CO2: " + "-- ppm";
                             } else {
-                                co2val += "CO2: " + freshairData.wendu + "-- ppm";
+                                co2val += "CO2: " + freshairData.wendu + "ppm";
                             }
                             $('#device_co2_info').html(co2val);
 
@@ -169,7 +170,6 @@
             }
 
             window.onbeforeunload = function () {
-                // ws.close();
                 window.clearInterval(t1);//去掉定时器
             };
 
@@ -179,7 +179,7 @@
                 });
             });
 
-            // 网关切换，页面数据重新加载
+            // 分组，页面数据重新加载
             function reloadPageContent(deviceGroup) {
                 if (!deviceGroup) {
                     return;
@@ -202,7 +202,7 @@
                 var deviceFreshairArray = new Array();
                 //重新请求分组下所有设备
                 $.ajax({
-                    url: "${path}/deviceGroup/tabDeviceInGroup/"+deviceGroup.tabDeviceGroupId,
+                    url: "${path}/deviceGroup/tabDeviceInGroup/" + deviceGroup.tabDeviceGroupId,
                     type: "GET",
                     data: {},
                     dataType: "json",
@@ -216,19 +216,13 @@
                             if ((null != groupFreshairList) && (0 < groupFreshairList.length)) {
                                 var freshairList = new Array();
                                 for (var i in groupFreshairList) {
-//                                    deviceFreshairArray.push({tabDeviceFreshairId:groupFreshairList[i].tabDeviceFreshairId,
-//                                        deviceSeriaNumber:groupFreshairList[i].deviceSeriaNumber,
-//                                        deviceCategory:groupFreshairList[i].deviceCategory,
-//                                        ip:groupFreshairList[i].ip,
-//                                        name:groupFreshairList[i].name,
-//                                        state:groupFreshairList[i].state
-//                                    });
                                     deviceFreshairArray.push(groupFreshairList[i]);
                                     //加载第一个空气检测设备
                                 }
-                                getFreshairData(groupFreshairList[0].deviceSeriaNumber);
+
                                 currentFreshDeviceSeriaNumber = groupFreshairList[0].deviceSeriaNumber;
                                 currentFreshairDeviceTabId = groupFreshairList[0].tabDeviceFreshairId;
+                                getFreshairData();
                             }
                         }
                         if (!isExist("#btnadddevice")) {
@@ -247,7 +241,7 @@
                         }
                     },
                     error: function (msg) {
-                        layer.error(msg);
+                        layer.msg(msg);
                     }
                 });
 
@@ -257,11 +251,9 @@
             function refresh() {
                 //  依据客户表ID 加载客户分组
                 $.ajax({
-                    url: "${path}/deviceGroup/allRelCustomerDeviceGroups",
-                    type: "POST",
-                    data: {
-                        tabCustomerId: customer.tabCustomerId
-                    },
+                    url: "${path}/deviceGroup/allCustomerGroups/"+customer.tabCustomerId,
+                    type: "GET",
+                    data: {},
                     dataType: "json",
                     success: function (result) {
                         if (result.code == 0) {
@@ -302,8 +294,8 @@
                             $("#leftM").append('<li id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></li>');
                         }
                     },
-                    error: function () {
-                        layer.error();
+                    error: function (msg) {
+                        layer.msg(msg);
                         $("#leftM").append('<li id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></li>');
                     }
                 });
@@ -314,15 +306,14 @@
              * 请求页面数据
              */
             refresh();
+            //加载定时器
             getTimer();
-            //WebSocketTest();
 
             /**
              * 定时器方法
              */
             function getTimer() {
-                t1 = window.setInterval(getFreshairData(currentFreshDeviceSeriaNumber), 10000);//使用字符串执行方法
-                // window.clearInterval(t1);//去掉定时器
+                t1 = window.setInterval(getFreshairData, 10000);//使用字符串执行方法
             }
 
             //更新网关信息，留用
@@ -333,10 +324,6 @@
                     '<label for="name">网关名称</label>' +
                     '<input type="text" class="form-control" id="update_gatewayIP" ' +
                     'placeholder="请输入网关IP地址" value="' + deviceGroup.address + '" required>' +
-
-//                            '<label for="name">网关IP</label>'+
-//                            '<input type="text" class="form-control" id="add_gatewayIP" placeholder="请输入网关IP">'+
-
                     '<label for="name">网关地址</label>' +
                     '<input type="text" class="form-control" id="update_gatewayPort" ' +
                     'placeholder="请输入网关端口" value="' + deviceGroup.address + '"  required>' +
@@ -364,7 +351,6 @@
                         },
                         dataType: "json",
                         success: function (result) {
-                            //console.log(result);
                             if (result.result == "success") {
                                 layer.msg("更新成功");
                                 refresh();
@@ -380,6 +366,11 @@
                 });
             }
 
+            $("#addGateWayBtn").click(function () {
+//                addGateway();http://localhost:8080/
+                window.location.href = "${path}/deviceGroup/addDevice?mobelPhone=" + customer.mobelPhone;
+                <%--window.location.href = "${path}/client/device?service=addGetway&mobelPhone=" + customer.mobelPhone;--%>
+            });
 //              页面事件响应
             $("#personal").click(function () {
                 window.location.href = "${path}/customer/personal?mobelPhone=" + customer.mobelPhone;
@@ -428,7 +419,7 @@
                         },
                         dataType: "json",
                         success: function (result) {
-                            if (result.code == 0 ) {
+                            if (result.code == 0) {
                                 layer.msg("已成功发送邀请");
                             } else {
                                 layer.alert(result.errorMsg);
@@ -483,9 +474,7 @@
                     },
                     dataType: "json",
                     success: function (result) {
-                        //console.log(result);
                         if (result.code == 0) {
-
 
                         } else {
                             layer.msg("操作失败！");
@@ -514,11 +503,13 @@
                 layer.confirm(dialog, {
                     title: "选择空气检测设备查看指数",
                     btn: [], //按钮
-//                            width: "100%"
+//                  width: "100%"
                 });
 
                 $('#invate2').click(function () {
-                   layer.closeAll();
+                    //添加默认绑定设备
+
+                    layer.closeAll();
                 });
 
                 $('#invate1').click(function () {
@@ -527,6 +518,34 @@
 
             });
 
+            function addDefaultGroup() {
+                $.ajax({
+                    url: "${path}/deviceGroup/addGroupByInvite",
+                    type: "POST",
+                    data: {
+                        invitederPhone: customer.mobelPhone,
+                        tabDeviceGroupId: 1,
+                        tabCustomerId: 1
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layer.msg("关注成功");
+                            //刷新页面
+                            refresh();
+                        } else {
+                            layer.alert("关注失败");
+                        }
+                    },
+                    error: function () {
+                        layer.msg("程序繁忙，请稍后重试。！");
+                    }
+                });
+                layer.closeAll();
+            };
+            $("#acceptShairGroup").click(function () {
+                addDefaultGroup();
+            });
         });
 
     </script>
@@ -553,6 +572,7 @@
         <li id="addGateWayBtn"><a href="#">扫描设备</a></li>
         <li id="openAirKiss_btn"><a href="#">配置WIFI</a></li>
         <li id="shareWithSomeone"><a href="#">邀请</a></li>
+        <li id="acceptShairGroup"><a href="#">关注共享设备</a></li>
 
     </ul>
     <ul id="leftM" class=" leftM">

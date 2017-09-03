@@ -70,7 +70,7 @@ public class CustomerDevicePageController extends BaseController{
         ModelAndView mav = new ModelAndView("updateService");
         String mobelPhone = request.getParameter("mobelPhone");
         if (StringUtil.isNotEmpty(mobelPhone)) {
-            mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+            mav.addObject("account",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
         }
         return mav;
     }
@@ -80,7 +80,7 @@ public class CustomerDevicePageController extends BaseController{
         ModelAndView mav = new ModelAndView("addDevice");
         String mobelPhone = request.getParameter("mobelPhone");
         if (StringUtil.isNotEmpty(mobelPhone)) {
-            mav.addObject("customer",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
+            mav.addObject("account",tabCustomerService.getCustomerByMobelPhone(mobelPhone));
         }
         return mav;
     }

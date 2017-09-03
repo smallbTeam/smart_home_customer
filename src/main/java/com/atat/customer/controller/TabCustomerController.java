@@ -252,7 +252,10 @@ public class TabCustomerController  extends BaseController {
             tabCustomer.setToken(token);
         }
         tabCustomer.setCreatedDate(new Date());
+        //新增用户
         tabCustomerService.addTabCustomer(tabCustomer);
+        //给用户默认绑定分组
+
         result.setCode(ResultCode.SUCCESS.getCode());
         result.setObj(mobelPhone);
         this.renderJson(response,result);

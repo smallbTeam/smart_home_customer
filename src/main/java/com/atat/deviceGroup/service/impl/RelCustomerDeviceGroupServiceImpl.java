@@ -120,12 +120,13 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         result = JsonUtil.fromJson(resultstr, result.getClass());
         resultMap = result.getObj();
         // 筛选设备分组不为空的设备
-        List<Map<String, Object>> deviceList = (List<Map<String, Object>>) resultMap.get("deviceList");
-        if (CollectionUtil.isNotEmpty(deviceList)) {
-            for (Map<String, Object> device : deviceList) {
-                if (null != device.get("tabDeviceGroupId")
-                        && StringUtil.isNotEmpty(device.get("tabDeviceGroupId").toString())) {
-                    deviceList.remove(device);
+        List<Map<String, Object>> deviceListBeforeFil = (List<Map<String, Object>>) resultMap.get("deviceList");
+        List<Map<String, Object>> deviceList = new ArrayList<Map<String, Object>>();
+        if (CollectionUtil.isNotEmpty(deviceListBeforeFil)) {
+            for (Map<String, Object> device : deviceListBeforeFil) {
+                if (null != device && (null == device.get("tabDeviceGroupId")
+                        || StringUtil.isEmpty(device.get("tabDeviceGroupId").toString()))) {
+                    deviceList.add(device);
                 }
             }
         }
@@ -206,17 +207,19 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             String[] deviceSeriaNumbers = deviceSeriaNumberList.split(",");
             for (String deviceSeriaNumber : deviceSeriaNumbers) {
                 // 依据序列号查找设备
-                Map<String, Object> findDeviceParam = new HashMap<String, Object>();
-                findDeviceParam.put("deviceSeriaNumber", deviceSeriaNumber);
-                // 去空气检测设备更改设别分组
-                List<Map<String, Object>> freshairList = tabDeviceFreshairService.selectTabDeviceFreshairList(findDeviceParam);
-                if (CollectionUtil.isNotEmpty(freshairList)) {
-                    // 依据Id更新设备
-                    Map<String, Object> freshair = freshairList.get(0);
-                    TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
-                    tabDeviceFreshair.setTabDeviceFreshairId(Long.parseLong(freshair.get("tabDeviceFreshairId").toString()));
-                    tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
-                    tabDeviceFreshairService.updateTabDeviceFreshairById(tabDeviceFreshair);
+                if(!"".equals(deviceSeriaNumber)) {
+                    Map<String, Object> findDeviceParam = new HashMap<String, Object>();
+                    findDeviceParam.put("deviceSeriaNumber", deviceSeriaNumber);
+                    // 去空气检测设备更改设别分组
+                    List<Map<String, Object>> freshairList = tabDeviceFreshairService.selectTabDeviceFreshairList(findDeviceParam);
+                    if (CollectionUtil.isNotEmpty(freshairList)) {
+                        // 依据Id更新设备
+                        Map<String, Object> freshair = freshairList.get(0);
+                        TabDeviceFreshair tabDeviceFreshair = new TabDeviceFreshair();
+                        tabDeviceFreshair.setTabDeviceFreshairId(Long.parseLong(freshair.get("tabDeviceFreshairId").toString()));
+                        tabDeviceFreshair.setTabDeviceGroupId(tabDeviceGroupId);
+                        tabDeviceFreshairService.updateTabDeviceFreshairById(tabDeviceFreshair);
+                    }
                 }
                 // 去其他类型设备去更改设备分组
             }

@@ -196,13 +196,13 @@
         var deviceGroupArray = new  Array();
 
         var customer = {
-            "tabCustomerId": '${customer.tabCustomerId}',
-            "mobelPhone": '${customer.mobelPhone}',
-            "wxId": '${customer.wxId}',
-            "nickName": '${customer.nickName}',
-            "birthday": '${customer.birthday}',
-            "sex": '${customer.sex}',
-            "token": '${customer.token}'
+            "tabCustomerId": '${account.tabCustomerId}',
+            "mobelPhone": '${account.mobelPhone}',
+            "wxId": '${account.wxId}',
+            "nickName": '${account.nickName}',
+            "birthday": '${account.birthday}',
+            "sex": '${account.sex}',
+            "token": '${account.token}'
         };
 
         customer.tabCustomerId = 1;
@@ -280,8 +280,8 @@
                         $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                     }
                 },
-                error: function () {
-                    layer.error();
+                error: function (msg) {
+                    layer.error(msg);
                     $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                 }
             });

@@ -133,9 +133,9 @@ public class WeixinServiceImpl implements WeixinService{
         // 时间戳
         String timestamp = String.valueOf(new Date().getTime());
         //获取jsapiticket
-        String jsapiticketTicket = (String) tabPropertyMapService.getTabPropertyMapById("jsapiticketTicket").get("propval");
+        String jsapiTicket = (String) tabPropertyMapService.getTabPropertyMapById("jsapiTicket").get("propval");
         /////拼接sha1
-        String str1 = "jsapi_ticket="+jsapiticketTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+mainurl;
+        String str1 = "jsapi_ticket="+jsapiTicket+"&noncestr="+noncestr+"&timestamp="+timestamp+"&url="+mainurl;
         try {
             signature = sha1(str1);
         } catch (NoSuchAlgorithmException e) {

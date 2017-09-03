@@ -13,9 +13,9 @@
 <head>
     <%--引入基础设置--%>
     <%@include file="/page/common/jsp/baseInclude.jsp" %>
-    <title>登录</title>
+    <title>空气检测</title>
     <script type="text/javascript">
-        var wxId = ${wxId};
+        var wxId = "${wxId}";
 
         $(function () {
 
@@ -134,17 +134,14 @@
             var date = time.getDate();
             var hours = time.getHours();
             var minutes = time.getMinutes();
-            if (type == 0){             //年
+            if (type == "year"){             //年
                 //return year+'/'+add0(month)+'/'+add0(date);
                 return add0(month)+'/'+add0(date);
-            }else if (type == 1) { //月
+            }else if (type == "mounth") { //月
                 //return year+'/'+add0(month)+'/'+add0(date)+' '+add0(hours);
-                return add0(hours);
+                return add0(date)+'日'+add0(hours)+'时';
             }                  //2 小时
             return add0(hours)+':'+add0(minutes);
-
-            //return "";
-
         }
 
         function setOption() {
@@ -186,44 +183,26 @@
                 },
                 dataType: "json",
                 success: function (result) {
-                    //console.log(result);
                     if (result.code == 0) {
-                        var operationResult = result.obj;
-                        var common = {
-                            "name": operationResult.name,
-                            "unit": operationResult.unit,
-                            "data": operationResult.data,
-                            "recordTime": operationResult.recordTime,
-                            "min": operationResult.deviceCategoryId,
-                            "max": operationResult.dataType,
-                            "avg": operationResult.name,
-                        } ;
-
-                        unit = operationResult.name+" "+operationResult.unit;
-                        data.push(operationResult.data);
-                        for (var i in operationResult.recordTime) {
-                            var  item = operationResult.recordTime[i];
-                            var newDateStr = format(item,2);
-                            date.push(newDateStr);
-                            if (deviceD.type == 0) {
-                                now = now + oneDay;
-                            }else if (deviceD.type == 1) {
-                                now = now + oneHour;
-                            }else{
-                                now = now + oneMinute;
-                            }
-                        }
-
-                        if (operationResult.data.length == 0) {
+                        var codeData = result.obj;
+                        if ((codeData.data == null) || (0 == codeData.data.length)) {
                             date.push("当前无数据");
                             data.push(0);
+                            return;
                         }
-                            setOption();
-                            if (option && typeof option === "object") {
-                                myChart.clear();
-                                // 显示折线图。
-                                myChart.setOption(option, true);
-                            }
+                        unit = codeData.name+" "+codeData.unit;
+                        data = codeData.data;
+                        for (var i in codeData.recordTime) {
+                            var  item = codeData.recordTime[i];
+                            var newDateStr = format(item,deviceD.type);
+                            date.push(newDateStr);
+                        }
+                        setOption();
+                        if (option && typeof option === "object") {
+                           myChart.clear();
+                           // 显示折线图。
+                           myChart.setOption(option, true);
+                        }
                     } else {
                         layer.alert(result.errorMsg);
                     }
@@ -246,14 +225,12 @@
             deviceD.type = "day";
             date = [];
             data = [];
-//            now -= oneHour*3;
             accountMsgs(deviceD);
         });
         $("#monthAccount").click(function () {
             deviceD.type = "mounth";
             date = [];
             data = [];
-//            now -= oneMonth;
             $("#chartTitle").html("本月");
             accountMsgs(deviceD);
         });
