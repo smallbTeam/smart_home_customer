@@ -207,7 +207,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             String[] deviceSeriaNumbers = deviceSeriaNumberList.split(",");
             for (String deviceSeriaNumber : deviceSeriaNumbers) {
                 // 依据序列号查找设备
-                if(!"".equals(deviceSeriaNumber)) {
+                if (!"".equals(deviceSeriaNumber)) {
                     Map<String, Object> findDeviceParam = new HashMap<String, Object>();
                     findDeviceParam.put("deviceSeriaNumber", deviceSeriaNumber);
                     // 去空气检测设备更改设别分组
@@ -310,7 +310,7 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
         getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
         List<Map<String, Object>> relCustomerDeviceGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
         if (CollectionUtil.isNotEmpty(relCustomerDeviceGroupList)) {
-            // 获取用户与设备所在分组关系 是否为拥有着
+            // 获取用户与设备所在分组关系
             Map<String, Object> relCustomerDeviceGroup = relCustomerDeviceGroupList.get(0);
             Integer isSendMsg = (Integer) relCustomerDeviceGroup.get("isSendMsg");
             Integer isSendMsg_new = ((Integer) 1).equals(isSendMsg) ? 0 : 1;
@@ -319,8 +319,54 @@ public class RelCustomerDeviceGroupServiceImpl implements RelCustomerDeviceGroup
             relCustomerDeviceGroup_add.setIsSendMsg(isSendMsg_new);
             relCustomerDeviceGroupDao.updateRelCustomerDeviceGroupById(relCustomerDeviceGroup_add);
             return isSendMsg_new;
-        } else {
+        }
+        else {
             return null;
+        }
+    }
+
+    @Override
+    public Integer customerRemoveGroup(Long tabCustomerId, Long tabDeviceGroupId) {
+        // 查找对应关系
+        Map<String, Object> getRelCustomerGroupParam = new HashMap<String, Object>();
+        getRelCustomerGroupParam.put("tabCustomerId", tabCustomerId);
+        getRelCustomerGroupParam.put("tabDeviceGroupId", tabDeviceGroupId);
+        List<Map<String, Object>> relCustomerDeviceGroupList = relCustomerDeviceGroupDao.selectRelCustomerDeviceGroupList(getRelCustomerGroupParam);
+        if (CollectionUtil.isNotEmpty(relCustomerDeviceGroupList)) {
+            // 获取用户与设备所在分组关系 是否为拥有着
+            Map<String, Object> relCustomerDeviceGroup = relCustomerDeviceGroupList.get(0);
+            // 判定是否是拥有着
+            Integer isOnwer = (Integer) relCustomerDeviceGroup.get("isOnwer");
+            Long relCustomerDeviceGroupId = Long.parseLong(relCustomerDeviceGroup.get("relCustomerDeviceGroupId").toString());
+            // 移除关系
+            RelCustomerDeviceGroup relCustomerDeviceGroupBean = new RelCustomerDeviceGroup();
+            relCustomerDeviceGroupBean.setIsDeleted(1);
+            relCustomerDeviceGroupBean.setModifiedDate(new Date());
+            relCustomerDeviceGroupBean.setRelCustomerDeviceGroupId(relCustomerDeviceGroupId);
+            relCustomerDeviceGroupDao.updateRelCustomerDeviceGroupById(relCustomerDeviceGroupBean);
+            // 是拥有着
+            if (((Integer) 1).equals(isOnwer)) {
+                // 删除组
+                tabDeviceGroupService.delTabDeviceGroupById(tabDeviceGroupId);
+                // 删除组下设备
+                //查找空气检测分组下设备并删除
+                Map<String, Object> findFreshairParam = new HashMap<String, Object>();
+                findFreshairParam.put("tabDeviceGroupId", tabDeviceGroupId);
+                List<Map<String,Object>> tabDeviceFreshairList = tabDeviceFreshairService.selectTabDeviceFreshairList(findFreshairParam);
+                //依次删除设备
+                if (CollectionUtil.isNotEmpty(tabDeviceFreshairList)){
+                    for (Map<String, Object> tabDeviceFreshair: tabDeviceFreshairList) {
+                        if (null != tabDeviceFreshair && null != tabDeviceFreshair.get("tabDeviceFreshairId")){
+                            Long tabDeviceFreshairId = Long.parseLong(tabDeviceFreshair.get("tabDeviceFreshairId").toString());
+                            tabDeviceFreshairService.delTabDeviceFreshairById(tabDeviceFreshairId);
+                        }
+                    }
+                }
+            }
+            return 1;
+        }
+        else {
+            return 1;
         }
     }
 }

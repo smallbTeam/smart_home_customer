@@ -102,4 +102,9 @@ public interface RelCustomerDeviceGroupService {
      * @return
      */
     public Integer switchGroupIsSendMag(Long tabCustomerId,Long tabDeviceGroupId);
+
+    /**
+     * 用户移除分组
+     */
+    public Integer customerRemoveGroup(Long tabCustomerId, Long tabDeviceGroupId);
 }

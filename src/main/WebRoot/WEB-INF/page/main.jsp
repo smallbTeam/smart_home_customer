@@ -154,7 +154,7 @@
                             if (null == freshairData.co2) {
                                 co2val += "CO2: " + "-- ppm";
                             } else {
-                                co2val += "CO2: " + freshairData.wendu + "ppm";
+                                co2val += "CO2: " + freshairData.co2 + "ppm";
                             }
                             $('#device_co2_info').html(co2val);
 

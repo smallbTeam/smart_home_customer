@@ -315,4 +315,20 @@ public class RelCustomerDeviceGroupController extends BaseController {
         }
         this.renderJson(response, result);
     }
+
+    @ApiOperation("用户删除分组")
+    @RequestMapping(value = "/customerRemoveGroup", method = RequestMethod.POST)
+    public void customerRemoveGroup(
+            @ApiParam(value = "用户Id (必传参数)") @RequestParam Long tabCustomerId,
+            @ApiParam(value = "设备分组Id (必传参数)") @RequestParam Long tabDeviceGroupId,
+            HttpServletResponse response)throws Exception {
+        JsonResult<Map<String, Object>> result = new JsonResult<Map<String, Object>>();
+        Integer rescod = relCustomerDeviceGroupService.customerRemoveGroup(tabCustomerId, tabDeviceGroupId);
+        if (((Integer)1).equals(rescod)){
+            result.setCode(ResultCode.SUCCESS.getCode());
+        } else {
+            result.setCode(ResultCode.SYSTEM_ERROR.getCode());
+        }
+        this.renderJson(response, result);
+    }
 }
