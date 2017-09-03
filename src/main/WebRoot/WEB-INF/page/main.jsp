@@ -572,7 +572,7 @@
         <li id="addGateWayBtn"><a href="#">扫描设备</a></li>
         <li id="openAirKiss_btn"><a href="#">配置WIFI</a></li>
         <li id="shareWithSomeone"><a href="#">邀请</a></li>
-        <li id="acceptShairGroup"><a href="#">关注共享设备</a></li>
+        <li id="acceptShairGroup"><a href="#">添加公共设备</a></li>
 
     </ul>
     <ul id="leftM" class=" leftM">
