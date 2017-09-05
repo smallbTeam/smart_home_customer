@@ -335,7 +335,7 @@
                 type: "POST",
                 data: {
                     "mobelPhone": $("#phoneNumber").val(),
-                    "veridateMsg": $("#validateCode").val(),
+                    "veridateMsg": $("#validateCode").val()
                 },
                 dataType: "json",
                 success: function (result) {
@@ -398,7 +398,7 @@
                                     "wxId": wxId,
                                     "nickName":  $("#nickName").val(),
                                     "birthday": "2016-11-10 12",
-                                    "sex": sex,
+                                    "sex": sex
                                 },
                                 dataType:"json",
                                 success:function (result) {

@@ -258,6 +258,7 @@
                     success: function (result) {
                         if (result.code == 0) {
                             var groupList = result.obj;
+                            deviceGroupArray = new Array();
                             for (var i in groupList) {
                                 var item = groupList[i];
                                 var groupItem = {
@@ -466,15 +467,71 @@
 
             $('#ask').click(function () {
                 $.ajax({
-                    url: "${path}/freshair/allTabDeviceFreshairs",
-                    type: "POST",
-                    data: {
-                        pageSize: 3,
-                        tabCustomerId: customer.tabCustomerId
-                    },
+                    url: "${path}/freshair/tabDeviceFreshairsInGroup/"+current_deviceGroup.tabDeviceGroupId,
+                    type: "GET",
+                    data: { },
                     dataType: "json",
                     success: function (result) {
                         if (result.code == 0) {
+                            layer.msg("item:"+result.code);
+
+                            var obj = result.obj;
+                            var freshDeviceArr = new Array();
+                            for (var i in obj) {
+                                var item = obj[i];
+                                var dtItem = {
+                                    "deviceCategory": item.deviceCategory,
+                                    "createdDate": item.createdDate,
+                                    "isDeleted": item.isDeleted,
+                                    "ip": item.ip,
+                                    "modifiedDate": item.modifiedDate,
+                                    "deviceSeriaNumber": item.deviceSeriaNumber,
+                                    "tabDeviceGroupId": item.tabDeviceGroupId,
+                                    "tabDeviceFreshairId": item.tabDeviceFreshairId
+                                };
+                                freshDeviceArr.push(dtItem);
+
+
+                            }
+
+
+                            var dialog = '<div class="box">' +
+                                '<form >' ;
+                            for (var i in freshDeviceArr) {
+                                dialog += '<div class="form-group"><div class="freshDevice-item" id="invate1" value="请输入邀请用户手机号"  required>'+freshDeviceArr[i].deviceSeriaNumber+'</div></div>' ;
+                            }
+                            if (freshDeviceArr.length == 0) {
+                                for (var i in freshDeviceArr) {
+                                    dialog += '<div class="form-group">当前无更多设备信息</div>' ;
+                                }
+                            }
+
+                            dialog += '' +
+                                '<div class="form-group">' +
+                                '</div>' +
+                                '<div class="form-group">' +
+                                '</div>' +
+                                '</form>' +
+                                '</div>';
+
+
+                            layer.confirm(dialog, {
+                                title: "选择空气检测设备查看指数",
+                                btn: [], //按钮
+//                  width: "100%"
+                            });
+
+                            $('#invate2').click(function () {
+                                //添加默认绑定设备
+
+                                layer.closeAll();
+                            });
+
+                            $('#invate1').click(function () {
+                                layer.closeAll();
+                            });
+
+
 
                         } else {
                             layer.msg("操作失败！");
@@ -486,35 +543,6 @@
                     }
                 });
 
-                var dialog = '<div class="box">' +
-                    '<form >' +
-                    '<div class="form-group">' +
-                    '<div class="freshDevice-item" id="invate1" value="请输入邀请用户手机号"  required>设备1</div>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                    '<div class="freshDevice-item" id="invate2" value="请输入邀请用户手机号"  required>设备2</div>' +
-                    '</div>' +
-                    '<div class="form-group">' +
-                    '</div>' +
-                    '</form>' +
-                    '</div>';
-
-
-                layer.confirm(dialog, {
-                    title: "选择空气检测设备查看指数",
-                    btn: [], //按钮
-//                  width: "100%"
-                });
-
-                $('#invate2').click(function () {
-                    //添加默认绑定设备
-
-                    layer.closeAll();
-                });
-
-                $('#invate1').click(function () {
-                    layer.closeAll();
-                });
 
             });
 
