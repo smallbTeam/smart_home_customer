@@ -228,7 +228,7 @@ public class TabDeviceFreshairController extends BaseController {
     }
 
     @ApiOperation("查询分组下所有空气检测设备")
-    @RequestMapping(value = "/tabDeviceFreshairsInGroup/{tabDeviceGroupId}", method = RequestMethod.POST)
+    @RequestMapping(value = "/tabDeviceFreshairsInGroup/{tabDeviceGroupId}", method = RequestMethod.GET)
     public void findTabDeviceFreshairsByTabDeviceGroupId(
             @ApiParam(value = "设备分组Id (必传参数)") @PathVariable Long tabDeviceGroupId, HttpServletResponse response)
             throws Exception {
