@@ -498,7 +498,7 @@
                             var dialog = '<div class="box">' +
                                 '<form >' ;
                             for (var i in freshDeviceArr) {
-                                dialog += '<div class="form-group"><div class="freshDevice-item" id="invate1" value="请输入邀请用户手机号"  required>'+freshDeviceArr[i].deviceSeriaNumber+'</div></div>' ;
+                                dialog += '<div class="form-group"><div class="freshDevice-item" id="freshDevice_'+freshDeviceArr[i].deviceSeriaNumber+'"  required>'+freshDeviceArr[i].deviceSeriaNumber+'</div></div>' ;
                             }
                             if (freshDeviceArr.length == 0) {
                                 for (var i in freshDeviceArr) {
@@ -520,6 +520,20 @@
                                 btn: [], //按钮
 //                  width: "100%"
                             });
+
+
+                            for (var i in freshDeviceArr) {
+
+                                $('#freshDevice_' + freshDeviceArr[i].deviceSeriaNumber).click(function () {
+
+                                    var frshDeviceId = $(this).attr("id").split("_")[1];
+
+                                    currentFreshDeviceSeriaNumber = frshDeviceId;
+                                    getFreshairData();
+
+                                });
+
+                            }
 
                             $('#invate2').click(function () {
                                 //添加默认绑定设备
