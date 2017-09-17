@@ -468,3 +468,12 @@ h3.title span:after {
 }
 
 
+#gateWayId_nomore{
+    margin: auto;
+    text-align: center;
+}
+#gateWayId_nomore a{
+    width: 100%;
+    height: auto;
+    text-align: center;
+}
