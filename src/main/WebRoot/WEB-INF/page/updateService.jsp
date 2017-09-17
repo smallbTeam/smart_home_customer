@@ -292,15 +292,12 @@
             });
                 $("#delete_"+device.id).click(function () {
                     var deviceID = $(this).attr("id").split("_")[1];
-
-
                     $.ajax({
-                        url: "${path}/freshair/tabDeviceFreshair/"+deviceID,
-                        type: "DELETE",
-                        data: { },
+                        url: "${path}/freshair/CustomerUpdateTabDeviceFreshair",
+                        type: "POST",
+                        data: {tabDeviceFreshairId:deviceID,tabCustomerId: customer.tabCustomerId,isDeleted:1},
                         dataType: "json",
                         success: function (result) {
-
                             if (result.code == 0) {
                                 layer.msg("删除成功");
                             }else{
