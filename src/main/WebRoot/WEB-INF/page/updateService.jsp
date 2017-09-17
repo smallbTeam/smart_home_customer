@@ -278,20 +278,18 @@
                 '  <div class="delete" id="delete_'+device.id+'">'+
                 '  <img src="${path}/page/img/addservice/delete.png"/>'+
                 '  </div>'+
-
-
                 '  </div>'+
             '</div>'+
             '</div>';
 
             $('#list-content').append(html);
 
-            $("edit_"+device.id).click(function () {
+            $("#edit_"+device.id).click(function () {
                 var deviceID = $(this).attr("id").split("_")[1];
                 updateDevice(deviceID);
 
             });
-                $("delete_"+device.id).click(function () {
+                $("#delete_"+device.id).click(function () {
                     var deviceID = $(this).attr("id").split("_")[1];
 
 

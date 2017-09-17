@@ -372,6 +372,16 @@
         });
 
         $("#regbtn").click(function () {
+            if (!isNotNull("#validateCode")){
+                layer.msg("请输入验证码");
+                return;
+            }
+
+            if (!phoneValidate){
+                layer.msg("验证码验证失败，请重试");
+                return;
+            }
+
             //验证手机号是否已存在
             $.ajax({
                 url: "${path}/customer/accountIsExit/" + $("#phoneNumber").val(),
@@ -380,8 +390,13 @@
                 dataType: "json",
                 success: function (result) {
                     if (result.code == 0) {
+                        layer.msg("resultaaa:"+result.code);
+
                         var obj = result.obj;
-                        if (!obj.isExit) {
+                        layer.alert("obj:"+JSON.stringify(obj));
+                        if (obj.isExit != true) {
+
+
                             var sex = $("#gender").val();
                             var str = $("#birth").val(); // 日期字符串
                             str = str.replace(/-/g, '/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
@@ -402,6 +417,8 @@
                                 },
                                 dataType:"json",
                                 success:function (result) {
+                                    layer.msg("result:"+result.code);
+                                    return;
                                     console.log(JSON.stringify(result));
                                     if (result.code == 0) {
                                         //请求成功
@@ -418,13 +435,16 @@
                             });
                         } else {
                             layer.msg("用户已存在");
+                            return;
                         }
                     } else {
                         layer.msg("系统繁忙，请稍后重试");
+                        return;
                     }
                 },
                 error: function () {
                     layer.msg("验证失败");
+                    return;
                 }
             });
         });
