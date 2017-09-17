@@ -286,6 +286,7 @@
 
             $("#edit_"+device.id).click(function () {
                 var deviceID = $(this).attr("id").split("_")[1];
+                $('#user-group').empty();
                 updateDevice(deviceID);
 
             });

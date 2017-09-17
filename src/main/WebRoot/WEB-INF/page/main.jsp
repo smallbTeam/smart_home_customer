@@ -588,6 +588,15 @@
             $("#acceptShairGroup").click(function () {
                 addDefaultGroup();
             });
+            $("#showAllGroup").click(function () {
+
+                window.location.href = "${path}/deviceGroup/updateService?mobelPhone=" + account.tabCustomerId;
+
+
+            });
+
+
+
         });
 
     </script>
@@ -615,6 +624,7 @@
         <li id="openAirKiss_btn"><a href="#">配置WIFI</a></li>
         <li id="shareWithSomeone"><a href="#">邀请</a></li>
         <li id="acceptShairGroup"><a href="#">添加公共设备</a></li>
+        <li id="showAllGroup"><a href="#">查看设备信息</a></li>
 
     </ul>
     <ul id="leftM" class=" leftM">
