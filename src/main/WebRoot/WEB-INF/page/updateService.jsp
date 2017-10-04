@@ -248,6 +248,7 @@
                         if (result.code == 0) {
                             layer.msg("更新成功");
                             deviceGroupArray = new  Array();
+                            $('#user-group').empty();
                             refreshData();
                         } else {
                             layer.msg("更新失败");
@@ -286,7 +287,7 @@
 
             $("#edit_"+device.id).click(function () {
                 var deviceID = $(this).attr("id").split("_")[1];
-                $('#user-group').empty();
+
                 updateDevice(deviceID);
 
             });

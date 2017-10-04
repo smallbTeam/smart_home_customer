@@ -595,6 +595,30 @@
 
             });
 
+            $("#delCurrentUserGroup").click(function () {
+                $.ajax({
+                    url: "${path}/deviceGroup/customerRemoveGroup",
+                    type: "POST",
+                    data: {
+                        tabCustomerId: customer.tabCustomerId,
+                        tabDeviceGroupId: current_deviceGroup
+                    },
+                    dataType: "json",
+                    success: function (result) {
+                        if (result.code == 0) {
+                            layer.msg("删除成功");
+                            //刷新页面
+                            refresh();
+                        } else {
+                            layer.alert("删除失败");
+                        }
+                    },
+                    error: function () {
+                        layer.msg("程序繁忙，请稍后重试。！");
+                    }
+                });
+            });
+
 
 
         });
@@ -625,6 +649,7 @@
         <li id="shareWithSomeone"><a href="#">邀请</a></li>
         <li id="acceptShairGroup"><a href="#">添加公共设备</a></li>
         <li id="showAllGroup"><a href="#">查看设备信息</a></li>
+        <li id="delCurrentUserGroup"><a href="#">删除当前分组</a></li>
 
     </ul>
     <ul id="leftM" class=" leftM">
