@@ -589,10 +589,7 @@
                 addDefaultGroup();
             });
             $("#showAllGroup").click(function () {
-
-                window.location.href = "${path}/deviceGroup/updateService?mobelPhone=" + account.tabCustomerId;
-
-
+                window.location.href = "${path}/deviceGroup/updateService?mobelPhone=" + customer.mobelPhone;
             });
 
             $("#delCurrentUserGroup").click(function () {
@@ -601,7 +598,7 @@
                     type: "POST",
                     data: {
                         tabCustomerId: customer.tabCustomerId,
-                        tabDeviceGroupId: current_deviceGroup
+                        tabDeviceGroupId: current_deviceGroup.tabDeviceGroupId
                     },
                     dataType: "json",
                     success: function (result) {

@@ -247,8 +247,7 @@
                     success: function (result) {
                         if (result.code == 0) {
                             layer.msg("更新成功");
-                            deviceGroupArray = new  Array();
-                            $('#user-group').empty();
+
                             refreshData();
                         } else {
                             layer.msg("更新失败");
@@ -381,7 +380,6 @@
 
         function refreshData() {
 
-            layer.msg('refresh');
 
             $.ajax({
                 url: "${path}/deviceGroup/allRelCustomerDeviceGroups",
@@ -391,10 +389,13 @@
                 },
                 dataType: "json",
                 success: function (result) {
-                    layer.alert('result:'+result.code);
+                    deviceGroupArray = new  Array();
+                    $("#user-group").empty();
 
                     if (result.code == 0) {
+
                         var groupList = result.obj;
+
                         for (var i in groupList) {
                             var item = groupList[i];
                             var groupItem = {
@@ -402,11 +403,18 @@
                                 "groupName": item.groupName,
                                 "isSendMsg": item.isSendMsg
                             };
-                            if ($.inArray(groupItem, deviceGroupArray) == -1) {
+
+                            layer.alert(groupItem.tabDeviceGroupId);
+                            if ($.inArray(groupItem, deviceGroupArray) == -1 && groupItem != null) {
+//                                layer.msg("itemaaa:"+groupItem.tabDeviceGroupId);
                                 deviceGroupArray.push(groupItem);
                                 userGroupContenReload(groupItem);
 
                             }
+                        }
+
+                        if (deviceGroupArray.length == 0){
+                            $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                         }
 
                     } else {
@@ -421,15 +429,13 @@
                 }
             });
 
-
-
-
         }
 
+    });
 //        var success = swal("Good job!", "You clicked the button!", "success");
 
 
-        document.querySelector('.delete').onclick = function(){
+//        document.querySelector('.delete').onclick = function(){
 //            swal({
 //                    title: "确定操作吗？",
 //                    text: "你确定要删除此设备吗？",
@@ -442,20 +448,20 @@
 //                function(){
 //                layer.msg("删除成功");
 //            });
-
-            layer.confirm('确定要删除吗？',function () {
-                layer.msg("删除成功");
-            });
-
-
-        };
-
-        document.querySelector('.edit').onclick = function(){
+//
+//            layer.confirm('确定要删除吗？',function () {
+//                layer.msg("删除成功");
+//            });
 
 
-            var dialog = '<div id="updateDeviceDialog" class="box">' +
-                '<form role="form" >' +
-                '<div class="form-group">' ;
+//        };
+
+//        document.querySelector('.edit').onclick = function(){
+//
+//
+//            var dialog = '<div id="updateDeviceDialog" class="box">' +
+//                '<form role="form" >' +
+//                '<div class="form-group">' ;
 //                '<label for="name">设备类型</label>'
 //                '<select id="deviceTypeCurrent"  class="form-control" >';
 
@@ -468,24 +474,25 @@
 //            }
 //            dialog += '</select>';
 
-            dialog += '<div class="form-group">' +
-                '</div>' +
-                '<label for="name">设备名称</label>' +
-                '<input type="text" class="form-control" id="update_gatewayName" placeholder="请输入设备名称" value="" required>' +
-                '<label for="name">设备型号</label>' +
-                '<input type="text" class="form-control" id="update_gatewayNo" placeholder="请输入设备型号"  value="" required>' +
-                '</div>' +
-                '</form>' +
-                '</div>';
-
-            layer.confirm(dialog, {
-                title: "修改信息",
-                btn: ["更新"], //按钮
-                width: "100%"
-            }, function () {
-                layer.msg('更新成功');
+//            dialog += '<div class="form-group">' +
+//                '</div>' +
+//                '<label for="name">设备名称</label>' +
+//                '<input type="text" class="form-control" id="update_gatewayName" placeholder="请输入设备名称" value="" required>' +
+//                '<label for="name">设备型号</label>' +
+//                '<input type="text" class="form-control" id="update_gatewayNo" placeholder="请输入设备型号"  value="" required>' +
+//                '</div>' +
+//                '</form>' +
+//                '</div>';
+//
+//            layer.confirm(dialog, {
+//                title: "修改信息",
+//                btn: ["更新"], //按钮
+//                width: "100%"
+//            }, function () {
+//                layer.msg('更新成功');
 //                $.ajax({
-//                    url: "${path}/client/device?action=updateDeviceById",
+//                    url: "
+<%--${path}/client/device?action=updateDeviceById",--%>
 //                    type: "GET",
 //                    data: {
 //                        name: $("#update_gatewayName").val(),
@@ -512,9 +519,9 @@
 //                        layer.msg("程序繁忙，请稍后重试。！");
 //                    }
 //                });
-            });
-        };
-    });
+//            });
+//        };
+//    });
 </script>
 
 </body>
