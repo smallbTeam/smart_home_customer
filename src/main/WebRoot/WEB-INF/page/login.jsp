@@ -13,25 +13,21 @@
     <%--引入基础设置--%>
     <%@include file="/page/common/jsp/baseInclude.jsp" %>
     <title>登录</title>
-    <script type="text/javascript">
-        var wxId = ${wxId};
-
-        $(function () {
-
-        });
-
-        //初始化页面
-        $(document).ready(function () {
-
-        });
-    </script>
+    <script type="text/javascript" src="${path}/page/js/third/md5.js" charset="utf8"></script>
     <link rel="stylesheet" type="text/css" href="${path}/page/css/register.css">
     <!-- 登录页面js -->
     <script type="text/javascript" src="${path}/page/js/index.js" charset="utf8"></script>
+    <script type="text/javascript">
+        var wxId = '${wxId}';
+        if (wxId == null || wxId == undefined || wxId == '') {
+            wxId = "";
+        }
+    </script>
     <style>
         .row {
             margin: 0;
         }
+
         .col-lg-1, .col-lg-10, .col-lg-11, .col-lg-12, .col-lg-2, .col-lg-3, .col-lg-4, .col-lg-5, .col-lg-6, .col-lg-7, .col-lg-8, .col-lg-9, .col-md-1, .col-md-10, .col-md-11, .col-md-12, .col-md-2, .col-md-3, .col-md-4, .col-md-5, .col-md-6, .col-md-7, .col-md-8, .col-md-9, .col-sm-1, .col-sm-10, .col-sm-11, .col-sm-12, .col-sm-2, .col-sm-3, .col-sm-4, .col-sm-5, .col-sm-6, .col-sm-7, .col-sm-8, .col-sm-9, .col-xs-1, .col-xs-10, .col-xs-11, .col-xs-12, .col-xs-2, .col-xs-3, .col-xs-4, .col-xs-5, .col-xs-6, .col-xs-7, .col-xs-8, .col-xs-9 {
             padding: 0;
         }
@@ -72,8 +68,7 @@
                     <button id="accountLogin">登录</button>
                 </div>
                 <div class="forgot">
-                    <%--<button class="btn-right pull-right">忘记密码?</button>--%>
-                    <button id="reg" class="btn-left pull-left">注册</button>
+                    <button id="turn2regpage" style="color: #2BB4EA;float: right;margin: 5px 14px;">注册</button>
                 </div>
             </div>
         </div>
@@ -95,67 +90,49 @@
         context.lineTo(0, 0);
         context.scale(4, 4);
         context.closePath();
-//        context.stroke();
         context.fill();
-//        $("#phoneNumber").change(function () {
-////            var validate = ' <div id="validate" class="validate">'+
-////                '<img src="img/icon/validate.png" class=" icon pull-left"/>'+
-////                '<button class=" pull-right">发送验证码</button>'+
-////                '<div class="row-center">'+
-////                '<input type="text" class="" placeholder="验证码">'+
-////                '</div>'+
-////                '</div>';
-//            $('#validate').slideDown("slow");
-//        });
-        $("#accountLogin").on("click",function(){
+        $("#accountLogin").on("click", function () {
             $('#accountLogin').text('登录中...');
+            var phoneNumber = $.trim($("#phoneNumber").val());
             $.ajax({
-                url:"${path}/client/account?service=accountLogin",
-                type:"post",
-                data:{
-                    "mobelPhone":$("#phoneNumber").val(),
-                    "password":$("#password").val(),
-                    "wxid":wxId
+                url: "${path}/customer/accountLogin",
+                type: "post",
+                data: {
+                    "mobelPhone": phoneNumber,
+                    "password": hex_md5($("#password").val()),
+                    "wxid": wxId
                 },
-                dataType:"json",
-                success:function(data){
-                    if(data.result == "success" && null != data.operationResult
-                        && "" != data.operationResult){
-                        if((0 == data.operationResult)){
-                            alert("手机号或密码错误");
-                            $('#accountLogin').text('登录');
+                dataType: "json",
+                success: function (result) {
+                    //0 手机号或密码错误 1 成功
+                    if (result.code == 0) {
+                        //请求成功
+                        if (result.obj == 1) {
+                            //请求成功
+                            window.location.href = "${path}/customer/index?mobelPhone=" + phoneNumber;
+                            layer.closeAll();
                         } else {
-                            window.location.href = "${path}/client/home?service=index&mobelPhone=" + $("#phoneNumber").val();
+                            //请求失败
+                            layer.msg("手机号或密码错误");
+                            $('#accountLogin').text('登录');
                         }
                     } else {
-                        alert("系统错误");
+                        //请求失败
+                        layer.msg("网络异常！");
                         $('#accountLogin').text('登录');
                     }
                 },
-                error:function(e) {
+                error: function (e) {
                     alert("系统错误");
                     $('#accountLogin').text('登录');
                     console.log(e);
                 }
             });
         });
-        $("#phoneNumber").keydown(function () {
-            if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
-                $("#password").focus();
-            }
-        });
-        $("#password").keydown(function () {
-            if(event.keyCode == "13") {//判断如果按下的是回车键则执行下面的代码
-                //ajax网络请求提交登录数据
 
-            }
-        });
-
-        $("#forgot").click(function () {
-
-        });
-        $("#reg").click(function () {
-            window.location.href = "${path}/client/account?service=register"
+        $("#turn2regpage").click(function () {
+            url = "${path}/customer/register?wxId=" + wxId;
+            window.location.href = url;
         });
     });
 </script>

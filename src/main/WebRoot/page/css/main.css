@@ -490,15 +490,14 @@ h3.title span:after {
     max-height: 120px;
     margin:  auto;
     z-index: 2;
-    margin-left: 50%;
-
-    transform: translate(-50%,0);
+    /*margin-left: 50%;*/
+    /*transform: translate(-50%,0);*/
 }
 .item span {
     width: 100%;
     /*margin:  auto;*/
-    left: 50%;
-    transform: translate(-50%,0);
+    /*left: 50%;*/
+    /*transform: translate(-50%,0);*/
     text-align: center;
     margin-bottom: 15px;
 }

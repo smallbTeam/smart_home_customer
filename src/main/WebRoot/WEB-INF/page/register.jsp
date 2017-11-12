@@ -90,12 +90,9 @@
                     <img src="${path}/page/img/icon/gender.png" class=" icon pull-left"/>
                     <img src="${path}/page/img/visible.png" class=" remark pull-right"/>
                     <div class="gender row-center ">
-                        <!--<input type="text" class="" placeholder="性别">-->
                         <select id="gender" class="">
                             <option value="1">男</option>
                             <option value="2">女</option>
-                            <%--<option value="0">未知</option>--%>
-
                         </select>
                     </div>
                 </div>
@@ -105,12 +102,18 @@
                     <div class=" example  sec2 row-center " data-desc="A basic datepicker" id="basic">
                         <input id="birth" placeholder="出生日期.." class=""/>
                     </div>
-                    <!--<input type="text" class="" placeholder="出生日期">-->
                 </div>
 
                 <div class=" btn-content">
                     <button id="regbtn">注册</button>
                 </div>
+
+
+            </div>
+        </div>
+        <div class="col-sm-8 col-sm-offset-2 col-xs-12 col-md-6 col-md-offset-3 col-lg-4 col-lg-offset-4">
+            <div class="text-center">
+                <span id="turn2loginpage" style="color: #2BB4EA;">已有账号 登录</span>
             </div>
         </div>
     </div>
@@ -120,20 +123,19 @@
 
 <script type="text/javascript">
     var wxId = '${wxId}';
+    if (wxId == null || wxId == undefined || wxId == '') {
+        wxId = "";
+    }
     $(document).ready(function () {
-        //console.log(JSON.stringify(wxId));
         Flatpickr.l10n.weekdays.shorthand = ['周日', '周一', '周二', '周三', '周四', '周五', '周六'];
-        Flatpickr.l10n.months.longhand = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月', '十月', '十一月', '十二月'];
-
+        Flatpickr.l10n.months.longhand = ['一月', '二月', '三月', '四月', '五月', '六月', '七月', '八月', '九月',
+            '十月', '十一月', '十二月'];
         document.getElementById('birth').flatpickr();
-
         var canvas = document.getElementById("contentConvas");
         var context = canvas.getContext("2d");
-
         context.strokeStyle = "#ffffff";
         context.fillStyle = "#ffffff";
         context.lineWidth = "1";
-
         context.beginPath();
         context.moveTo(0, 0);
         context.quadraticCurveTo(canvas.width / 4, 45, canvas.width * 0.6, 35);
@@ -183,15 +185,14 @@
                 $("#pwdAgain").focus();
             }
         });
+
         function validatePWD() {
             var reg = /^[a-zA-z]\w{3,15}$/;
             if (listenField("#pwdAgain", reg) && listenField("#pwd", reg)) {
                 if (($("#pwdAgain").val() == $("#pwd").val()) && isNotNull("#pwd")) {
                     $("#pwdAgain").parent().prev("img").attr("src", "${path}/page/img/icon/success.png");
-
                     return true;
                 } else {
-                    //layer.msg("val:" + $("#pwdAgain").val() + "；f：" + $("#pwd").val());
                     $("#pwdAgain").parent().prev("img").attr("src", "${path}/page/img/icon/failed.png");
                     $("#pwdAgain").val("");
                     $("#pwdAgain").attr('placeholder', "密码输入不一致");
@@ -204,14 +205,6 @@
         }
 
         $("#phoneNumber").change(function () {
-            //            var validate = ' <div id="validate" class="validate">'+
-            //                '<img src="img/icon/validate.png" class=" icon pull-left"/>'+
-            //                '<button class=" pull-right">发送验证码</button>'+
-            //                '<div class="row-center">'+
-            //                '<input type="text" class="" placeholder="验证码">'+
-            //                '</div>'+
-            //                '</div>';
-
             if (listenField("#phoneNumber", phoneReg)) {
                 $('#validate').slideDown("slow");
             } else {
@@ -231,10 +224,7 @@
 
         $("#pwd").change(function () {
             var reg = /^[a-zA-z]\w{3,15}$/;
-            //console.log("pwd:" + $("#pwdAgain").val() + ":pwd:" + $("#pwd").val());
-            //            if (listenField("#pwd",reg)){
             if (isNotNull("#pwdAgain")) {
-                //                    //console.log("hihi");
                 validatePWD();
             } else {
                 if (listenField("#pwd", reg)) {
@@ -243,10 +233,6 @@
                     $(this).attr('placeholder', "请输入6-22位数字字母组合!");
                 }
             }
-            //            }else{
-            //                $(this).attr('placeholder',"请输入6-22位数字字母组合!");
-            //            }
-
         });
 
         $("#pwdAgain").change(function () {
@@ -262,25 +248,15 @@
                     $(this).attr('placeholder', "请输入6-22位数字字母组合!");
                 }
             }
-            //            }else{
-            //                $(this).attr('placeholder',"请输入6-22位数字字母组合!");
-            //            }
-
         });
 
         $("#sendCode").click(function () {
             if (!listenField("#phoneNumber", phoneReg)) {
-                //                //console.log("false");
-
                 return;
-            } else {
-                //                //console.log("sendCode");
             }
-
             var mobelPhone = $("#phoneNumber").val();
             //发送验证码请求
             var timestamp = Date.parse(new Date());
-            <%--var url = "${path}/verificationMsg?service=sendMsg&mobelPhone=" + mobelPhone + "&timeStamp=" + timestamp;--%>
             $.ajax({
                 url: "${path}/shortMessage/sendMsg",
                 type: "GET",
@@ -319,17 +295,12 @@
         });
 
         function validateWithCode() {
-            //console.log("validateCode");
             if (!listenField("#phoneNumber", phoneReg)) {
                 return;
             }
-
             if (!isNotNull("#validateCode")) {
-                //                //console.log("false");
                 return;
             }
-
-            //console.log("[" + validateUrl + "]");
             $.ajax({
                 url: "${path}/shortMessage/veridateMsg",
                 type: "POST",
@@ -363,10 +334,6 @@
             });
         }
 
-        //        $("#validateCode").onmouseout(function () {
-        //            validateWithCode();
-        //        });
-
         $("#validateCode").change(function () {
             validateWithCode();
         });
@@ -395,15 +362,10 @@
                         var obj = result.obj;
                         layer.alert("obj:"+JSON.stringify(obj));
                         if (obj.isExit != true) {
-
-
                             var sex = $("#gender").val();
                             var str = $("#birth").val(); // 日期字符串
                             str = str.replace(/-/g, '/'); // 将-替换成/，因为下面这个构造函数只支持/分隔的日期字符串
                             var birthday = new Date(str).getTime();
-                            if (wxId == null || wxId == undefined || wxId == '') {
-                                wxId = "";
-                            }
                             $.ajax({
                                 url: "${path}/customer/tabCustomer",
                                 type: "POST",
@@ -412,14 +374,11 @@
                                     "password": hex_md5($("#pwd").val()),
                                     "wxId": wxId,
                                     "nickName":  $("#nickName").val(),
-                                    "birthday": "2016-11-10 12",
+                                    "birthday": (new Date($("#birth").val())).format("yyyy-MM-dd"),
                                     "sex": sex
                                 },
                                 dataType:"json",
                                 success:function (result) {
-                                    layer.msg("result:"+result.code);
-                                    return;
-                                    console.log(JSON.stringify(result));
                                     if (result.code == 0) {
                                         //请求成功
                                         window.location.href = "${path}/customer/index?mobelPhone=" + result.obj;
@@ -448,6 +407,12 @@
                 }
             });
         });
+
+        $("#turn2loginpage").click(function () {
+            url = "${path}/customer/login?wxId="+wxId;
+            window.location.href = url;
+        });
+
     });
 </script>
 

@@ -51,9 +51,8 @@ public class CustomerPageController extends BaseController{
     public ModelAndView register(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("register");
         String wxId = request.getParameter("wxId");
-        if (StringUtil.isNotEmpty(wxId)) {
-            mav.addObject("wxId", wxId);
-        }
+        wxId = StringUtil.isNotEmpty(wxId) ? wxId :"";
+        mav.addObject("wxId", wxId);
         return mav;
     }
 
@@ -68,9 +67,8 @@ public class CustomerPageController extends BaseController{
     public ModelAndView login(HttpServletRequest request, HttpServletResponse response) {
         ModelAndView mav = new ModelAndView("login");
         String wxId = request.getParameter("wxId");
-        if (StringUtil.isNotEmpty(wxId)) {
-            mav.addObject("wxId", wxId);
-        }
+        wxId = StringUtil.isNotEmpty(wxId) ? wxId :"";
+        mav.addObject("wxId", wxId);
         return mav;
     }
 
@@ -124,6 +122,8 @@ public class CustomerPageController extends BaseController{
             else {
                 mav.addObject("wxId", wxId);
             }
+        } else {
+            mav.addObject("wxId", "");
         }
         return mav;
     }

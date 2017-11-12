@@ -37,7 +37,7 @@ public class TabCustomerController  extends BaseController {
     @RequestMapping(value = "/accountLogin", method = RequestMethod.POST)
     public void accountLogin(@ApiParam(value = "用户名(必传)") @RequestParam String mobelPhone,
             @ApiParam(value = "密码(必传)") @RequestParam String password,
-            @ApiParam(value = "微信Id(非必传 传的话表示绑定)") @RequestParam String wxId,
+            @ApiParam(value = "微信Id(非必传 传的话表示绑定)") @RequestParam(required = false) String wxId,
             HttpServletResponse response) throws Exception {
         JsonResult<Object> result = new JsonResult<Object>();
         try {
@@ -155,8 +155,8 @@ public class TabCustomerController  extends BaseController {
             @ApiParam(value = "密码 (非必传参数)") @RequestParam(required = false) String password,
             @ApiParam(value = "微信Id (非必传参数)") @RequestParam(required = false) String wxId,
             @ApiParam(value = "昵称 (非必传参数)") @RequestParam(required = false) String nickName,
-            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd HH)") @RequestParam(required = false) @DateTimeFormat(
-                    pattern = "yyyy-MM-dd HH") Date birthday,
+            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd)") @RequestParam(required = false) @DateTimeFormat(
+                    pattern = "yyyy-MM-dd") Date birthday,
             @ApiParam(value = "性别 1男 2 女 0其他 (非必传参数)") @RequestParam(required = false) Integer sex,
             @ApiParam(value = "token (非必传参数)") @RequestParam(required = false) String token,
             @ApiParam(value = "页码(必传)") @RequestParam Integer pageNo,
@@ -194,8 +194,8 @@ public class TabCustomerController  extends BaseController {
             @ApiParam(value = "密码 (非必传参数)") @RequestParam(required = false) String password,
             @ApiParam(value = "微信Id (非必传参数)") @RequestParam(required = false) String wxId,
             @ApiParam(value = "昵称 (非必传参数)") @RequestParam(required = false) String nickName,
-            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd HH)") @RequestParam(required = false) @DateTimeFormat(
-                    pattern = "yyyy-MM-dd HH") Date birthday,
+            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd)") @RequestParam(required = false) @DateTimeFormat(
+                    pattern = "yyyy-MM-dd") Date birthday,
             @ApiParam(value = "性别 1男 2 女 0其他 (非必传参数)") @RequestParam(required = false) Integer sex,
             @ApiParam(value = "token (非必传参数)") @RequestParam(required = false) String token,
             HttpServletResponse response) throws Exception {
@@ -233,8 +233,8 @@ public class TabCustomerController  extends BaseController {
             @ApiParam(value = "密码 (必传参数)") @RequestParam String password,
             @ApiParam(value = "微信Id (非必传参数)") @RequestParam(required = false) String wxId,
             @ApiParam(value = "昵称 (非必传参数)") @RequestParam String nickName,
-            @ApiParam(value = "出生日期 (必传参数日期格式:yyyy-MM-dd HH)") @RequestParam @DateTimeFormat(
-                    pattern = "yyyy-MM-dd HH") Date birthday,
+            @ApiParam(value = "出生日期 (必传参数日期格式:yyyy-MM-dd)") @RequestParam @DateTimeFormat(
+                    pattern = "yyyy-MM-dd") Date birthday,
             @ApiParam(value = "性别 1男 2 女 0其他 (必传参数)") @RequestParam Integer sex,
             @ApiParam(value = "token (非必传参数)") @RequestParam(required = false) String token,
             HttpServletResponse response) throws Exception {
@@ -269,8 +269,8 @@ public class TabCustomerController  extends BaseController {
             @ApiParam(value = "密码 (非必传参数)") @RequestParam(required = false) String password,
             @ApiParam(value = "微信Id (非必传参数)") @RequestParam(required = false) String wxId,
             @ApiParam(value = "昵称 (非必传参数)") @RequestParam(required = false) String nickName,
-            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd HH)") @RequestParam(required = false) @DateTimeFormat(
-                    pattern = "yyyy-MM-dd HH") Date birthday,
+            @ApiParam(value = "出生日期 (非必传参数 日期格式:yyyy-MM-dd)") @RequestParam(required = false) @DateTimeFormat(
+                    pattern = "yyyy-MM-dd") Date birthday,
             @ApiParam(value = "性别 1男 2 女 0其他 (非必传参数)") @RequestParam(required = false) Integer sex,
             @ApiParam(value = "token (非必传参数)") @RequestParam(required = false) String token,
             @ApiParam(value = "是否删除 1:是 2:否 (非必传参数)") @RequestParam(required = false) Integer isDeleted,
