@@ -98,7 +98,7 @@
                         $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                     }
                 } else {
-                    layer.alert(result.msg);
+                    layer.msg(removeempetconnect(result.msg,"系统异常",""));
                     $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                 }
             },
@@ -162,7 +162,7 @@
                     $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
 
                 } else {
-                    layer.alert(result.error);
+                    layer.msg(removeempetconnect(result.msg,"系统异常",""));
                     $("#user-group").append('<div id="gateWayId_nomore"><a href="#">没有更多数据了哦！</a></div>');
                 }
             },
@@ -217,7 +217,7 @@
                         layer.msg("删除成功");
                         refreshData();
                     } else {
-                        layer.msg(result.msg);
+                        layer.msg(removeempetconnect(result.msg,"删除失败，没有权限",""));
                     }
                 },
                 error: function (msg) {
@@ -257,7 +257,7 @@
                         layer.msg("更新成功");
                         refreshData();
                     } else {
-                        layer.msg(result.msg);
+                        layer.msg(removeempetconnect(result.msg,"更新失败，没有权限",""));
                     }
                 },
                 error: function () {
