@@ -407,7 +407,6 @@
         </resources>
         <!--插件-->
         <plugins>
-
         </plugins>
     </build>
 
@@ -415,7 +414,6 @@
     <!--<modules>
         <module></module>
     </modules>-->
-
     <!--私服配置-->
     <!--<distributionManagement>
         <repository></repository>
