@@ -415,7 +415,6 @@
         <module></module>
     </modules>-->
     <!--私服配置-->
-
     <!--<distributionManagement>
         <repository></repository>
         <snapshotRepository></snapshotRepository>
